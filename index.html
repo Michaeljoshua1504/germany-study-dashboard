@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -86,6 +85,33 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
   .rec-box h4 { font-size: 13px; font-weight: 600; color: #14213c; margin-bottom: 6px; }
   .apply-btn { display: inline-block; background: #14213c; color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 500; text-decoration: none; margin-top: 4px; }
   .apply-btn:hover { background: #1d3260; color: #fff; text-decoration: none; }
+  /* Dynamic day badge */
+  .days-live { font-weight: 700; }
+  .days-live.urgent { color: #c0392b; }
+  .days-live.soon { color: #8a5500; }
+  .days-live.ok { color: #1a4b8c; }
+  .days-live.closed { color: #999; text-decoration: line-through; }
+  /* Submit button */
+  .submit-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #e6f4ec; color: #1a6b3c; border: 1.5px solid #a8d8bc;
+    padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;
+    cursor: pointer; margin-top: 8px; transition: all 0.15s;
+  }
+  .submit-btn:hover { background: #1a6b3c; color: #fff; border-color: #1a6b3c; }
+  .submit-btn.submitted-state { background: #1a6b3c; color: #fff; border-color: #1a6b3c; cursor: default; pointer-events: none; }
+  .undo-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: transparent; color: #888; border: 1px solid #d3d1c7;
+    padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 500;
+    cursor: pointer; margin-top: 4px; margin-left: 6px;
+  }
+  .undo-btn:hover { background: #fde8e8; color: #a01c1c; border-color: #f0b0b0; }
+  .submitted-empty { text-align: center; padding: 60px 20px; color: #aaa; }
+  .submitted-empty .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .submitted-card { background: #fff; border-radius: 10px; border: 2px solid #a8d8bc; overflow: hidden; position: relative; }
+  .submitted-card .submitted-ribbon { background: #1a6b3c; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 10px; border-radius: 10px; letter-spacing: 0.5px; display: inline-block; margin-bottom: 6px; }
+  .submitted-date { font-size: 10px; color: #888; margin-top: 2px; }
   @media (max-width: 600px) {
     .cards { grid-template-columns: 1fr; }
     .city-grid { grid-template-columns: 1fr; }
@@ -97,7 +123,7 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 
 <header>
   <h1>🎓 Germany University Comparison — Michael Joshua Padamuthum</h1>
-  <p>Complete analysis of all 21 universities · Updated: 19 May 2026</p>
+  <p>Complete analysis of all 21 universities · Last updated: 19 May 2026 · <span id="today-display" style="color:#8cf;font-weight:600;"></span></p>
   <div class="profile-bar">
     <span class="pb">CGPA 7.18 · 68.65% · First Class</span>
     <span class="pb">176 JNTUA Credits</span>
@@ -110,12 +136,13 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 </header>
 
 <nav>
-  <div class="tab active" onclick="showTab('overview')">📋 Overview Table</div>
-  <div class="tab" onclick="showTab('deadlines')">📅 Deadlines & Apply</div>
-  <div class="tab" onclick="showTab('costs')">💶 Costs & Financials</div>
-  <div class="tab" onclick="showTab('admission')">🎯 Admission & Eligibility</div>
-  <div class="tab" onclick="showTab('cities')">🏙️ City Guide</div>
-  <div class="tab" onclick="showTab('recommendation')">⭐ My Recommendation</div>
+  <div class="tab active" onclick="showTab('overview',this)">📋 Overview Table</div>
+  <div class="tab" onclick="showTab('deadlines',this)">📅 Deadlines & Apply</div>
+  <div class="tab" id="tab-nav-submitted" onclick="showTab('submitted',this)">✅ Submitted <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
+  <div class="tab" onclick="showTab('costs',this)">💶 Costs & Financials</div>
+  <div class="tab" onclick="showTab('admission',this)">🎯 Admission & Eligibility</div>
+  <div class="tab" onclick="showTab('cities',this)">🏙️ City Guide</div>
+  <div class="tab" onclick="showTab('recommendation',this)">⭐ My Recommendation</div>
 </nav>
 
 <!-- OVERVIEW TABLE -->
@@ -274,7 +301,7 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 <!-- DEADLINES -->
 <div id="tab-deadlines" class="section">
   <div class="section-title">Application Deadlines & Direct Links</div>
-  <div class="section-sub">Today is 19 May 2026. All deadlines verified from official programme documents.</div>
+  <div class="section-sub" id="deadlines-sub">Deadlines calculated from today's date automatically.</div>
 
   <div class="note-box">
     <strong>⚠️ Always verify deadlines on the official university website before submitting.</strong> Deadlines can change each cycle.
@@ -282,69 +309,81 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 
   <div class="cards">
 
-    <div class="card">
+    <div class="card" id="deadline-card-hof">
       <div class="card-header">
         <div class="card-title">Hof University — MEng Software Engineering</div>
         <div class="card-sub">MEng Software Engineering for Industrial Applications · Hof</div>
         <div class="badges">
           <span class="badge green">Strong Fit ⭐</span>
           <span class="badge amber">€3,300/sem</span>
-          <span class="badge red">🔥 12 days left</span>
+          <span class="badge" id="badge-hof"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">31 May 2026 <span class="deadline-alert open">✅ Open now</span></span></div>
+        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">31 May 2026 <span class="deadline-alert" id="status-hof"></span></span></div>
         <div class="detail-row"><span class="detail-label">Next window:</span><span class="detail-val">5–30 Nov 2026 (summer sem)</span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong style="color:#e05">12 days — apply today</strong></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-hof"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">Direct Hof portal (Primuss)</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Application Portal ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hof-university.com" target="_blank">hof-university.com ↗</a></span></div>
         <a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank" class="apply-btn">Apply at Hof Portal →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-hof" onclick="markSubmitted('hof')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-hof" style="display:none;" onclick="undoSubmitted('hof')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-fulda">
       <div class="card-header">
         <div class="card-title">Fulda University of Applied Sciences</div>
         <div class="card-sub">MSc Global Software Development · Fulda</div>
         <div class="badges">
           <span class="badge blue">Good Fit ✅</span>
           <span class="badge green">Free tuition</span>
-          <span class="badge red">🔥 12 days left</span>
+          <span class="badge" id="badge-fulda"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Winter deadline (intl):</span><span class="detail-val">31 May 2026 <span class="deadline-alert open">✅ Open now</span></span></div>
+        <div class="detail-row"><span class="detail-label">Winter deadline (intl):</span><span class="detail-val">31 May 2026 <span class="deadline-alert" id="status-fulda"></span></span></div>
         <div class="detail-row"><span class="detail-label">Summer deadline (intl):</span><span class="detail-val">1 Dec 2026</span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong style="color:#e05">12 days — apply today</strong></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-fulda"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hs-fulda.de/en/studyprogramme/global-software-development-msc" target="_blank">hs-fulda.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-fulda" onclick="markSubmitted('fulda')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-fulda" style="display:none;" onclick="undoSubmitted('fulda')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-koblenz">
       <div class="card-header">
         <div class="card-title">University of Koblenz</div>
         <div class="card-sub">MSc Web and Data Science · Koblenz</div>
         <div class="badges">
           <span class="badge blue">Good Fit ✅</span>
           <span class="badge green">Free tuition</span>
-          <span class="badge amber">27 days left</span>
+          <span class="badge" id="badge-koblenz"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Non-EU deadline:</span><span class="detail-val">15 June 2026 <span class="deadline-alert open">✅ Open now</span></span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong>27 days</strong></span></div>
+        <div class="detail-row"><span class="detail-label">Non-EU deadline:</span><span class="detail-val">15 June 2026 <span class="deadline-alert" id="status-koblenz"></span></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-koblenz"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.uni-koblenz.de/en/degree-programs/web-and-data-science-master-of-science" target="_blank">uni-koblenz.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-koblenz" onclick="markSubmitted('koblenz')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-koblenz" style="display:none;" onclick="undoSubmitted('koblenz')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-siegen">
       <div class="card-header">
         <div class="card-title">University of Siegen</div>
         <div class="card-sub">MSc Computer Science · Siegen</div>
@@ -360,94 +399,109 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">Direct Siegen portal</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">master-cs.eti.uni-siegen.de ↗</a></span></div>
         <a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank" class="apply-btn">Apply at Siegen Portal →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-siegen" onclick="markSubmitted('siegen')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-siegen" style="display:none;" onclick="undoSubmitted('siegen')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-chemnitz">
       <div class="card-header">
         <div class="card-title">Chemnitz University of Technology</div>
         <div class="card-sub">MSc Web Engineering · Chemnitz</div>
         <div class="badges">
           <span class="badge green">Strong Fit ⭐</span>
           <span class="badge green">Free tuition</span>
-          <span class="badge amber">57 days left</span>
+          <span class="badge" id="badge-chemnitz"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert open">✅ Open now</span></span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong>57 days</strong></span></div>
+        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert" id="status-chemnitz"></span></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-chemnitz"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">eduapplication.de</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.eduapplication.de/" target="_blank">www.eduapplication.de ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.tu-chemnitz.de" target="_blank">tu-chemnitz.de ↗</a></span></div>
         <a href="https://www.eduapplication.de/" target="_blank" class="apply-btn">Apply at eduapplication.de →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-chemnitz" onclick="markSubmitted('chemnitz')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-chemnitz" style="display:none;" onclick="undoSubmitted('chemnitz')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-rheinmain">
       <div class="card-header">
         <div class="card-title">RheinMain University of Applied Sciences</div>
         <div class="card-sub">MEng AI & Advanced IT · Rüsselsheim</div>
         <div class="badges">
           <span class="badge blue">Good Fit ✅</span>
           <span class="badge purple">New program 2026</span>
-          <span class="badge amber">57 days left</span>
+          <span class="badge" id="badge-rheinmain"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">First ever deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert open">✅ Open now</span></span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong>57 days</strong></span></div>
+        <div class="detail-row"><span class="detail-label">First ever deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert" id="status-rheinmain"></span></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-rheinmain"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hs-rm.de/en/international/from-abroad/international-students/studium/english-masters-programs" target="_blank">hs-rm.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-rheinmain" onclick="markSubmitted('rheinmain')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-rheinmain" style="display:none;" onclick="undoSubmitted('rheinmain')">↩ Undo</button>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="deadline-card-kiel">
       <div class="card-header">
         <div class="card-title">Kiel University of Applied Sciences</div>
         <div class="card-sub">MSc Computer Science · Kiel</div>
         <div class="badges">
           <span class="badge amber">Conditional ⚠️</span>
           <span class="badge red">GRE required</span>
-          <span class="badge blue">119 days left</span>
+          <span class="badge" id="badge-kiel"></span>
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 September 2026 <span class="deadline-alert future">Apply after GRE</span></span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong>119 days</strong></span></div>
+        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 September 2026 <span class="deadline-alert" id="status-kiel"></span></span></div>
+        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-kiel"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Condition:</span><span class="detail-val">Register GRE now at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
         <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
         <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.haw-kiel.de/en/degree-courses/courses/computer-science" target="_blank">haw-kiel.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">Frankfurt University of Applied Sciences</div>
-        <div class="card-sub">MSc High Integrity Systems · Frankfurt am Main</div>
-        <div class="badges">
-          <span class="badge blue">Good Fit ✅</span>
-          <span class="badge green">Free tuition</span>
-          <span class="badge blue">149 days left</span>
+        <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="submit-btn" id="submit-btn-kiel" onclick="markSubmitted('kiel')">✅ Mark as Submitted</button>
+          <button class="undo-btn" id="undo-btn-kiel" style="display:none;" onclick="undoSubmitted('kiel')">↩ Undo</button>
         </div>
-      </div>
-      <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 April 2026 <span class="deadline-alert closed">Closed</span></span></div>
-        <div class="detail-row"><span class="detail-label">Summer deadline:</span><span class="detail-val">15 October 2026 <span class="deadline-alert future">Upcoming</span></span></div>
-        <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong>149 days</strong> (Oct 15, 2026)</span></div>
-        <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
-        <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
       </div>
     </div>
 
   </div>
 
-  <div class="note-box" style="margin-top:16px;">
-    <strong>🔥 Most urgent:</strong> Hof and Fulda close in <strong>12 days (31 May)</strong>. If you haven't submitted yet, do it today. Koblenz closes in 27 days. Siegen has no fixed deadline — apply this week.
+  <div class="note-box" style="margin-top:16px;" id="urgency-note">
+    <!-- Filled by JS -->
+  </div>
+</div>
+
+
+<!-- SUBMITTED APPLICATIONS -->
+<div id="tab-submitted" class="section">
+  <div class="section-title">✅ Submitted Applications</div>
+  <div class="section-sub">Universities you've marked as applied. Click "Undo" on any card to move it back to the Deadlines tab.</div>
+
+  <div id="submitted-empty" class="submitted-empty">
+    <div class="empty-icon">📭</div>
+    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No submitted applications yet</p>
+    <p>Go to <strong>📅 Deadlines &amp; Apply</strong> and click <strong>✅ Mark as Submitted</strong> on any university you've applied to.</p>
+  </div>
+
+  <div class="cards" id="submitted-cards-grid"></div>
+
+  <div id="submitted-footer" style="display:none;margin-top:16px;" class="note-box">
+    <strong>🚀 What's next after submitting?</strong> Track your email inbox for acknowledgement from uni-assist or the university portal. Decisions typically take 4–8 weeks. Meanwhile, keep your remaining applications moving — don't wait for one result before submitting others.
   </div>
 </div>
 
@@ -714,7 +768,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
   <div class="section-sub">Which city is best for your DevOps career, budget, and life in Germany?</div>
 
   <div class="city-grid">
-
     <div class="city-card">
       <div class="city-name">🏙️ Frankfurt am Main</div>
       <div class="city-uni">Frankfurt UAS — MSc High Integrity Systems</div>
@@ -728,7 +781,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">SAP, AWS, Google, Deutsche Bank, T-Systems</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Europe's financial-tech hub. #1 city for DevOps career in Germany. High cost but unmatched job market and Indian community.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">🏘️ Rüsselsheim (near Frankfurt)</div>
       <div class="city-uni">RheinMain UAS — MEng AI & Advanced IT</div>
@@ -742,7 +794,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Opel, T-Systems, Fraport, all Frankfurt tech</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Best of both worlds — affordable living with Frankfurt job market 20 minutes away. Great starting point.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">⚙️ Chemnitz</div>
       <div class="city-uni">Chemnitz TU — MSc Web Engineering</div>
@@ -756,7 +807,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">VW, BMW plants nearby, mid-size tech</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Cheapest city on this list with the best DevOps curriculum. Ideal if budget is the priority. Dresden is 1 hr away for city life.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">🏫 Fulda</div>
       <div class="city-uni">Fulda UAS — MSc Global Software Dev.</div>
@@ -770,7 +820,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Krones, regional IT firms</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Quiet, peaceful university town. Affordable. Frankfurt reachable in 1 hr for job hunting and networking.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">🏭 Hof</div>
       <div class="city-uni">Hof UAS — MEng Software Engineering</div>
@@ -784,7 +833,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Internship companies</span><span class="city-val">SAP, IBM, Siemens, Continental, JPM</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Small Bavarian town with 40%+ international students. The 2-semester paid internship is your direct gateway into Germany's top companies.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">🌊 Kiel</div>
       <div class="city-uni">Kiel UAS — MSc Computer Science</div>
@@ -798,7 +846,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Beautiful coastal city, Baltic Sea</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Stunning coastal city. Best Cloud Computing curriculum (Advanced Cloud Computing module) but requires GRE. Hamburg job market 1.5 hr away.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">🌉 Koblenz</div>
       <div class="city-uni">Koblenz Uni — MSc Web & Data Science</div>
@@ -812,7 +859,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Historic Rhine valley, UNESCO heritage</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Beautiful Rhine location between Frankfurt and Cologne. Affordable and well connected. DAAD-funded career support specifically for international students.</div>
     </div>
-
     <div class="city-card">
       <div class="city-name">⚒️ Siegen</div>
       <div class="city-uni">Siegen Uni — MSc Computer Science</div>
@@ -826,7 +872,6 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
       <div class="city-row"><span class="city-label">Career support</span><span class="city-val">FIT in Siegen DAAD-funded programme</span></div>
       <div style="margin-top:10px;font-size:11px;color:#888;">Affordable, with dedicated FIT in Siegen programme supporting international students into the German job market throughout the degree.</div>
     </div>
-
   </div>
 
   <div class="note-box" style="margin-top:16px;">
@@ -846,30 +891,30 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
   <div class="section-sub">Based on your complete profile: 68.65% · CGPA 7.18 · 176 JNTUA credits · IELTS 6.5 · German A1 · 3+ yrs work exp · Goal: DevOps Engineer in Germany.</div>
 
   <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (12 days left)</h4>
+    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Hof UAS — MEng Software Engineering for Industrial Applications</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best career outcome of all 21 universities. Applied Cloud Computing module + 2-semester paid internship at SAP/IBM/Siemens. IELTS 6.5 exact match. 3+ yrs work exp exceeds their 1-yr requirement. Yes, €3,300/sem — but recovered during internship. Currently applying.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026 — 12 days</strong></span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Application Portal ↗</a></span></div>
   </div>
 
   <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (12 days left)</h4>
+    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Fulda UAS — MSc Global Software Development</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Free tuition. IELTS 6.5 exact match. Distributed systems + intercultural deployment focus. 20-week IT internship option. Deutschlandstipendium eligible. LOM ready.</span></div>
     <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Book Goethe A1 exam in Hyderabad this week for German requirement</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026 — 12 days</strong></span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
   </div>
 
   <div class="rec-box" style="background:#f0f4ff;border-color:#a8bce8;">
-    <h4>📅 Priority 2 — Apply this week (27 days)</h4>
+    <h4>📅 Priority 2 — Apply this week (<span class="rec-days" data-deadline="2026-06-15"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Koblenz — MSc Web and Data Science</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Your 68.65% qualifies (65% CGPA required). Free tuition. Web systems + data engineering. Near Frankfurt/Cologne. DAAD-funded FIT4SukCESS career programme supports your German job market entry throughout the degree.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong>15 June 2026 — 27 days</strong></span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong>15 June 2026</strong></span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
   </div>
 
@@ -882,40 +927,40 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
   </div>
 
   <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15</h4>
+    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Chemnitz TU — MSc Web Engineering</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best DevOps curriculum of all 21 universities — Cloud & web apps, distributed systems, data engineering, IoT. Free tuition. Cheapest city. Lowest admission barrier. DAAD scholarship eligible. LOM still to write.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026 — 57 days</span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.eduapplication.de/" target="_blank">eduapplication.de ↗</a></span></div>
   </div>
 
   <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15</h4>
+    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>RheinMain UAS — MEng AI & Advanced IT</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">First cohort 2026 = less competition. Cloud Computing, IoT, ML modules. Free tuition. 20 min to Frankfurt job market. LOM still to write.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026 — 57 days</span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
   </div>
 
   <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 4 — If GRE done (Sep 15)</h4>
+    <h4>📅 Priority 4 — If GRE done (<span class="rec-days" data-deadline="2026-09-15"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Kiel UAS — MSc Computer Science</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best Cloud Computing curriculum anywhere on this list — Advanced Cloud Computing, Distributed DBs, Advanced Software Engineering all in semester 1. Worth the GRE effort.</span></div>
     <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Register GRE now at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a>. Target August test date. Score 55%+ in quantitative.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 September 2026 — 119 days</span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 September 2026</span></div>
   </div>
 
   <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 5 — Apply Oct (summer 2027 intake)</h4>
+    <h4>📅 Priority 5 — Apply Oct (<span class="rec-days" data-deadline="2026-10-15"></span>)</h4>
     <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Frankfurt UAS — MSc High Integrity Systems</strong></span></div>
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Frankfurt is Germany's #1 DevOps job market. Cloud Computing elective, Distributed Systems, IoT. If you get into any earlier program, apply here too for summer 2027 as a backup or top-up plan.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 October 2026 — 149 days</span></div>
+    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 October 2026</span></div>
     <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
   </div>
 
-  <div class="note-box" style="margin-top:16px;">
+  <div class="note-box" style="margin-top:16px;" id="rec-checklist">
     <strong>📋 Complete checklist — in order:</strong>
     <ol style="margin-top:8px;padding-left:20px;line-height:2.2;font-size:12px;">
       <li>Submit <strong>Hof MEng</strong> application — <a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Portal ↗</a> — by 31 May</li>
@@ -939,24 +984,275 @@ cat > /mnt/user-data/outputs/germany_university_dashboard.html << 'HTMLEOF'
 </div>
 
 <script>
-function showTab(name) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+// ─── University metadata for submitted cards ───
+const UNI_META = {
+  hof: {
+    title: 'Hof University — MEng Software Engineering',
+    sub: 'MEng Software Engineering for Industrial Applications · Hof',
+    fit: 'Strong Fit ⭐', fitClass: 'green',
+    tuition: '€3,300/sem', deadline: '31 May 2026',
+    applyVia: 'Direct Hof portal (Primuss)',
+    link: 'https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en',
+    deadlineKey: '2026-05-31'
+  },
+  fulda: {
+    title: 'Fulda University of Applied Sciences',
+    sub: 'MSc Global Software Development · Fulda',
+    fit: 'Good Fit ✅', fitClass: 'blue',
+    tuition: 'Free', deadline: '31 May 2026',
+    applyVia: 'uni-assist',
+    link: 'https://www.uni-assist.de/en',
+    deadlineKey: '2026-05-31'
+  },
+  koblenz: {
+    title: 'University of Koblenz',
+    sub: 'MSc Web and Data Science · Koblenz',
+    fit: 'Good Fit ✅', fitClass: 'blue',
+    tuition: 'Free', deadline: '15 June 2026',
+    applyVia: 'uni-assist',
+    link: 'https://www.uni-assist.de/en',
+    deadlineKey: '2026-06-15'
+  },
+  siegen: {
+    title: 'University of Siegen',
+    sub: 'MSc Computer Science · Siegen',
+    fit: 'Good Fit ✅', fitClass: 'blue',
+    tuition: 'Free', deadline: 'No fixed deadline',
+    applyVia: 'Direct Siegen portal',
+    link: 'http://www.master-cs.eti.uni-siegen.de/',
+    deadlineKey: null
+  },
+  chemnitz: {
+    title: 'Chemnitz University of Technology',
+    sub: 'MSc Web Engineering · Chemnitz',
+    fit: 'Strong Fit ⭐', fitClass: 'green',
+    tuition: 'Free', deadline: '15 July 2026',
+    applyVia: 'eduapplication.de',
+    link: 'https://www.eduapplication.de/',
+    deadlineKey: '2026-07-15'
+  },
+  rheinmain: {
+    title: 'RheinMain University of Applied Sciences',
+    sub: 'MEng AI & Advanced IT · Rüsselsheim',
+    fit: 'Good Fit ✅', fitClass: 'blue',
+    tuition: 'Free', deadline: '15 July 2026',
+    applyVia: 'uni-assist',
+    link: 'https://www.uni-assist.de/en',
+    deadlineKey: '2026-07-15'
+  },
+  kiel: {
+    title: 'Kiel University of Applied Sciences',
+    sub: 'MSc Computer Science · Kiel',
+    fit: 'Conditional ⚠️', fitClass: 'amber',
+    tuition: 'Free', deadline: '15 September 2026',
+    applyVia: 'uni-assist',
+    link: 'https://www.uni-assist.de/en',
+    deadlineKey: '2026-09-15'
+  }
+};
+
+// ─── Submitted state (localStorage) ───
+function getSubmitted() {
+  try { return JSON.parse(localStorage.getItem('submitted_unis') || '{}'); } catch(e) { return {}; }
 }
-function filterRows(fit, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const rows = document.querySelectorAll('tbody tr[data-fit]');
-  rows.forEach(r => {
-    if (fit === 'all' || r.dataset.fit === fit) {
-      r.style.display = '';
+function saveSubmitted(data) {
+  localStorage.setItem('submitted_unis', JSON.stringify(data));
+}
+
+// ─── Mark a uni as submitted ───
+function markSubmitted(key) {
+  const data = getSubmitted();
+  data[key] = { submittedOn: new Date().toISOString() };
+  saveSubmitted(data);
+  applySubmittedState();
+  updateSubmittedBadge();
+  renderSubmittedCards();
+}
+
+// ─── Undo submitted ───
+function undoSubmitted(key) {
+  const data = getSubmitted();
+  delete data[key];
+  saveSubmitted(data);
+  applySubmittedState();
+  updateSubmittedBadge();
+  renderSubmittedCards();
+}
+
+// ─── Apply submitted state to deadline cards ───
+function applySubmittedState() {
+  const data = getSubmitted();
+  Object.keys(UNI_META).forEach(key => {
+    const card = document.getElementById('deadline-card-' + key);
+    const submitBtn = document.getElementById('submit-btn-' + key);
+    const undoBtn = document.getElementById('undo-btn-' + key);
+    if (!card) return;
+    if (data[key]) {
+      card.style.display = 'none';
+      if (submitBtn) { submitBtn.textContent = '✅ Submitted'; submitBtn.classList.add('submitted-state'); }
+      if (undoBtn) undoBtn.style.display = 'inline-flex';
     } else {
-      r.style.display = 'none';
+      card.style.display = '';
+      if (submitBtn) { submitBtn.textContent = '✅ Mark as Submitted'; submitBtn.classList.remove('submitted-state'); }
+      if (undoBtn) undoBtn.style.display = 'none';
     }
   });
 }
+
+// ─── Render submitted cards in the submitted tab ───
+function renderSubmittedCards() {
+  const data = getSubmitted();
+  const grid = document.getElementById('submitted-cards-grid');
+  const empty = document.getElementById('submitted-empty');
+  const footer = document.getElementById('submitted-footer');
+  const keys = Object.keys(data);
+
+  if (keys.length === 0) {
+    empty.style.display = 'block';
+    grid.innerHTML = '';
+    footer.style.display = 'none';
+    return;
+  }
+
+  empty.style.display = 'none';
+  footer.style.display = 'block';
+  grid.innerHTML = keys.map(key => {
+    const m = UNI_META[key];
+    const d = data[key];
+    const submittedDate = new Date(d.submittedOn).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+    return `
+    <div class="card submitted-card" id="submitted-card-${key}">
+      <div class="card-header">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <span class="submitted-ribbon">✅ SUBMITTED</span>
+            <div class="card-title">${m.title}</div>
+            <div class="card-sub">${m.sub}</div>
+          </div>
+        </div>
+        <div class="badges" style="margin-top:6px;">
+          <span class="badge ${m.fitClass}">${m.fit}</span>
+          <span class="badge ${m.tuition === 'Free' ? 'green' : 'amber'}">${m.tuition === 'Free' ? 'Free tuition' : m.tuition}</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="detail-row"><span class="detail-label">Submitted on:</span><span class="detail-val" style="font-weight:600;color:#1a6b3c;">📅 ${submittedDate}</span></div>
+        <div class="detail-row"><span class="detail-label">Application deadline:</span><span class="detail-val">${m.deadline}</span></div>
+        <div class="detail-row"><span class="detail-label">Applied via:</span><span class="detail-val">${m.applyVia}</span></div>
+        <div class="detail-row"><span class="detail-label">Portal:</span><span class="detail-val"><a href="${m.link}" target="_blank">${m.link.replace('https://','').replace('http://','').split('/')[0]} ↗</a></span></div>
+        <div style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
+          <button class="undo-btn" style="display:inline-flex;margin:0;" onclick="undoSubmitted('${key}')">↩ Move back to Deadlines</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── Update nav badge ───
+function updateSubmittedBadge() {
+  const count = Object.keys(getSubmitted()).length;
+  const badge = document.getElementById('submitted-count-badge');
+  if (!badge) return;
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+// ─── Utility: days from today ───
+function daysLeft(deadlineStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const deadline = new Date(deadlineStr + 'T00:00:00');
+  return Math.round((deadline - today) / 86400000);
+}
+function badgeClass(d) {
+  if (d < 0) return 'gray'; if (d <= 14) return 'red'; if (d <= 30) return 'amber'; return 'blue';
+}
+function statusLabel(d) {
+  if (d < 0) return ['closed', '❌ Closed'];
+  if (d === 0) return ['open', '🔴 TODAY'];
+  return ['open', '✅ Open'];
+}
+function daysText(d) {
+  if (d < 0) return 'Deadline has passed';
+  if (d === 0) return '⚠️ TODAY is the last day — apply now!';
+  if (d === 1) return '⚠️ 1 day left — apply TODAY';
+  return d + ' days left';
+}
+function applyCountdown(idSuffix, deadlineStr) {
+  const d = daysLeft(deadlineStr);
+  const badgeEl = document.getElementById('badge-' + idSuffix);
+  const statusEl = document.getElementById('status-' + idSuffix);
+  const daysEl = document.getElementById('days-' + idSuffix);
+  if (!badgeEl) return;
+  const [statusClass, statusText] = statusLabel(d);
+  const urgency = d < 0 ? '' : d <= 14 ? '🔥 ' : '';
+  const daysDisplay = d < 0 ? 'Closed' : d + ' day' + (d === 1 ? '' : 's') + ' left';
+  badgeEl.className = 'badge ' + badgeClass(d);
+  badgeEl.textContent = urgency + daysDisplay;
+  statusEl.className = 'deadline-alert ' + statusClass;
+  statusEl.textContent = statusText;
+  daysEl.className = 'days-live ' + (d < 0 ? 'closed' : d <= 7 ? 'urgent' : d <= 30 ? 'soon' : 'ok');
+  daysEl.textContent = daysText(d);
+}
+const deadlines = {
+  hof: '2026-05-31', fulda: '2026-05-31', koblenz: '2026-06-15',
+  chemnitz: '2026-07-15', rheinmain: '2026-07-15', kiel: '2026-09-15',
+};
+function updateAll() {
+  for (const [key, date] of Object.entries(deadlines)) applyCountdown(key, date);
+  const today = new Date();
+  document.getElementById('today-display').textContent =
+    'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('deadlines-sub').textContent =
+    'Countdown calculated from today — ' +
+    today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) + '. Always verify on official sites.';
+  const submitted = getSubmitted();
+  const urgent = Object.entries(deadlines)
+    .filter(([k]) => !submitted[k])
+    .map(([k, d]) => ({ key: k, days: daysLeft(d) }))
+    .filter(x => x.days >= 0 && x.days <= 14)
+    .sort((a, b) => a.days - b.days);
+  const urgencyEl = document.getElementById('urgency-note');
+  if (urgent.length === 0) {
+    urgencyEl.innerHTML = '<strong>ℹ️ No deadlines within the next 14 days.</strong> Check the cards above for upcoming dates.';
+  } else {
+    const names = { hof:'Hof', fulda:'Fulda', koblenz:'Koblenz', chemnitz:'Chemnitz', rheinmain:'RheinMain', kiel:'Kiel' };
+    const list = urgent.map(x => `<strong>${names[x.key]}</strong> (${x.days === 0 ? 'today' : x.days + ' days'})`).join(', ');
+    urgencyEl.innerHTML = `<strong>🔥 Most urgent right now:</strong> ${list}. Submit these applications immediately.`;
+  }
+  document.querySelectorAll('.rec-days[data-deadline]').forEach(el => {
+    const d = daysLeft(el.dataset.deadline);
+    if (d < 0) { el.textContent = 'deadline passed'; el.style.color = '#999'; }
+    else if (d === 0) { el.textContent = 'TODAY'; el.style.color = '#c0392b'; el.style.fontWeight = '700'; }
+    else { el.textContent = d + ' day' + (d===1?'':'s') + ' left'; el.style.color = d<=14?'#c0392b':d<=30?'#8a5500':'#1a4b8c'; el.style.fontWeight = d<=14?'700':'600'; }
+  });
+}
+
+// ─── Tab switching ───
+function showTab(name, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+// ─── Filter rows ───
+function filterRows(fit, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('tbody tr[data-fit]').forEach(r => {
+    r.style.display = (fit === 'all' || r.dataset.fit === fit) ? '' : 'none';
+  });
+}
+
+// ─── Init ───
+updateAll();
+applySubmittedState();
+updateSubmittedBadge();
+renderSubmittedCards();
 </script>
 </body>
 </html>
