@@ -4,124 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Germany University Comparison — Michael Joshua</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; background: #f5f5f0; color: #2c2c2a; line-height: 1.5; }
-  header { background: #14213c; color: #fff; padding: 20px 24px 16px; }
-  header h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
-  header p { font-size: 12px; color: #aab; margin-bottom: 10px; }
-  .profile-bar { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pb { background: rgba(255,255,255,0.12); border-radius: 4px; padding: 3px 10px; font-size: 11px; color: #dde; }
-  nav { background: #fff; border-bottom: 1px solid #e0ded6; padding: 0 24px; display: flex; gap: 0; overflow-x: auto; }
-  .tab { padding: 12px 18px; font-size: 12px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: #888; white-space: nowrap; }
-  .tab.active { border-bottom-color: #14213c; color: #14213c; }
-  .tab:hover { color: #14213c; }
-  .section { display: none; padding: 20px 24px; }
-  .section.active { display: block; }
-  .filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; align-items: center; }
-  .filter-btn { padding: 5px 14px; border: 1px solid #d3d1c7; border-radius: 20px; background: #fff; font-size: 11px; cursor: pointer; color: #5f5e5a; }
-  .filter-btn.active { background: #14213c; color: #fff; border-color: #14213c; }
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; }
-  .card { background: #fff; border-radius: 10px; border: 1px solid #e0ded6; overflow: hidden; }
-  .card-header { padding: 14px 16px 10px; border-bottom: 1px solid #f0ede6; }
-  .card-title { font-size: 14px; font-weight: 600; color: #14213c; margin-bottom: 2px; }
-  .card-sub { font-size: 11px; color: #888; margin-bottom: 8px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 4px; }
-  .badge { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; }
-  .badge.green { background: #e6f4ec; color: #1a6b3c; }
-  .badge.blue { background: #e6f0fb; color: #1a4b8c; }
-  .badge.amber { background: #fef3e0; color: #8a5500; }
-  .badge.red { background: #fde8e8; color: #a01c1c; }
-  .badge.gray { background: #f0eee8; color: #5f5e5a; }
-  .badge.purple { background: #ede8fc; color: #4a2d99; }
-  .card-body { padding: 12px 16px; }
-  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #e0ded6; background: #fff; }
-  table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
-  thead { background: #14213c; color: #fff; position: sticky; top: 0; z-index: 10; }
-  thead th { padding: 10px 12px; text-align: left; font-weight: 500; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); }
-  tbody tr { border-bottom: 1px solid #f0ede6; }
-  tbody tr:hover { background: #fafaf7; }
-  tbody td { padding: 9px 12px; vertical-align: top; border-right: 1px solid #f0ede6; }
-  tbody td:first-child { font-weight: 600; color: #14213c; white-space: nowrap; }
-  .pill { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 10px; font-weight: 600; white-space: nowrap; }
-  .pill.green { background: #e6f4ec; color: #1a6b3c; }
-  .pill.blue { background: #e6f0fb; color: #1a4b8c; }
-  .pill.amber { background: #fef3e0; color: #8a5500; }
-  .pill.red { background: #fde8e8; color: #a01c1c; }
-  .pill.gray { background: #f0eee8; color: #5f5e5a; }
-  .deadline-alert { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; display: inline-block; }
-  .deadline-alert.open { background: #e6f4ec; color: #1a6b3c; }
-  .deadline-alert.soon { background: #fef3e0; color: #8a5500; }
-  .deadline-alert.closed { background: #fde8e8; color: #a01c1c; }
-  .deadline-alert.future { background: #e6f0fb; color: #1a4b8c; }
-  .score-bar { display: flex; align-items: center; gap: 6px; }
-  .bar { height: 6px; border-radius: 3px; background: #e0ded6; flex: 1; max-width: 80px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 3px; }
-  .score-num { font-weight: 600; font-size: 11px; min-width: 24px; }
-  .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
-  .city-card { background: #fff; border-radius: 10px; border: 1px solid #e0ded6; padding: 16px; }
-  .city-name { font-size: 15px; font-weight: 600; color: #14213c; margin-bottom: 2px; }
-  .city-uni { font-size: 11px; color: #888; margin-bottom: 12px; }
-  .city-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #f5f3ee; font-size: 12px; }
-  .city-row:last-child { border-bottom: none; }
-  .city-label { color: #888; }
-  .city-val { font-weight: 500; }
-  .stars { color: #f5a623; }
-  .detail-row { display: flex; gap: 6px; margin-bottom: 6px; font-size: 12px; }
-  .detail-label { color: #888; min-width: 130px; flex-shrink: 0; }
-  .detail-val { color: #2c2c2a; }
-  a { color: #1a4b8c; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .chance { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; display: inline-block; }
-  .chance.high { background: #e6f4ec; color: #1a6b3c; }
-  .chance.medium { background: #fef3e0; color: #8a5500; }
-  .chance.low { background: #fde8e8; color: #a01c1c; }
-  .section-title { font-size: 15px; font-weight: 600; color: #14213c; margin-bottom: 4px; }
-  .section-sub { font-size: 12px; color: #888; margin-bottom: 16px; }
-  .note-box { background: #fffbf0; border: 1px solid #f5d87c; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 12px; }
-  .note-box strong { color: #8a5500; }
-  .rec-box { background: #f0f9f4; border: 1px solid #a8d8bc; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; font-size: 12px; }
-  .rec-box strong { color: #1a6b3c; }
-  .rec-box h4 { font-size: 13px; font-weight: 600; color: #14213c; margin-bottom: 6px; }
-  .apply-btn { display: inline-block; background: #14213c; color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 500; text-decoration: none; margin-top: 4px; }
-  .apply-btn:hover { background: #1d3260; color: #fff; text-decoration: none; }
-  /* Dynamic day badge */
-  .days-live { font-weight: 700; }
-  .days-live.urgent { color: #c0392b; }
-  .days-live.soon { color: #8a5500; }
-  .days-live.ok { color: #1a4b8c; }
-  .days-live.closed { color: #999; text-decoration: line-through; }
-  /* Submit button */
-  .submit-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: #e6f4ec; color: #1a6b3c; border: 1.5px solid #a8d8bc;
-    padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;
-    cursor: pointer; margin-top: 8px; transition: all 0.15s;
-  }
-  .submit-btn:hover { background: #1a6b3c; color: #fff; border-color: #1a6b3c; }
-  .submit-btn.submitted-state { background: #1a6b3c; color: #fff; border-color: #1a6b3c; cursor: default; pointer-events: none; }
-  .undo-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    background: transparent; color: #888; border: 1px solid #d3d1c7;
-    padding: 3px 10px; border-radius: 6px; font-size: 10px; font-weight: 500;
-    cursor: pointer; margin-top: 4px; margin-left: 6px;
-  }
-  .undo-btn:hover { background: #fde8e8; color: #a01c1c; border-color: #f0b0b0; }
-  .submitted-empty { text-align: center; padding: 60px 20px; color: #aaa; }
-  .submitted-empty .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  .submitted-card { background: #fff; border-radius: 10px; border: 2px solid #a8d8bc; overflow: hidden; position: relative; }
-  .submitted-card .submitted-ribbon { background: #1a6b3c; color: #fff; font-size: 9px; font-weight: 700; padding: 2px 10px; border-radius: 10px; letter-spacing: 0.5px; display: inline-block; margin-bottom: 6px; }
-  .submitted-date { font-size: 10px; color: #888; margin-top: 2px; }
-  @media (max-width: 600px) {
-    .cards { grid-template-columns: 1fr; }
-    .city-grid { grid-template-columns: 1fr; }
-    .tab { padding: 10px 12px; font-size: 11px; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
+  <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌓 Dark Mode</button>
   <h1>🎓 Germany University Comparison — Michael Joshua Padamuthum</h1>
   <p>Complete analysis of all 21 universities · Last updated: 19 May 2026 · <span id="today-display" style="color:#8cf;font-weight:600;"></span></p>
   <div class="profile-bar">
@@ -139,13 +27,14 @@
   <div class="tab active" onclick="showTab('overview',this)">📋 Overview Table</div>
   <div class="tab" onclick="showTab('deadlines',this)">📅 Deadlines & Apply</div>
   <div class="tab" id="tab-nav-submitted" onclick="showTab('submitted',this)">✅ Submitted <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
-  <div class="tab" onclick="showTab('costs',this)">💶 Costs & Financials</div>
-  <div class="tab" onclick="showTab('admission',this)">🎯 Admission & Eligibility</div>
+  <div class="tab" onclick="showTab('costs',this)">💶 Costs & Calc</div>
+  <div class="tab" onclick="showTab('admission',this)">🎯 Eligibility</div>
   <div class="tab" onclick="showTab('cities',this)">🏙️ City Guide</div>
+  <div class="tab" onclick="showTab('checklist',this)">✈️ Visa Checklist</div>
+  <div class="tab" onclick="showTab('notes',this)">📝 My Notes</div>
   <div class="tab" onclick="showTab('recommendation',this)">⭐ My Recommendation</div>
 </nav>
 
-<!-- OVERVIEW TABLE -->
 <div id="tab-overview" class="section active">
   <div class="section-title">Overview — Apply List (8 Universities)</div>
   <div class="section-sub">Filtered from 21 universities. 12 rejected with clear reasons. 1 borderline risk. These 8 are worth applying to.</div>
@@ -298,7 +187,6 @@
   </div>
 </div>
 
-<!-- DEADLINES -->
 <div id="tab-deadlines" class="section">
   <div class="section-title">Application Deadlines & Direct Links</div>
   <div class="section-sub" id="deadlines-sub">Deadlines calculated from today's date automatically.</div>
@@ -308,7 +196,6 @@
   </div>
 
   <div class="cards">
-
     <div class="card" id="deadline-card-hof">
       <div class="card-header">
         <div class="card-title">Hof University — MEng Software Engineering</div>
@@ -321,11 +208,8 @@
       </div>
       <div class="card-body">
         <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">31 May 2026 <span class="deadline-alert" id="status-hof"></span></span></div>
-        <div class="detail-row"><span class="detail-label">Next window:</span><span class="detail-val">5–30 Nov 2026 (summer sem)</span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-hof"></strong></span></div>
-        <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">Direct Hof portal (Primuss)</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Application Portal ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hof-university.com" target="_blank">hof-university.com ↗</a></span></div>
+        <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">Direct Hof portal</span></div>
         <a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank" class="apply-btn">Apply at Hof Portal →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-hof" onclick="markSubmitted('hof')">✅ Mark as Submitted</button>
@@ -333,7 +217,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-fulda">
       <div class="card-header">
         <div class="card-title">Fulda University of Applied Sciences</div>
@@ -346,11 +229,8 @@
       </div>
       <div class="card-body">
         <div class="detail-row"><span class="detail-label">Winter deadline (intl):</span><span class="detail-val">31 May 2026 <span class="deadline-alert" id="status-fulda"></span></span></div>
-        <div class="detail-row"><span class="detail-label">Summer deadline (intl):</span><span class="detail-val">1 Dec 2026</span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-fulda"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hs-fulda.de/en/studyprogramme/global-software-development-msc" target="_blank">hs-fulda.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-fulda" onclick="markSubmitted('fulda')">✅ Mark as Submitted</button>
@@ -358,7 +238,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-koblenz">
       <div class="card-header">
         <div class="card-title">University of Koblenz</div>
@@ -373,8 +252,6 @@
         <div class="detail-row"><span class="detail-label">Non-EU deadline:</span><span class="detail-val">15 June 2026 <span class="deadline-alert" id="status-koblenz"></span></span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-koblenz"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.uni-koblenz.de/en/degree-programs/web-and-data-science-master-of-science" target="_blank">uni-koblenz.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-koblenz" onclick="markSubmitted('koblenz')">✅ Mark as Submitted</button>
@@ -382,7 +259,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-siegen">
       <div class="card-header">
         <div class="card-title">University of Siegen</div>
@@ -394,10 +270,9 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">Apply as early as possible <span class="deadline-alert open">✅ Open</span></span></div>
-        <div class="detail-row"><span class="detail-label">Note:</span><span class="detail-val">No fixed deadline listed — apply now to allow visa processing time</span></div>
+        <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">Apply early <span class="deadline-alert open">✅ Open</span></span></div>
+        <div class="detail-row"><span class="detail-label">Note:</span><span class="detail-val">No fixed deadline listed — apply now</span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">Direct Siegen portal</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">master-cs.eti.uni-siegen.de ↗</a></span></div>
         <a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank" class="apply-btn">Apply at Siegen Portal →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-siegen" onclick="markSubmitted('siegen')">✅ Mark as Submitted</button>
@@ -405,7 +280,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-chemnitz">
       <div class="card-header">
         <div class="card-title">Chemnitz University of Technology</div>
@@ -420,8 +294,6 @@
         <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert" id="status-chemnitz"></span></span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-chemnitz"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">eduapplication.de</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.eduapplication.de/" target="_blank">www.eduapplication.de ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.tu-chemnitz.de" target="_blank">tu-chemnitz.de ↗</a></span></div>
         <a href="https://www.eduapplication.de/" target="_blank" class="apply-btn">Apply at eduapplication.de →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-chemnitz" onclick="markSubmitted('chemnitz')">✅ Mark as Submitted</button>
@@ -429,7 +301,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-rheinmain">
       <div class="card-header">
         <div class="card-title">RheinMain University of Applied Sciences</div>
@@ -444,8 +315,6 @@
         <div class="detail-row"><span class="detail-label">First ever deadline:</span><span class="detail-val">15 July 2026 <span class="deadline-alert" id="status-rheinmain"></span></span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-rheinmain"></strong></span></div>
         <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.hs-rm.de/en/international/from-abroad/international-students/studium/english-masters-programs" target="_blank">hs-rm.de ↗</a></span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-rheinmain" onclick="markSubmitted('rheinmain')">✅ Mark as Submitted</button>
@@ -453,7 +322,6 @@
         </div>
       </div>
     </div>
-
     <div class="card" id="deadline-card-kiel">
       <div class="card-header">
         <div class="card-title">Kiel University of Applied Sciences</div>
@@ -467,10 +335,7 @@
       <div class="card-body">
         <div class="detail-row"><span class="detail-label">Winter deadline:</span><span class="detail-val">15 September 2026 <span class="deadline-alert" id="status-kiel"></span></span></div>
         <div class="detail-row"><span class="detail-label">Days left:</span><span class="detail-val"><strong class="days-live" id="days-kiel"></strong></span></div>
-        <div class="detail-row"><span class="detail-label">Condition:</span><span class="detail-val">Register GRE now at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Apply via:</span><span class="detail-val">uni-assist</span></div>
-        <div class="detail-row"><span class="detail-label">Application link:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">www.uni-assist.de/en ↗</a></span></div>
-        <div class="detail-row"><span class="detail-label">Programme page:</span><span class="detail-val"><a href="https://www.haw-kiel.de/en/degree-courses/courses/computer-science" target="_blank">haw-kiel.de ↗</a></span></div>
+        <div class="detail-row"><span class="detail-label">Condition:</span><span class="detail-val">Register GRE now at ets.org/gre</span></div>
         <a href="https://www.uni-assist.de/en" target="_blank" class="apply-btn">Apply via uni-assist →</a>
         <div class="submit-row" style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
           <button class="submit-btn" id="submit-btn-kiel" onclick="markSubmitted('kiel')">✅ Mark as Submitted</button>
@@ -478,162 +343,120 @@
         </div>
       </div>
     </div>
-
   </div>
-
-  <div class="note-box" style="margin-top:16px;" id="urgency-note">
-    <!-- Filled by JS -->
-  </div>
+  <div class="note-box" style="margin-top:16px;" id="urgency-note"></div>
 </div>
 
-
-<!-- SUBMITTED APPLICATIONS -->
 <div id="tab-submitted" class="section">
   <div class="section-title">✅ Submitted Applications</div>
-  <div class="section-sub">Universities you've marked as applied. Click "Undo" on any card to move it back to the Deadlines tab.</div>
-
+  <div class="section-sub">Universities you've marked as applied. Track decisions and move to the Visa Checklist when admitted.</div>
   <div id="submitted-empty" class="submitted-empty">
     <div class="empty-icon">📭</div>
     <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No submitted applications yet</p>
-    <p>Go to <strong>📅 Deadlines &amp; Apply</strong> and click <strong>✅ Mark as Submitted</strong> on any university you've applied to.</p>
+    <p>Go to <strong>📅 Deadlines &amp; Apply</strong> and click <strong>✅ Mark as Submitted</strong>.</p>
   </div>
-
   <div class="cards" id="submitted-cards-grid"></div>
-
   <div id="submitted-footer" style="display:none;margin-top:16px;" class="note-box">
-    <strong>🚀 What's next after submitting?</strong> Track your email inbox for acknowledgement from uni-assist or the university portal. Decisions typically take 4–8 weeks. Meanwhile, keep your remaining applications moving — don't wait for one result before submitting others.
+    <strong>🚀 What's next after submitting?</strong> Track your email inbox for acknowledgement. Decisions typically take 4–8 weeks. Keep your remaining applications moving — don't wait for one result before submitting others!
   </div>
 </div>
 
-<!-- COSTS -->
 <div id="tab-costs" class="section">
-  <div class="section-title">Costs & Financial Details</div>
-  <div class="section-sub">All costs in EUR. Scholarship eligibility assessed against your profile.</div>
+  <div class="section-title">Costs & Budget Calculator</div>
+  <div class="section-sub">Estimate your upfront costs for the first year.</div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>University</th>
-          <th>Tuition/sem</th>
-          <th>Sem contribution</th>
-          <th>Living/month</th>
-          <th>Housing/month</th>
-          <th>Health insurance</th>
-          <th>Scholarship available</th>
-          <th>How to apply</th>
-          <th>Your eligibility</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Hof UAS (MEng)</td>
-          <td><span class="pill amber">€3,300</span></td>
-          <td>€150</td>
-          <td>€900</td>
-          <td>€350–550</td>
-          <td>~€120</td>
-          <td><span class="pill gray">None listed</span></td>
-          <td>—</td>
-          <td>Paid internship (yr 3–4) ~€800–1,200/mo offsets tuition</td>
-        </tr>
-        <tr>
-          <td>Chemnitz TU</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€330 (transport incl.)</td>
-          <td>€970</td>
-          <td>€270–350</td>
-          <td>~€120</td>
-          <td><span class="pill blue">Yes — DAAD + internal</span></td>
-          <td><a href="https://www.tu-chemnitz.de/international/incoming/stipendien/index.php.en" target="_blank">Chemnitz scholarships ↗</a></td>
-          <td><span class="pill green">Eligible — apply after admission</span></td>
-        </tr>
-        <tr>
-          <td>Fulda UAS</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€360 (transport incl.)</td>
-          <td>€925</td>
-          <td>€400–500</td>
-          <td>~€120</td>
-          <td><span class="pill blue">Deutschlandstipendium</span></td>
-          <td><a href="https://www.hs-fulda.de/en/studieren/my-studies/finance-studies/scholarships/deutschlandstipendium" target="_blank">Fulda Stipendium ↗</a></td>
-          <td><span class="pill amber">Eligible after enrolment — competitive</span></td>
-        </tr>
-        <tr>
-          <td>RheinMain UAS</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€370 (Deutschlandticket incl.)</td>
-          <td>€950</td>
-          <td>€400–600</td>
-          <td>~€120</td>
-          <td><span class="pill gray">None listed</span></td>
-          <td>—</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>Koblenz Uni</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€290 (transport incl.)</td>
-          <td>€992</td>
-          <td>€350–500</td>
-          <td>~€120</td>
-          <td><span class="pill gray">None listed</span></td>
-          <td>—</td>
-          <td>DAAD FIT4SukCESS funded career support programme</td>
-        </tr>
-        <tr>
-          <td>Siegen Uni</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€320 (transport incl.)</td>
-          <td>€875</td>
-          <td>€270–450</td>
-          <td>~€120</td>
-          <td><span class="pill blue">Deutschlandstipendium</span></td>
-          <td><a href="https://www.sff.uni-siegen.de/index.html.en?lang=en" target="_blank">Siegen scholarships ↗</a></td>
-          <td><span class="pill green">Eligible — apply after admission</span></td>
-        </tr>
-        <tr>
-          <td>Frankfurt UAS</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€360</td>
-          <td>€1,000</td>
-          <td>€500–800</td>
-          <td>~€120</td>
-          <td><span class="pill gray">None listed</span></td>
-          <td>—</td>
-          <td>—</td>
-        </tr>
-        <tr>
-          <td>Kiel UAS</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€378 (transport incl.)</td>
-          <td>€992</td>
-          <td>€400–600</td>
-          <td>~€120</td>
-          <td><span class="pill gray">None listed</span></td>
-          <td>—</td>
-          <td>—</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="calc-container">
+    <h3 style="font-size:15px;margin-bottom:12px;color:#14213c;">💰 1st Year Upfront Budget Calculator</h3>
+    <div class="calc-grid">
+      <div class="calc-group">
+        <label>Target University</label>
+        <select id="calc-uni" class="calc-input" onchange="calculateBudget()">
+          <option value="0">Free Tuition University (e.g., Chemnitz, Fulda) — €0/sem</option>
+          <option value="3300">Hof University (MEng) — €3,300/sem</option>
+        </select>
+      </div>
+      <div class="calc-group">
+        <label>Blocked Account (German Mandate)</label>
+        <input type="text" class="calc-input" value="€11,208 (Fixed)" disabled>
+      </div>
+      <div class="calc-group">
+        <label>Semester Contribution (Avg)</label>
+        <input type="number" id="calc-semfee" class="calc-input" value="350" oninput="calculateBudget()">
+      </div>
+      <div class="calc-group">
+        <label>Flights & Buffer Setup</label>
+        <input type="number" id="calc-flights" class="calc-input" value="1200" oninput="calculateBudget()">
+      </div>
+    </div>
+    <div class="calc-result">
+      <div style="font-size:12px;color:#1a6b3c;font-weight:600;">Total Estimated Upfront Capital Required:</div>
+      <div class="calc-total" id="calc-total-display">€12,758</div>
+      <div style="font-size:11px;color:#276749;margin-top:6px;">This is the money you need in your bank account before applying for the student visa.</div>
+    </div>
   </div>
 
   <div class="note-box" style="margin-top:16px;">
-    <strong>💡 Deutschlandstipendium:</strong> €300/month for 1 year. Available at Fulda, Chemnitz, and Siegen. Apply after admission. Your church technical leadership, first-generation student background, and 3+ years work experience strengthen your application.
-  </div>
-  <div class="note-box">
-    <strong>💡 DAAD Scholarships:</strong> Check <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank">daad.de ↗</a> after admission. Your profile (clear career goal + work experience) fits several DAAD categories.
-  </div>
-  <div class="note-box">
-    <strong>💡 Hof MEng tuition recovery:</strong> €3,300/sem × 2 sems = €6,600 tuition for years 1–2. The paid internship in years 3–4 at companies like SAP/IBM/Siemens typically pays €800–1,200/month = €9,600–14,400 over 12 months. You recover the full tuition cost during the internship.
+    <strong>💡 Hof MEng tuition recovery:</strong> €3,300/sem × 2 sems = €6,600 tuition for years 1–2. The paid internship in years 3–4 typically pays €800–1,200/month = €9,600–14,400 over 12 months. You recover the full tuition cost during the internship.
   </div>
 </div>
 
-<!-- ADMISSION -->
+<div id="tab-checklist" class="section">
+  <div class="section-title">✈️ Exhaustive Post-Admission Checklist</div>
+  <div class="section-sub">From receiving your offer letter to arriving in Germany. Your progress is saved automatically.</div>
+
+  <div class="chk-phase">
+    <div class="chk-header">Phase 1: Acceptance & Enrollment (Immediately after admission)</div>
+    <ul class="chk-list">
+      <li class="chk-item"><input type="checkbox" id="chk-1.1" onchange="saveChk(this)"><div class="chk-text">Accept the offer letter on the university portal<div class="chk-subtext">Usually must be done within 7-14 days of receiving the email.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-1.2" onchange="saveChk(this)"><div class="chk-text">Pay the Semester Contribution Fee (Semesterbeitrag)<div class="chk-subtext">Transfer via regular bank transfer or Instarem/Wise. Keep the receipt.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-1.3" onchange="saveChk(this)"><div class="chk-text">Sign up for German Public Health Insurance<div class="chk-subtext">Choose TK, AOK, Barmer, or use Expatrio/Coracle value packages.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-1.4" onchange="saveChk(this)"><div class="chk-text">Request M10 Certificate transfer to your university<div class="chk-subtext">Your insurance provider must digitally transmit your M10 status to the university.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-1.5" onchange="saveChk(this)"><div class="chk-text">Complete Digital Enrollment (Immatrikulation)<div class="chk-subtext">Upload payment receipt and finalize enrollment on the university portal.</div></div></li>
+    </ul>
+  </div>
+
+  <div class="chk-phase">
+    <div class="chk-header">Phase 2: Financials & Blocked Account</div>
+    <ul class="chk-list">
+      <li class="chk-item"><input type="checkbox" id="chk-2.1" onchange="saveChk(this)"><div class="chk-text">Open a Blocked Account (Sperrkonto)<div class="chk-subtext">Use Fintiba, Expatrio, or Coracle.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-2.2" onchange="saveChk(this)"><div class="chk-text">Transfer the required €11,208 (plus buffer)<div class="chk-subtext">Always add an extra €100-200 for international transfer fee fluctuations.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-2.3" onchange="saveChk(this)"><div class="chk-text">Download the Sperrkonto-Bestätigung<div class="chk-subtext">This is the official Blocked Account Confirmation Document required for the Visa.</div></div></li>
+    </ul>
+  </div>
+
+  <div class="chk-phase">
+    <div class="chk-header">Phase 3: Visa Application (Student Visa - Section 16b)</div>
+    <ul class="chk-list">
+      <li class="chk-item"><input type="checkbox" id="chk-3.1" onchange="saveChk(this)"><div class="chk-text">Book a VFS Global / Consulate appointment<div class="chk-subtext">Do this ASAP. Slots fill up months in advance for the winter intake.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-3.2" onchange="saveChk(this)"><div class="chk-text">Draft Motivation Letter and update CV<div class="chk-subtext">Align your LOM strictly with your DevOps career goals in Germany.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-3.3" onchange="saveChk(this)"><div class="chk-text">Print & organize all documents strictly to Embassy checklist<div class="chk-subtext">Offer letter, APS, Blocked Account, Insurance, Transcripts, IELTS. Prepare 2 sets of copies.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-3.4" onchange="saveChk(this)"><div class="chk-text">Attend Visa Interview & submit passport<div class="chk-subtext">Be prepared to answer technical questions about your master's modules.</div></div></li>
+    </ul>
+  </div>
+
+  <div class="chk-phase">
+    <div class="chk-header">Phase 4: Relocation & Post-Arrival (Germany)</div>
+    <ul class="chk-list">
+      <li class="chk-item"><input type="checkbox" id="chk-4.1" onchange="saveChk(this)"><div class="chk-text">Sign a housing contract (WG-Gesucht, Studierendenwerk)<div class="chk-subtext">Beware of scams. Never transfer deposit before signing a legitimate contract or viewing.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-4.2" onchange="saveChk(this)"><div class="chk-text">Pack apostilled/notarized copies of all degree documents<div class="chk-subtext">Essential for university physical enrollment and future job applications.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-4.3" onchange="saveChk(this)"><div class="chk-text">Post-Arrival: City Registration (Anmeldung)<div class="chk-subtext">Must be done at the local Bürgeramt within 14 days of moving into your permanent address.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-4.4" onchange="saveChk(this)"><div class="chk-text">Post-Arrival: Open a German Bank Account (Girokonto)<div class="chk-subtext">Link this to your Blocked Account to receive your €934 monthly payouts.</div></div></li>
+      <li class="chk-item"><input type="checkbox" id="chk-4.5" onchange="saveChk(this)"><div class="chk-text">Post-Arrival: Apply for Residence Permit (Aufenthaltstitel)<div class="chk-subtext">Book appointment at the Ausländerbehörde before your 3-month entry visa expires.</div></div></li>
+    </ul>
+  </div>
+</div>
+
+<div id="tab-notes" class="section">
+  <div class="section-title">📝 My University Notes & Journal</div>
+  <div class="section-sub">Jot down portal login details, specific professors to mention in your LOM, or application status updates. Auto-saves as you type.</div>
+  
+  <div class="notes-grid" id="notes-grid-container">
+    </div>
+</div>
+
 <div id="tab-admission" class="section">
   <div class="section-title">Admission Requirements & Your Eligibility</div>
-  <div class="section-sub">Every requirement verified from official programme documents. Green = you meet it. Red = blocker.</div>
-
+  <div class="section-sub">Green = you meet it. Red = blocker.</div>
   <div class="table-wrap">
     <table>
       <thead>
@@ -643,616 +466,118 @@
           <th>German req.</th>
           <th>GRE req.</th>
           <th>Min grade</th>
-          <th>Special req.</th>
-          <th>Program focus</th>
-          <th>Integrated internship</th>
-          <th>Admission difficulty</th>
           <th>Your chance</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Hof UAS (MEng)</td>
-          <td>IELTS 6.5 <span class="pill green">✓ Exact match</span></td>
-          <td>Not required at entry. A1+A2 taught in program.</td>
+          <td>IELTS 6.5 <span class="pill green">✓ Exact</span></td>
+          <td>A1+A2 taught in program</td>
           <td><span class="pill green">Not required</span></td>
-          <td>Bachelor's in CS/SE · 180 ECTS equiv.</td>
-          <td>1 yr work exp ✓ (you have 3+). Motivation letter ✓.</td>
-          <td>Applied Cloud Computing, IoT, Component-Based Dev, Project Mgmt, Non-Relational DBs</td>
-          <td>✅ Yes — 2-semester paid internship at SAP, IBM, Siemens etc.</td>
-          <td><span class="pill blue">Low-Medium</span></td>
+          <td>CS/SE · 180 ECTS</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Chemnitz TU</td>
           <td>IELTS 5.5 <span class="pill green">✓ You: 6.5</span></td>
-          <td>A2 by end of sem 3 — courses included in program</td>
+          <td>A2 by end of sem 3</td>
           <td><span class="pill green">Not required</span></td>
-          <td>Bachelor's in CS / Applied CS</td>
-          <td>None beyond degree + language</td>
-          <td>Cloud & Web Apps, Distributed Systems, Data Engineering, IoT, Parallel Programming, Blockchain (simulation game)</td>
-          <td>No — thesis-based final semester</td>
-          <td><span class="pill blue">Low</span></td>
+          <td>CS / Applied CS</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Fulda UAS</td>
-          <td>IELTS 6.5 <span class="pill green">✓ Exact match</span></td>
-          <td>A1 required — Goethe/telc/ÖSD/ECL certificate needed</td>
+          <td>IELTS 6.5 <span class="pill green">✓ Exact</span></td>
+          <td>A1 required at application</td>
           <td><span class="pill green">Not required</span></td>
-          <td>German grade 2.5 or better · 180 or 210 ECTS</td>
-          <td>Your 176 JNTUA credits → 4 sem route + 20-week internship for 30 extra credits</td>
-          <td>Distributed SW systems, intercultural teams, deployment methodologies</td>
-          <td>✅ 20-week IT internship in Germany available</td>
-          <td><span class="pill blue">Low</span></td>
+          <td>German grade 2.5</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>RheinMain UAS</td>
-          <td>B2 level <span class="pill green">✓ Your 6.5 = B2/C1</span></td>
+          <td>B2 level <span class="pill green">✓ You: 6.5</span></td>
           <td>Not specified</td>
           <td><span class="pill green">Not required</span></td>
-          <td>Bachelor's in relevant field · NC (grade) applies</td>
-          <td>New program — first cohort 2026, less competition</td>
-          <td>Cloud Computing, IoT, ML, Neural Networks, Audio/Video, Communication Systems</td>
-          <td>Industry projects mentioned</td>
-          <td><span class="pill blue">Low (new program)</span></td>
+          <td>Relevant field</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Koblenz Uni</td>
-          <td>Check official site <span class="pill blue">Verify before applying</span></td>
+          <td>Check official site</td>
           <td>Not required</td>
           <td><span class="pill green">Not required</span></td>
-          <td>CGPA 65% or German 2.5 <span class="pill green">✓ You: 68.65%</span></td>
-          <td>Bachelor's in CS / computational visualistics or comparable</td>
-          <td>Web Science, Data Science, Big Data, Machine Learning, Web Engineering</td>
-          <td>No — thesis-based</td>
-          <td><span class="pill blue">Low-Medium</span></td>
+          <td>CGPA 65% <span class="pill green">✓ You: 68%</span></td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Siegen Uni</td>
-          <td>IELTS 6.5 <span class="pill green">✓ Exact match</span></td>
+          <td>IELTS 6.5 <span class="pill green">✓ Exact</span></td>
           <td>Not required</td>
           <td><span class="pill green">Not required</span></td>
-          <td>Bachelor's in CS or computer engineering</td>
-          <td>None beyond degree + IELTS</td>
-          <td>Complex & Intelligent Software Systems (recommended track), Embedded Systems, Visual Computing</td>
-          <td>No — but project work 15 CP. FIT in Siegen career programme.</td>
-          <td><span class="pill blue">Low-Medium</span></td>
+          <td>CS or computer eng.</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Frankfurt UAS</td>
           <td>IELTS 6.0 <span class="pill green">✓ You: 6.5</span></td>
-          <td>German courses offered but not required</td>
+          <td>Not required</td>
           <td><span class="pill green">Not required</span></td>
-          <td>Bachelor's in CS (European standards)</td>
-          <td>None beyond degree + language</td>
-          <td>Distributed Systems, Cloud Computing (elective), Security, Real-Time Systems, IoT (elective)</td>
-          <td>No — thesis often industry-linked</td>
-          <td><span class="pill blue">Low-Medium</span></td>
+          <td>CS (Euro standards)</td>
           <td><span class="chance high">High</span></td>
         </tr>
         <tr>
           <td>Kiel UAS</td>
           <td>IELTS 5.5 <span class="pill green">✓ You: 6.5</span></td>
-          <td>A2 by sem 3 — courses included</td>
-          <td><span class="pill red">Yes — GRE 55% quant. Mandatory, no exceptions.</span></td>
-          <td>German 2.5 min · 3 or 4-yr degree</td>
-          <td>GRE must be taken before applying. Register at ets.org/gre now.</td>
-          <td>Advanced Cloud Computing ⭐, Distributed DBs, AI, Advanced Software Engineering</td>
-          <td>No — research project + thesis</td>
-          <td><span class="pill amber">Medium</span></td>
-          <td><span class="chance medium">Medium — GRE is the only blocker</span></td>
+          <td>A2 by sem 3</td>
+          <td><span class="pill red">Yes — 55% quant</span></td>
+          <td>German 2.5 min</td>
+          <td><span class="chance medium">Medium (GRE blocker)</span></td>
         </tr>
       </tbody>
     </table>
   </div>
-
-  <div class="note-box" style="margin-top:16px;">
-    <strong>⚠️ Fulda A1 German certificate:</strong> Required at application. Accepted: Goethe-Zertifikat A1, telc A1, ÖSD A1, ECL A1. Book Goethe Institut Hyderabad exam this week — <a href="https://www.goethe.de/ins/in/en/sta/hyd.html" target="_blank">goethe.de/ins/in/en/sta/hyd ↗</a>. Results in 2–3 weeks. Cost ~₹4,500–5,500.
-  </div>
-  <div class="note-box">
-    <strong>⚠️ Kiel GRE:</strong> Mandatory, 55% in quantitative reasoning, no exceptions. Register at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a>. Preparation: 2–3 months. Test centre available in Hyderabad. Register now to meet Sep 15 deadline.
-  </div>
-  <div class="note-box">
-    <strong>⚠️ Your German grade:</strong> 68.65% converts to approximately 2.9 on the German scale (Modified Bavarian Formula). This meets the 2.5 requirement at Chemnitz, Fulda, Koblenz. For Kiel (2.5 required) you are fine. For Bamberg (2.0 required) — you don't qualify, which is why it is rejected.
-  </div>
 </div>
 
-<!-- CITIES -->
 <div id="tab-cities" class="section">
   <div class="section-title">City Guide — All 8 Universities</div>
   <div class="section-sub">Which city is best for your DevOps career, budget, and life in Germany?</div>
-
   <div class="city-grid">
     <div class="city-card">
       <div class="city-name">🏙️ Frankfurt am Main</div>
-      <div class="city-uni">Frankfurt UAS — MSc High Integrity Systems</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill amber">High (€1,000+/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill red">Hard — very high demand</span></span></div>
+      <div class="city-uni">Frankfurt UAS</div>
       <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★★★</span> Best in Germany</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★★☆</span> Very good</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★★★★</span> Large</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Excellent U-Bahn + S-Bahn</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€600–900/mo</span></div>
-      <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">SAP, AWS, Google, Deutsche Bank, T-Systems</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Europe's financial-tech hub. #1 city for DevOps career in Germany. High cost but unmatched job market and Indian community.</div>
-    </div>
-    <div class="city-card">
-      <div class="city-name">🏘️ Rüsselsheim (near Frankfurt)</div>
-      <div class="city-uni">RheinMain UAS — MEng AI & Advanced IT</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill blue">Medium (€950/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill amber">Moderate</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★★★</span> Excellent (via Frankfurt)</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★★☆</span> Good</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★★★☆</span> Good (Frankfurt nearby)</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">S-Bahn to Frankfurt 20 min</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€450–650/mo</span></div>
-      <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Opel, T-Systems, Fraport, all Frankfurt tech</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Best of both worlds — affordable living with Frankfurt job market 20 minutes away. Great starting point.</div>
-    </div>
-    <div class="city-card">
-      <div class="city-name">⚙️ Chemnitz</div>
-      <div class="city-uni">Chemnitz TU — MSc Web Engineering</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Low (€970/mo incl. transport)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill green">Easy — very affordable</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★☆☆☆</span> Small</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Tram + train; Dresden 1 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (dorm)</span><span class="city-val">€270–350/mo</span></div>
-      <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">VW, BMW plants nearby, mid-size tech</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Cheapest city on this list with the best DevOps curriculum. Ideal if budget is the priority. Dresden is 1 hr away for city life.</div>
-    </div>
-    <div class="city-card">
-      <div class="city-name">🏫 Fulda</div>
-      <div class="city-uni">Fulda UAS — MSc Global Software Dev.</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Low-Medium (€925/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill green">Easy</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★☆☆☆</span> Small</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train to Frankfurt ~1 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€400–500/mo</span></div>
-      <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Krones, regional IT firms</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Quiet, peaceful university town. Affordable. Frankfurt reachable in 1 hr for job hunting and networking.</div>
+      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill amber">High</span></span></div>
     </div>
     <div class="city-card">
       <div class="city-name">🏭 Hof</div>
-      <div class="city-uni">Hof UAS — MEng Software Engineering</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Low (€900/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill green">Easy</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★★☆</span> Good (via internship)</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">International %</span><span class="city-val"><span class="stars">★★★★★</span> 40%+ students international</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Regional train; Nuremberg 1.5 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€350–550/mo</span></div>
-      <div class="city-row"><span class="city-label">Internship companies</span><span class="city-val">SAP, IBM, Siemens, Continental, JPM</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Small Bavarian town with 40%+ international students. The 2-semester paid internship is your direct gateway into Germany's top companies.</div>
+      <div class="city-uni">Hof UAS</div>
+      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★★☆</span> via Internship</span></div>
+      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Low</span></span></div>
     </div>
     <div class="city-card">
-      <div class="city-name">🌊 Kiel</div>
-      <div class="city-uni">Kiel UAS — MSc Computer Science</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill blue">Medium (€992/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill blue">Moderate</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate (Hamburg 1.5 hr)</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★★☆</span> Good</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★☆☆☆</span> Small</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Good local; Hamburg 1.5 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€400–600/mo</span></div>
-      <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Beautiful coastal city, Baltic Sea</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Stunning coastal city. Best Cloud Computing curriculum (Advanced Cloud Computing module) but requires GRE. Hamburg job market 1.5 hr away.</div>
+      <div class="city-name">⚙️ Chemnitz</div>
+      <div class="city-uni">Chemnitz TU</div>
+      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
+      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Very Low</span></span></div>
     </div>
-    <div class="city-card">
-      <div class="city-name">🌉 Koblenz</div>
-      <div class="city-uni">Koblenz Uni — MSc Web & Data Science</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill blue">Medium (€992/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill blue">Moderate</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★★☆</span> Good (near Frankfurt/Cologne)</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train; Frankfurt 1 hr; Cologne 1 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€350–500/mo</span></div>
-      <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Historic Rhine valley, UNESCO heritage</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Beautiful Rhine location between Frankfurt and Cologne. Affordable and well connected. DAAD-funded career support specifically for international students.</div>
-    </div>
-    <div class="city-card">
-      <div class="city-name">⚒️ Siegen</div>
-      <div class="city-uni">Siegen Uni — MSc Computer Science</div>
-      <div class="city-row"><span class="city-label">Cost level</span><span class="city-val"><span class="pill green">Low-Medium (€875/mo)</span></span></div>
-      <div class="city-row"><span class="city-label">Housing difficulty</span><span class="city-val"><span class="pill green">Easy</span></span></div>
-      <div class="city-row"><span class="city-label">DevOps job market</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate (Cologne 1 hr)</span></div>
-      <div class="city-row"><span class="city-label">English friendliness</span><span class="city-val"><span class="stars">★★★☆☆</span> Moderate</span></div>
-      <div class="city-row"><span class="city-label">Indian community</span><span class="city-val"><span class="stars">★★☆☆☆</span> Small</span></div>
-      <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train; Cologne 1.5 hr</span></div>
-      <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€270–450/mo</span></div>
-      <div class="city-row"><span class="city-label">Career support</span><span class="city-val">FIT in Siegen DAAD-funded programme</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Affordable, with dedicated FIT in Siegen programme supporting international students into the German job market throughout the degree.</div>
-    </div>
-  </div>
-
-  <div class="note-box" style="margin-top:16px;">
-    <strong>🏆 Best city ranking for your DevOps goal:</strong>
-    <ol style="margin-top:8px;padding-left:20px;line-height:2">
-      <li><strong>Frankfurt / Rüsselsheim</strong> — #1 for job market. AWS, Google, SAP, Deutsche Telekom all nearby. Where DevOps careers are built.</li>
-      <li><strong>Hof</strong> — #1 for guaranteed industry entry via the paid internship at SAP/IBM/Siemens. Your career starts during the degree.</li>
-      <li><strong>Koblenz</strong> — Strategic location between Frankfurt and Cologne. DAAD-funded career support. Affordable.</li>
-      <li><strong>Chemnitz</strong> — Best value. Cheapest city, best curriculum. Focus on studies, job hunt after graduation.</li>
-    </ol>
   </div>
 </div>
 
-<!-- RECOMMENDATION -->
 <div id="tab-recommendation" class="section">
-  <div class="section-title">⭐ My Recommendation for You — Michael Joshua</div>
-  <div class="section-sub">Based on your complete profile: 68.65% · CGPA 7.18 · 176 JNTUA credits · IELTS 6.5 · German A1 · 3+ yrs work exp · Goal: DevOps Engineer in Germany.</div>
+  <div class="section-title">⭐ My Recommendation for You</div>
+  <div class="section-sub">Based on your complete profile: 68.65% · CGPA 7.18 · IELTS 6.5 · 3+ yrs work exp.</div>
 
   <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Hof UAS — MEng Software Engineering for Industrial Applications</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best career outcome of all 21 universities. Applied Cloud Computing module + 2-semester paid internship at SAP/IBM/Siemens. IELTS 6.5 exact match. 3+ yrs work exp exceeds their 1-yr requirement. Yes, €3,300/sem — but recovered during internship. Currently applying.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Application Portal ↗</a></span></div>
+    <h4>🔥 Priority 1 — Hof UAS (MEng Software Engineering)</h4>
+    <div>Best career outcome via 2-semester paid internship at SAP/IBM/Siemens. Applies directly to your 3+ years work exp. Apply by May 31.</div>
   </div>
-
   <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Fulda UAS — MSc Global Software Development</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Free tuition. IELTS 6.5 exact match. Distributed systems + intercultural deployment focus. 20-week IT internship option. Deutschlandstipendium eligible. LOM ready.</span></div>
-    <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Book Goethe A1 exam in Hyderabad this week for German requirement</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f0f4ff;border-color:#a8bce8;">
-    <h4>📅 Priority 2 — Apply this week (<span class="rec-days" data-deadline="2026-06-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Koblenz — MSc Web and Data Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Your 68.65% qualifies (65% CGPA required). Free tuition. Web systems + data engineering. Near Frankfurt/Cologne. DAAD-funded FIT4SukCESS career programme supports your German job market entry throughout the degree.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong>15 June 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f0f4ff;border-color:#a8bce8;">
-    <h4>📅 Priority 2 — Apply this week (no fixed deadline)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Siegen — MSc Computer Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">IELTS 6.5 exact match. No GRE. Free tuition. FIT in Siegen (DAAD-funded) actively supports international students into the German job market throughout the degree. Apply ASAP — no fixed deadline but early applications preferred.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">master-cs.eti.uni-siegen.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Chemnitz TU — MSc Web Engineering</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best DevOps curriculum of all 21 universities — Cloud & web apps, distributed systems, data engineering, IoT. Free tuition. Cheapest city. Lowest admission barrier. DAAD scholarship eligible. LOM still to write.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.eduapplication.de/" target="_blank">eduapplication.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>RheinMain UAS — MEng AI & Advanced IT</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">First cohort 2026 = less competition. Cloud Computing, IoT, ML modules. Free tuition. 20 min to Frankfurt job market. LOM still to write.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 4 — If GRE done (<span class="rec-days" data-deadline="2026-09-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Kiel UAS — MSc Computer Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best Cloud Computing curriculum anywhere on this list — Advanced Cloud Computing, Distributed DBs, Advanced Software Engineering all in semester 1. Worth the GRE effort.</span></div>
-    <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Register GRE now at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a>. Target August test date. Score 55%+ in quantitative.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 September 2026</span></div>
-  </div>
-
-  <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 5 — Apply Oct (<span class="rec-days" data-deadline="2026-10-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Frankfurt UAS — MSc High Integrity Systems</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Frankfurt is Germany's #1 DevOps job market. Cloud Computing elective, Distributed Systems, IoT. If you get into any earlier program, apply here too for summer 2027 as a backup or top-up plan.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 October 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="note-box" style="margin-top:16px;" id="rec-checklist">
-    <strong>📋 Complete checklist — in order:</strong>
-    <ol style="margin-top:8px;padding-left:20px;line-height:2.2;font-size:12px;">
-      <li>Submit <strong>Hof MEng</strong> application — <a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Portal ↗</a> — by 31 May</li>
-      <li>Submit <strong>Fulda</strong> via uni-assist — <a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a> — by 31 May</li>
-      <li>Book <strong>Goethe A1 exam</strong> in Hyderabad — <a href="https://www.goethe.de/ins/in/en/sta/hyd.html" target="_blank">goethe.de ↗</a> — this week</li>
-      <li>Write <strong>Siegen LOM</strong> and apply — <a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">Siegen portal ↗</a> — this week</li>
-      <li>Apply <strong>Koblenz</strong> via uni-assist — by 15 June</li>
-      <li>Write <strong>Chemnitz LOM</strong> and apply via eduapplication.de — by 15 July</li>
-      <li>Write <strong>RheinMain LOM</strong> and apply via uni-assist — by 15 July</li>
-      <li>Register <strong>GRE</strong> at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a> for August sitting</li>
-      <li>Apply <strong>Kiel</strong> via uni-assist (after GRE) — by 15 September</li>
-      <li>Apply <strong>Frankfurt</strong> via uni-assist — by 15 October</li>
-      <li>After admission — apply <strong>Deutschlandstipendium</strong> at Fulda, Chemnitz, Siegen</li>
-      <li>After admission — check <strong>DAAD scholarships</strong> at <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank">daad.de ↗</a></li>
-    </ol>
-  </div>
-
-  <div class="note-box">
-    <strong>🚀 Your DevOps career path after graduation:</strong> German Job Seeker Visa gives 18 months to find work. DevOps Engineers in Germany earn €55,000–€85,000/year starting salary. Top hiring cities: Frankfurt, Berlin, Munich, Hamburg. With a German Master's + internship experience at a German company (especially via Hof), you are in a very strong position. Germany's EU Blue Card makes permanent residency achievable within 2–3 years of employment.
+    <h4>🔥 Priority 1 — Fulda UAS (MSc Global Software Dev)</h4>
+    <div>Free tuition, perfect IELTS match, 20-week internship. Needs A1 German cert ASAP. Apply by May 31.</div>
   </div>
 </div>
 
-<script>
-// ─── University metadata for submitted cards ───
-const UNI_META = {
-  hof: {
-    title: 'Hof University — MEng Software Engineering',
-    sub: 'MEng Software Engineering for Industrial Applications · Hof',
-    fit: 'Strong Fit ⭐', fitClass: 'green',
-    tuition: '€3,300/sem', deadline: '31 May 2026',
-    applyVia: 'Direct Hof portal (Primuss)',
-    link: 'https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en',
-    deadlineKey: '2026-05-31'
-  },
-  fulda: {
-    title: 'Fulda University of Applied Sciences',
-    sub: 'MSc Global Software Development · Fulda',
-    fit: 'Good Fit ✅', fitClass: 'blue',
-    tuition: 'Free', deadline: '31 May 2026',
-    applyVia: 'uni-assist',
-    link: 'https://www.uni-assist.de/en',
-    deadlineKey: '2026-05-31'
-  },
-  koblenz: {
-    title: 'University of Koblenz',
-    sub: 'MSc Web and Data Science · Koblenz',
-    fit: 'Good Fit ✅', fitClass: 'blue',
-    tuition: 'Free', deadline: '15 June 2026',
-    applyVia: 'uni-assist',
-    link: 'https://www.uni-assist.de/en',
-    deadlineKey: '2026-06-15'
-  },
-  siegen: {
-    title: 'University of Siegen',
-    sub: 'MSc Computer Science · Siegen',
-    fit: 'Good Fit ✅', fitClass: 'blue',
-    tuition: 'Free', deadline: 'No fixed deadline',
-    applyVia: 'Direct Siegen portal',
-    link: 'http://www.master-cs.eti.uni-siegen.de/',
-    deadlineKey: null
-  },
-  chemnitz: {
-    title: 'Chemnitz University of Technology',
-    sub: 'MSc Web Engineering · Chemnitz',
-    fit: 'Strong Fit ⭐', fitClass: 'green',
-    tuition: 'Free', deadline: '15 July 2026',
-    applyVia: 'eduapplication.de',
-    link: 'https://www.eduapplication.de/',
-    deadlineKey: '2026-07-15'
-  },
-  rheinmain: {
-    title: 'RheinMain University of Applied Sciences',
-    sub: 'MEng AI & Advanced IT · Rüsselsheim',
-    fit: 'Good Fit ✅', fitClass: 'blue',
-    tuition: 'Free', deadline: '15 July 2026',
-    applyVia: 'uni-assist',
-    link: 'https://www.uni-assist.de/en',
-    deadlineKey: '2026-07-15'
-  },
-  kiel: {
-    title: 'Kiel University of Applied Sciences',
-    sub: 'MSc Computer Science · Kiel',
-    fit: 'Conditional ⚠️', fitClass: 'amber',
-    tuition: 'Free', deadline: '15 September 2026',
-    applyVia: 'uni-assist',
-    link: 'https://www.uni-assist.de/en',
-    deadlineKey: '2026-09-15'
-  }
-};
-
-// ─── Submitted state (localStorage) ───
-function getSubmitted() {
-  try { return JSON.parse(localStorage.getItem('submitted_unis') || '{}'); } catch(e) { return {}; }
-}
-function saveSubmitted(data) {
-  localStorage.setItem('submitted_unis', JSON.stringify(data));
-}
-
-// ─── Mark a uni as submitted ───
-function markSubmitted(key) {
-  const data = getSubmitted();
-  data[key] = { submittedOn: new Date().toISOString() };
-  saveSubmitted(data);
-  applySubmittedState();
-  updateSubmittedBadge();
-  renderSubmittedCards();
-}
-
-// ─── Undo submitted ───
-function undoSubmitted(key) {
-  const data = getSubmitted();
-  delete data[key];
-  saveSubmitted(data);
-  applySubmittedState();
-  updateSubmittedBadge();
-  renderSubmittedCards();
-}
-
-// ─── Apply submitted state to deadline cards ───
-function applySubmittedState() {
-  const data = getSubmitted();
-  Object.keys(UNI_META).forEach(key => {
-    const card = document.getElementById('deadline-card-' + key);
-    const submitBtn = document.getElementById('submit-btn-' + key);
-    const undoBtn = document.getElementById('undo-btn-' + key);
-    if (!card) return;
-    if (data[key]) {
-      card.style.display = 'none';
-      if (submitBtn) { submitBtn.textContent = '✅ Submitted'; submitBtn.classList.add('submitted-state'); }
-      if (undoBtn) undoBtn.style.display = 'inline-flex';
-    } else {
-      card.style.display = '';
-      if (submitBtn) { submitBtn.textContent = '✅ Mark as Submitted'; submitBtn.classList.remove('submitted-state'); }
-      if (undoBtn) undoBtn.style.display = 'none';
-    }
-  });
-}
-
-// ─── Render submitted cards in the submitted tab ───
-function renderSubmittedCards() {
-  const data = getSubmitted();
-  const grid = document.getElementById('submitted-cards-grid');
-  const empty = document.getElementById('submitted-empty');
-  const footer = document.getElementById('submitted-footer');
-  const keys = Object.keys(data);
-
-  if (keys.length === 0) {
-    empty.style.display = 'block';
-    grid.innerHTML = '';
-    footer.style.display = 'none';
-    return;
-  }
-
-  empty.style.display = 'none';
-  footer.style.display = 'block';
-  grid.innerHTML = keys.map(key => {
-    const m = UNI_META[key];
-    const d = data[key];
-    const submittedDate = new Date(d.submittedOn).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
-    return `
-    <div class="card submitted-card" id="submitted-card-${key}">
-      <div class="card-header">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-          <div>
-            <span class="submitted-ribbon">✅ SUBMITTED</span>
-            <div class="card-title">${m.title}</div>
-            <div class="card-sub">${m.sub}</div>
-          </div>
-        </div>
-        <div class="badges" style="margin-top:6px;">
-          <span class="badge ${m.fitClass}">${m.fit}</span>
-          <span class="badge ${m.tuition === 'Free' ? 'green' : 'amber'}">${m.tuition === 'Free' ? 'Free tuition' : m.tuition}</span>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="detail-row"><span class="detail-label">Submitted on:</span><span class="detail-val" style="font-weight:600;color:#1a6b3c;">📅 ${submittedDate}</span></div>
-        <div class="detail-row"><span class="detail-label">Application deadline:</span><span class="detail-val">${m.deadline}</span></div>
-        <div class="detail-row"><span class="detail-label">Applied via:</span><span class="detail-val">${m.applyVia}</span></div>
-        <div class="detail-row"><span class="detail-label">Portal:</span><span class="detail-val"><a href="${m.link}" target="_blank">${m.link.replace('https://','').replace('http://','').split('/')[0]} ↗</a></span></div>
-        <div style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:10px;">
-          <button class="undo-btn" style="display:inline-flex;margin:0;" onclick="undoSubmitted('${key}')">↩ Move back to Deadlines</button>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ─── Update nav badge ───
-function updateSubmittedBadge() {
-  const count = Object.keys(getSubmitted()).length;
-  const badge = document.getElementById('submitted-count-badge');
-  if (!badge) return;
-  if (count > 0) {
-    badge.textContent = count;
-    badge.style.display = 'inline';
-  } else {
-    badge.style.display = 'none';
-  }
-}
-
-// ─── Utility: days from today ───
-function daysLeft(deadlineStr) {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const deadline = new Date(deadlineStr + 'T00:00:00');
-  return Math.round((deadline - today) / 86400000);
-}
-function badgeClass(d) {
-  if (d < 0) return 'gray'; if (d <= 14) return 'red'; if (d <= 30) return 'amber'; return 'blue';
-}
-function statusLabel(d) {
-  if (d < 0) return ['closed', '❌ Closed'];
-  if (d === 0) return ['open', '🔴 TODAY'];
-  return ['open', '✅ Open'];
-}
-function daysText(d) {
-  if (d < 0) return 'Deadline has passed';
-  if (d === 0) return '⚠️ TODAY is the last day — apply now!';
-  if (d === 1) return '⚠️ 1 day left — apply TODAY';
-  return d + ' days left';
-}
-function applyCountdown(idSuffix, deadlineStr) {
-  const d = daysLeft(deadlineStr);
-  const badgeEl = document.getElementById('badge-' + idSuffix);
-  const statusEl = document.getElementById('status-' + idSuffix);
-  const daysEl = document.getElementById('days-' + idSuffix);
-  if (!badgeEl) return;
-  const [statusClass, statusText] = statusLabel(d);
-  const urgency = d < 0 ? '' : d <= 14 ? '🔥 ' : '';
-  const daysDisplay = d < 0 ? 'Closed' : d + ' day' + (d === 1 ? '' : 's') + ' left';
-  badgeEl.className = 'badge ' + badgeClass(d);
-  badgeEl.textContent = urgency + daysDisplay;
-  statusEl.className = 'deadline-alert ' + statusClass;
-  statusEl.textContent = statusText;
-  daysEl.className = 'days-live ' + (d < 0 ? 'closed' : d <= 7 ? 'urgent' : d <= 30 ? 'soon' : 'ok');
-  daysEl.textContent = daysText(d);
-}
-const deadlines = {
-  hof: '2026-05-31', fulda: '2026-05-31', koblenz: '2026-06-15',
-  chemnitz: '2026-07-15', rheinmain: '2026-07-15', kiel: '2026-09-15',
-};
-function updateAll() {
-  for (const [key, date] of Object.entries(deadlines)) applyCountdown(key, date);
-  const today = new Date();
-  document.getElementById('today-display').textContent =
-    'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
-  document.getElementById('deadlines-sub').textContent =
-    'Countdown calculated from today — ' +
-    today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) + '. Always verify on official sites.';
-  const submitted = getSubmitted();
-  const urgent = Object.entries(deadlines)
-    .filter(([k]) => !submitted[k])
-    .map(([k, d]) => ({ key: k, days: daysLeft(d) }))
-    .filter(x => x.days >= 0 && x.days <= 14)
-    .sort((a, b) => a.days - b.days);
-  const urgencyEl = document.getElementById('urgency-note');
-  if (urgent.length === 0) {
-    urgencyEl.innerHTML = '<strong>ℹ️ No deadlines within the next 14 days.</strong> Check the cards above for upcoming dates.';
-  } else {
-    const names = { hof:'Hof', fulda:'Fulda', koblenz:'Koblenz', chemnitz:'Chemnitz', rheinmain:'RheinMain', kiel:'Kiel' };
-    const list = urgent.map(x => `<strong>${names[x.key]}</strong> (${x.days === 0 ? 'today' : x.days + ' days'})`).join(', ');
-    urgencyEl.innerHTML = `<strong>🔥 Most urgent right now:</strong> ${list}. Submit these applications immediately.`;
-  }
-  document.querySelectorAll('.rec-days[data-deadline]').forEach(el => {
-    const d = daysLeft(el.dataset.deadline);
-    if (d < 0) { el.textContent = 'deadline passed'; el.style.color = '#999'; }
-    else if (d === 0) { el.textContent = 'TODAY'; el.style.color = '#c0392b'; el.style.fontWeight = '700'; }
-    else { el.textContent = d + ' day' + (d===1?'':'s') + ' left'; el.style.color = d<=14?'#c0392b':d<=30?'#8a5500':'#1a4b8c'; el.style.fontWeight = d<=14?'700':'600'; }
-  });
-}
-
-// ─── Tab switching ───
-function showTab(name, el) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  if (el) el.classList.add('active');
-}
-
-// ─── Filter rows ───
-function filterRows(fit, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('tbody tr[data-fit]').forEach(r => {
-    r.style.display = (fit === 'all' || r.dataset.fit === fit) ? '' : 'none';
-  });
-}
-
-// ─── Init ───
-updateAll();
-applySubmittedState();
-updateSubmittedBadge();
-renderSubmittedCards();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
