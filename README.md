@@ -8,13 +8,20 @@ This project was developed as part of my DevOps learning journey and demonstrate
 
 ## 🚀 Features
 
-- 📊 Interactive university comparison dashboard
-- 📑 Multi-tab navigation system
+- 📊 Interactive university comparison dashboard with search & sortable columns
+- 📑 Multi-tab navigation system (11 tabs)
+- 🚦 Application status pipeline — Submitted → Interview → Decision → Accepted/Rejected → Visa → Enrolled
+- 🎓 Accepted Offers table with offer type, accept-by countdown, and next-step actions
+- 📄 Per-university document checklist with progress bars
+- 💰 Tuition fee and living expense analysis + interactive cost & budget calculator (EUR/INR)
+- ✈️ Detailed Visa & Relocation journey tracker — admission through arrival & settling in, in 9 phases
+- 📝 Per-university notes/journal
+- 🌗 Dark / light theme toggle
 - 🎯 DevOps-focused university recommendations
-- 💰 Tuition fee and living expense analysis
 - 📌 Admission eligibility tracking
 - 🏙️ City-wise comparison and guidance
 - ⚡ Responsive UI design
+- 💾 All personal progress saved locally in your browser (localStorage) — no backend required
 - 🐳 Dockerized deployment using Nginx
 - ⚙️ Docker Compose orchestration
 - 🔄 CI/CD pipeline with GitHub Actions
@@ -54,6 +61,8 @@ A GitHub Actions pipeline automatically:
 ```bash
 .
 ├── index.html
+├── styles.css
+├── script.js
 ├── Dockerfile
 ├── docker-compose.yml
 └── .github/workflows/ci-cd.yml
