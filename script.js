@@ -3,12 +3,12 @@
 const SUPABASE_URL = 'https://epndekpwxngjozytlcmy.supabase.co'; // <-- PASTE YOUR URL HERE
 const SUPABASE_ANON_KEY = 'sb_publishable_1RHubw6OVdqUAS_XAcKnpg_po3SzAj5'; // <-- PASTE YOUR ANON KEY HERE
 
-let supabase = null;
+let sbClient = null;
 try {
   if (!window.supabase) throw new Error("Supabase library is missing. Did you add the script tag to index.html?");
   // Only create the client if the URL looks like a real URL to prevent crashing
   if (SUPABASE_URL.startsWith('http')) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   } else {
     console.warn("Waiting for valid Supabase URL to be entered.");
   }
@@ -43,7 +43,7 @@ async function fetchAllCloudData() {
   const dot = document.getElementById('db-dot');
   const text = document.getElementById('db-text');
 
-  if (!supabase) {
+  if (!sbClient) {
     if (dot) dot.className = 'status-dot offline';
     if (text) text.textContent = 'Offline Mode (Local Storage)';
     return; // Safely exit if DB isn't connected yet
@@ -51,17 +51,17 @@ async function fetchAllCloudData() {
 
   try {
     // Fetch Pipeline
-    const { data: pipeline, error: e1 } = await supabase.from('admission_pipeline').select('*');
+    const { data: pipeline, error: e1 } = await sbClient.from('admission_pipeline').select('*');
     if (e1) throw new Error(e1.message);
     pipeline?.forEach(row => pipelineData[row.uni_key] = row);
 
     // Fetch Checklists
-    const { data: checks, error: e2 } = await supabase.from('admission_checklists').select('*');
+    const { data: checks, error: e2 } = await sbClient.from('admission_checklists').select('*');
     if (e2) throw new Error(e2.message);
     checks?.forEach(row => checksData[row.check_id] = row.is_checked);
 
     // Fetch Notes
-    const { data: notes, error: e3 } = await supabase.from('admission_notes').select('*');
+    const { data: notes, error: e3 } = await sbClient.from('admission_notes').select('*');
     if (e3) throw new Error(e3.message);
     notes?.forEach(row => notesData[row.uni_key] = row.note_text);
 
@@ -73,7 +73,7 @@ async function fetchAllCloudData() {
 
     // Fetch Admission Requirements — isolated so it can't crash the main fetch
     try {
-      const { data: admission, error: e4 } = await supabase.from('admission_requirements').select('*');
+      const { data: admission, error: e4 } = await sbClient.from('admission_requirements').select('*');
       if (e4) throw new Error(e4.message);
       admission?.forEach(row => admissionData[row.uni_key] = row);
       renderAdmission();
@@ -107,8 +107,8 @@ function updatePipelineDB(key, extraFields = {}) {
   const payload = { uni_key: key, ...pipelineData[key], ...extraFields };
   pipelineData[key] = payload; // Update local immediately
   
-  if (supabase) {
-    supabase.from('admission_pipeline').upsert(payload).then(({error}) => {
+  if (sbClient) {
+    sbClient.from('admission_pipeline').upsert(payload).then(({error}) => {
       if (error) console.error("Failed to save pipeline to DB:", error.message);
     });
   }
@@ -121,8 +121,8 @@ function markSubmitted(key) {
 
 function undoSubmitted(key) {
   delete pipelineData[key];
-  if (supabase) {
-    supabase.from('admission_pipeline').delete().eq('uni_key', key).then();
+  if (sbClient) {
+    sbClient.from('admission_pipeline').delete().eq('uni_key', key).then();
   }
   applySubmittedState(); refreshPipelineUI();
 }
@@ -298,8 +298,8 @@ function renderAccepted() {
 function saveCheck(el) {
   checksData[el.id] = el.checked; // Local update
   
-  if (supabase) {
-    supabase.from('admission_checklists')
+  if (sbClient) {
+    sbClient.from('admission_checklists')
       .upsert({ check_id: el.id, is_checked: el.checked })
       .then(({error}) => {
          if (error) console.error("Failed to save checkbox to DB:", error.message);
@@ -389,8 +389,8 @@ function saveNote(el) {
   // Cloud sync (waits 1 second after you stop typing to save)
   clearTimeout(noteTimeout);
   noteTimeout = setTimeout(() => {
-    if (supabase) {
-      supabase.from('admission_notes')
+    if (sbClient) {
+    sbClient.from('admission_notes')
         .upsert({ uni_key: el.id, note_text: el.value })
         .then(({error}) => {
            if(error) console.error("Failed to save note to DB:", error.message);
