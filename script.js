@@ -639,9 +639,9 @@ const GRE_PILL = {
   not_required: '<span class="pill green">✅ Not required</span>'
 };
 const CHANCE_PILL = {
-  high:   '<span class="pill green">High ✅</span>',
-  medium: '<span class="pill amber">Medium ⚠️</span>',
-  low:    '<span class="pill red">Low ❌</span>'
+  high:   '<span class="adm-chance high">High ✅</span>',
+  medium: '<span class="adm-chance medium">Medium ⚠️</span>',
+  low:    '<span class="adm-chance low">Low ❌</span>'
 };
 const DIFF_PILL = {
   low:          '<span class="pill green">Low</span>',
@@ -649,36 +649,77 @@ const DIFF_PILL = {
   medium:       '<span class="pill amber">Medium</span>'
 };
 
+const FIT_BORDER = {
+  hof:       'green',
+  chemnitz:  'green',
+  fulda:     'blue',
+  rheinmain: 'blue',
+  koblenz:   'blue',
+  siegen:    'blue',
+  frankfurt: 'blue',
+  kiel:      'amber'
+};
+
 function renderAdmission() {
-  const tbody = document.querySelector('#tab-admission tbody');
-  if (!tbody) return;
+  const grid = document.getElementById('admission-grid');
+  if (!grid) return;
 
   const keys = Object.keys(admissionData);
   if (keys.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;opacity:.6;">⏳ Loading admission data from database…</td></tr>';
+    grid.innerHTML = '<div class="adm-loading">⏳ Loading admission data from database…</div>';
     return;
   }
 
-  // Sort by UNI_ORDER; anything not in the list goes to the end
   const sorted = UNI_ORDER.filter(k => admissionData[k])
     .concat(keys.filter(k => !UNI_ORDER.includes(k)));
 
-  tbody.innerHTML = sorted.map(key => {
+  grid.innerHTML = sorted.map(key => {
     const d = admissionData[key];
     const meta = UNI_META[key] || {};
-    const name = meta.sub || key;
+    const borderColor = FIT_BORDER[key] || 'blue';
 
-    return `<tr>
-      <td><strong>${name}</strong></td>
-      <td>${d.ielts_req}<br>${IELTS_PILL[d.ielts_status] || ''}</td>
-      <td>${d.german_req}</td>
-      <td>${d.gre_req}<br>${GRE_PILL[d.gre_status] || ''}</td>
-      <td>${d.min_grade}</td>
-      <td>${d.special_req}</td>
-      <td>${d.program_focus}</td>
-      <td>${d.internship}</td>
-      <td>${DIFF_PILL[d.difficulty] || d.difficulty}<br>${CHANCE_PILL[d.your_chance] || d.your_chance}</td>
-    </tr>`;
+    return `
+    <div class="adm-card adm-border-${borderColor}">
+      <div class="adm-card-header">
+        <div class="adm-uni-name">${meta.title || key}</div>
+        <div class="adm-uni-sub">${meta.sub || ''}</div>
+        <div class="adm-footer-pills">
+          ${DIFF_PILL[d.difficulty] || d.difficulty}
+          ${CHANCE_PILL[d.your_chance] || d.your_chance}
+        </div>
+      </div>
+      <div class="adm-card-body">
+        <div class="adm-row">
+          <div class="adm-label">🎤 IELTS</div>
+          <div class="adm-val">${d.ielts_req} ${IELTS_PILL[d.ielts_status] || ''}</div>
+        </div>
+        <div class="adm-row">
+          <div class="adm-label">🇩🇪 German</div>
+          <div class="adm-val">${d.german_req}</div>
+        </div>
+        <div class="adm-row">
+          <div class="adm-label">📝 GRE</div>
+          <div class="adm-val">${d.gre_req} ${GRE_PILL[d.gre_status] || ''}</div>
+        </div>
+        <div class="adm-row">
+          <div class="adm-label">🎓 Min Grade</div>
+          <div class="adm-val">${d.min_grade}</div>
+        </div>
+        <div class="adm-row">
+          <div class="adm-label">💼 Internship</div>
+          <div class="adm-val">${d.internship}</div>
+        </div>
+        <div class="adm-row adm-row-focus">
+          <div class="adm-label">📚 Program Focus</div>
+          <div class="adm-val adm-focus-text">${d.program_focus}</div>
+        </div>
+        ${d.special_req ? `
+        <div class="adm-special">
+          <span class="adm-special-label">📌 Note</span>
+          ${d.special_req}
+        </div>` : ''}
+      </div>
+    </div>`;
   }).join('');
 }
 
