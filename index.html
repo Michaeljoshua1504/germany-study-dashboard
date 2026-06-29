@@ -13,6 +13,7 @@
 <header>
   <h1>🎓 Germany University Comparison — Michael Joshua Padamuthum</h1>
   <p>Complete analysis of all 21 universities · Last updated: 19 May 2026 · <span id="today-display" style="color:#8cf;font-weight:600;"></span></p>
+  
   <div class="profile-bar">
     <span class="pb">CGPA 7.18 · 68.65% · First Class</span>
     <span class="pb">176 JNTUA Credits</span>
@@ -22,9 +23,20 @@
     <span class="pb">APS Certificate ✓</span>
     <span class="pb">Goal: DevOps Engineer in Germany</span>
   </div>
+
+  <div class="db-status-pill" id="db-status">
+    <div class="status-dot" id="db-dot"></div>
+    <span id="db-text">Connecting to Supabase...</span>
+  </div>
+
 </header>
 
-<nav>
+<nav class="main-nav">
+  <div class="main-tab active" onclick="showMainTab('admission', this)">🎯 Admission Phase</div>
+  <div class="main-tab locked" onclick="alert('This will unlock when you land in Germany!')">🇩🇪 Life Tracker 🔒</div>
+</nav>
+
+<nav class="sub-nav" id="nav-admission">
   <div class="tab active" onclick="showTab('overview',this)">📋 Overview Table</div>
   <div class="tab" onclick="showTab('deadlines',this)">📅 Deadlines & Apply</div>
   <div class="tab" id="tab-nav-submitted" onclick="showTab('submitted',this)">🚦 Pipeline <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
@@ -38,7 +50,6 @@
   <div class="tab" onclick="showTab('recommendation',this)">⭐ My Recommendation</div>
 </nav>
 
-<!-- OVERVIEW TABLE -->
 <div id="tab-overview" class="section active">
   <div class="section-title">Overview — Apply List (8 Universities)</div>
   <div class="section-sub">Filtered from 21 universities. 12 rejected with clear reasons. 1 borderline risk. These 8 are worth applying to.</div>
@@ -195,7 +206,6 @@
   </div>
 </div>
 
-<!-- DEADLINES -->
 <div id="tab-deadlines" class="section">
   <div class="section-title">Application Deadlines & Direct Links</div>
   <div class="section-sub" id="deadlines-sub">Deadlines calculated from today's date automatically.</div>
@@ -403,12 +413,9 @@
   </div>
 
   <div class="note-box" style="margin-top:16px;" id="urgency-note">
-    <!-- Filled by JS -->
-  </div>
+    </div>
 </div>
 
-
-<!-- PIPELINE (was: SUBMITTED APPLICATIONS — now a full status pipeline) -->
 <div id="tab-submitted" class="section">
   <div class="section-title">🚦 Application Status Pipeline</div>
   <div class="section-sub">Track every application from submission through to enrollment. Click a stage button on a card to move it forward — use "↩ Undo" if you click the wrong one.</div>
@@ -422,11 +429,10 @@
   <div class="cards" id="submitted-cards-grid"></div>
 
   <div id="submitted-footer" style="margin-top:16px;" class="note-box">
-    <strong>🚀 How the pipeline works:</strong> Not Submitted → Submitted → Interview (if applicable) → Decision → Accepted 🎉 / Rejected → Visa Process → Enrolled. Once a university reaches "Accepted", it will also show up in the <strong>🎓 Accepted</strong> tab with offer details and a link straight into your Visa &amp; Relocation checklist.
+    <strong>🚀 How the pipeline works:</strong> Not Submitted → Submitted → Interview (if applicable) → Decision → Accepted 🎉 / Rejected → Visa Process → Enrolled. Once a university reaches "Accepted", it will also show up in the <strong>🎓 Accepted</strong> tab.
   </div>
 </div>
 
-<!-- ACCEPTED OFFERS -->
 <div id="tab-accepted" class="section">
   <div class="section-title">🎓 Accepted Universities</div>
   <div class="section-sub">Every offer you've received, in one place. Mark a university "Accepted" in the 🚦 Pipeline tab and it will show up here automatically.</div>
@@ -455,23 +461,21 @@
   </div>
 
   <div class="note-box" id="accepted-note" style="display:none;">
-    <strong>🎉 Got an offer?</strong> Once you decide which university to enroll at, head to the <strong>✈️ Visa &amp; Relocation</strong> tab and start Phase 1 — accepting your offer and requesting your official enrollment confirmation letter is the document everything else (blocked account, visa) depends on.
+    <strong>🎉 Got an offer?</strong> Once you decide which university to enroll at, head to the <strong>✈️ Visa &amp; Relocation</strong> tab and start Phase 1.
   </div>
 </div>
 
-<!-- DOCUMENT CHECKLIST -->
 <div id="tab-documents" class="section">
   <div class="section-title">📄 Document Checklist — Per University</div>
   <div class="section-sub">Tick off documents as you prepare them. Progress is saved automatically in this browser.</div>
 
   <div class="note-box">
-    <strong>💡 Tip:</strong> Most documents below are shared across all 8 universities — prepare them once (as PDFs, English-translated and notarised where needed) and reuse them everywhere. University-specific extras are listed separately on each card.
+    <strong>💡 Tip:</strong> Most documents below are shared across all 8 universities — prepare them once and reuse them everywhere.
   </div>
 
   <div class="doc-grid" id="doc-grid"></div>
 </div>
 
-<!-- COSTS -->
 <div id="tab-costs" class="section">
   <div class="section-title">Costs & Financial Details</div>
   <div class="section-sub">All costs in EUR. Scholarship eligibility assessed against your profile.</div>
@@ -508,9 +512,6 @@
     <div class="calc-total">
       <div><div class="ctl">Estimated total cost — full program</div><div class="ctv" id="calc-grand-total">—</div></div>
       <div style="text-align:right;"><div class="ctl">≈ in INR (today's selected rate)</div><div class="ctv" id="calc-grand-total-inr">—</div></div>
-    </div>
-    <div class="note-box" style="margin-top:12px;margin-bottom:0;font-size:11px;">
-      <strong>* One-off costs assumed:</strong> APS Certificate ₹18,000 (already obtained ✓, included only for reference), German student visa fee ~€75, VFS service charge ~₹1,700, blocked-account provider fee ~€50–90, one-way flight ~€550. The €11,904 blocked account is <em>your own money</em> released back to you at €992/month after arrival — it's not spent, just locked. Exchange rates fluctuate daily — check a live rate (e.g. Google, XE.com) before any transfer.
     </div>
   </div>
 
@@ -621,19 +622,8 @@
       </tbody>
     </table>
   </div>
-
-  <div class="note-box" style="margin-top:16px;">
-    <strong>💡 Deutschlandstipendium:</strong> €300/month for 1 year. Available at Fulda, Chemnitz, and Siegen. Apply after admission. Your church technical leadership, first-generation student background, and 3+ years work experience strengthen your application.
-  </div>
-  <div class="note-box">
-    <strong>💡 DAAD Scholarships:</strong> Check <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank">daad.de ↗</a> after admission. Your profile (clear career goal + work experience) fits several DAAD categories.
-  </div>
-  <div class="note-box">
-    <strong>💡 Hof MEng tuition recovery:</strong> €3,300/sem × 2 sems = €6,600 tuition for years 1–2. The paid internship in years 3–4 at companies like SAP/IBM/Siemens typically pays €800–1,200/month = €9,600–14,400 over 12 months. You recover the full tuition cost during the internship.
-  </div>
 </div>
 
-<!-- ADMISSION -->
 <div id="tab-admission" class="section">
   <div class="section-title">Admission Requirements & Your Eligibility</div>
   <div class="section-sub">Every requirement verified from official programme documents. Green = you meet it. Red = blocker.</div>
@@ -754,19 +744,8 @@
       </tbody>
     </table>
   </div>
-
-  <div class="note-box" style="margin-top:16px;">
-    <strong>⚠️ Fulda A1 German certificate:</strong> Required at application. Accepted: Goethe-Zertifikat A1, telc A1, ÖSD A1, ECL A1. Book Goethe Institut Bangalore exam this week — <a href="https://www.goethe.de/ins/in/en/sta/ban.html" target="_blank">goethe.de/ins/in/en/sta/ban ↗</a>. Results in 2–3 weeks. Cost ~₹4,500–5,500.
-  </div>
-  <div class="note-box">
-    <strong>⚠️ Kiel GRE:</strong> Mandatory, 55% in quantitative reasoning, no exceptions. Register at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a>. Preparation: 2–3 months. Test centre available in Bangalore. Register now to meet Sep 15 deadline.
-  </div>
-  <div class="note-box">
-    <strong>⚠️ Your German grade:</strong> 68.65% converts to approximately 2.9 on the German scale (Modified Bavarian Formula). This meets the 2.5 requirement at Chemnitz, Fulda, Koblenz. For Kiel (2.5 required) you are fine. For Bamberg (2.0 required) — you don't qualify, which is why it is rejected.
-  </div>
 </div>
 
-<!-- CITIES -->
 <div id="tab-cities" class="section">
   <div class="section-title">City Guide — All 8 Universities</div>
   <div class="section-sub">Which city is best for your DevOps career, budget, and life in Germany?</div>
@@ -783,7 +762,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Excellent U-Bahn + S-Bahn</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€600–900/mo</span></div>
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">SAP, AWS, Google, Deutsche Bank, T-Systems</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Europe's financial-tech hub. #1 city for DevOps career in Germany. High cost but unmatched job market and Indian community.</div>
     </div>
     <div class="city-card">
       <div class="city-name">🏘️ Rüsselsheim (near Frankfurt)</div>
@@ -796,7 +774,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">S-Bahn to Frankfurt 20 min</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€450–650/mo</span></div>
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Opel, T-Systems, Fraport, all Frankfurt tech</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Best of both worlds — affordable living with Frankfurt job market 20 minutes away. Great starting point.</div>
     </div>
     <div class="city-card">
       <div class="city-name">⚙️ Chemnitz</div>
@@ -809,7 +786,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Tram + train; Dresden 1 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (dorm)</span><span class="city-val">€270–350/mo</span></div>
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">VW, BMW plants nearby, mid-size tech</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Cheapest city on this list with the best DevOps curriculum. Ideal if budget is the priority. Dresden is 1 hr away for city life.</div>
     </div>
     <div class="city-card">
       <div class="city-name">🏫 Fulda</div>
@@ -822,7 +798,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train to Frankfurt ~1 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€400–500/mo</span></div>
       <div class="city-row"><span class="city-label">Major companies</span><span class="city-val">Krones, regional IT firms</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Quiet, peaceful university town. Affordable. Frankfurt reachable in 1 hr for job hunting and networking.</div>
     </div>
     <div class="city-card">
       <div class="city-name">🏭 Hof</div>
@@ -834,8 +809,7 @@
       <div class="city-row"><span class="city-label">International %</span><span class="city-val"><span class="stars">★★★★★</span> 40%+ students international</span></div>
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Regional train; Nuremberg 1.5 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€350–550/mo</span></div>
-      <div class="city-row"><span class="city-label">Internship companies</span><span class="city-val">SAP, IBM, Siemens, Continental, JPM, Rehau AG, ND SatCom, EU Joint Research Centre (JRC)</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Small Bavarian town with 40%+ international students. The 2-semester paid internship is your direct gateway into Germany's top companies.</div>
+      <div class="city-row"><span class="city-label">Internship companies</span><span class="city-val">SAP, IBM, Siemens, Continental, JPM</span></div>
     </div>
     <div class="city-card">
       <div class="city-name">🌊 Kiel</div>
@@ -848,7 +822,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Good local; Hamburg 1.5 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€400–600/mo</span></div>
       <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Beautiful coastal city, Baltic Sea</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Stunning coastal city. Best Cloud Computing curriculum (Advanced Cloud Computing module) but requires GRE. Hamburg job market 1.5 hr away.</div>
     </div>
     <div class="city-card">
       <div class="city-name">🌉 Koblenz</div>
@@ -861,7 +834,6 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train; Frankfurt 1 hr; Cologne 1 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€350–500/mo</span></div>
       <div class="city-row"><span class="city-label">City vibe</span><span class="city-val">Historic Rhine valley, UNESCO heritage</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Beautiful Rhine location between Frankfurt and Cologne. Affordable and well connected. DAAD-funded career support specifically for international students.</div>
     </div>
     <div class="city-card">
       <div class="city-name">⚒️ Siegen</div>
@@ -874,22 +846,10 @@
       <div class="city-row"><span class="city-label">Transport</span><span class="city-val">Train; Cologne 1.5 hr</span></div>
       <div class="city-row"><span class="city-label">Avg. rent (room)</span><span class="city-val">€270–450/mo</span></div>
       <div class="city-row"><span class="city-label">Career support</span><span class="city-val">FIT in Siegen DAAD-funded programme</span></div>
-      <div style="margin-top:10px;font-size:11px;color:#888;">Affordable, with dedicated FIT in Siegen programme supporting international students into the German job market throughout the degree.</div>
     </div>
-  </div>
-
-  <div class="note-box" style="margin-top:16px;">
-    <strong>🏆 Best city ranking for your DevOps goal:</strong>
-    <ol style="margin-top:8px;padding-left:20px;line-height:2">
-      <li><strong>Frankfurt / Rüsselsheim</strong> — #1 for job market. AWS, Google, SAP, Deutsche Telekom all nearby. Where DevOps careers are built.</li>
-      <li><strong>Hof</strong> — #1 for guaranteed industry entry via the paid internship at SAP/IBM/Siemens. Your career starts during the degree.</li>
-      <li><strong>Koblenz</strong> — Strategic location between Frankfurt and Cologne. DAAD-funded career support. Affordable.</li>
-      <li><strong>Chemnitz</strong> — Best value. Cheapest city, best curriculum. Focus on studies, job hunt after graduation.</li>
-    </ol>
   </div>
 </div>
 
-<!-- VISA & RELOCATION -->
 <div id="tab-visa" class="section">
   <div class="section-title">✈️ Visa & Relocation Journey — Admission to Arrival</div>
   <div class="section-sub">Every step from the moment you accept an offer to settling into life in Germany, broken into phases. Tick items off as you go — your progress is saved in this browser.</div>
@@ -897,10 +857,6 @@
   <div class="progress-row">
     <div class="progress-track"><div class="progress-fill" id="visa-progress-fill" style="width:0%;"></div></div>
     <div class="progress-pct" id="visa-progress-pct">0%</div>
-  </div>
-
-  <div class="note-box">
-    <strong>📍 Your jurisdiction:</strong> As an applicant based in Bangalore, Karnataka, your student visa is processed by VFS Global Shivajinagar, Bangalore on behalf of the <strong>German Consulate General, Bengaluru</strong> (which covers Karnataka & Kerala). Book your visa appointment through the Consular Services Portal / VFS as soon as you have an admission letter and blocked account confirmation.
   </div>
 
   <details class="phase" open>
@@ -929,11 +885,10 @@
     <summary>Phase 2 — Financial Proof: Blocked Account (Sperrkonto) <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
       <div class="phase-intro">2026 requirement: <strong>€11,904</strong> deposited up front, released at <strong>€992/month</strong> after you arrive. Open this 6–8 weeks before your visa appointment.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-1" onchange="saveCheck(this)"><label for="visa-2-1">Compare providers — Fintiba and Expatrio are the main active options (Coracle is currently unavailable)</label></div>
+      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-1" onchange="saveCheck(this)"><label for="visa-2-1">Compare providers — Fintiba and Expatrio are the main active options</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-2" onchange="saveCheck(this)"><label for="visa-2-2">Register online with your chosen provider and submit ID + proof of admission</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-3" onchange="saveCheck(this)"><label for="visa-2-3">Transfer €11,904 — only from your own account or an immediate family member's (third-party transfers are usually rejected)</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-4" onchange="saveCheck(this)"><label for="visa-2-4">Download the blocking confirmation (Sperrbestätigung) PDF once funds clear — needed for the visa file</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-5" onchange="saveCheck(this)"><label for="visa-2-5">Note: a DAAD/scholarship letter or a notarised sponsor declaration (Verpflichtungserklärung) can substitute for the blocked account if applicable to you</label></div>
     </div>
   </details>
 
@@ -951,10 +906,10 @@
     <summary>Phase 4 — Student Visa Application (VFS Bangalore → Consulate Bengaluru) <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
       <div class="phase-intro">One-shot process — note that the remonstration (appeal) procedure for visa rejections was abolished from July 2025, so the file needs to be complete and correct the first time.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-1" onchange="saveCheck(this)"><label for="visa-4-1">Register on the Consular Services Portal and book your VFS Bangalore appointment — slots fill up, book ~90–100 days before intake if possible</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-2" onchange="saveCheck(this)"><label for="visa-4-2">Gather the document set: passport + copies, 2 completed visa application forms, biometric photos, admission letter, APS certificate, academic transcripts & degree certificates, CV, statement of purpose / motivation letter, blocked account confirmation, health insurance proof</label></div>
+      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-1" onchange="saveCheck(this)"><label for="visa-4-1">Register on the Consular Services Portal and book your VFS Bangalore appointment</label></div>
+      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-2" onchange="saveCheck(this)"><label for="visa-4-2">Gather the document set: passport + copies, 2 completed visa application forms, biometric photos, admission letter, APS certificate, academic transcripts & degree certificates, CV, SOP, blocked account confirmation, health insurance proof</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-3" onchange="saveCheck(this)"><label for="visa-4-3">Pay the visa fee (~€75) plus the VFS service charge (~₹2,080) — keep the receipt</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-4" onchange="saveCheck(this)"><label for="visa-4-4">Attend your VFS appointment for biometrics and document submission (basic questions possible, no formal interview at VFS Bangalore)</label></div>
+      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-4" onchange="saveCheck(this)"><label for="visa-4-4">Attend your VFS appointment for biometrics and document submission</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-5" onchange="saveCheck(this)"><label for="visa-4-5">Track your application status online using your VFS reference number while you wait (typically 6–8 weeks)</label></div>
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-6" onchange="saveCheck(this)"><label for="visa-4-6">Collect your passport with the national (D) visa stamped in</label></div>
     </div>
@@ -983,44 +938,14 @@
       <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-5" onchange="saveCheck(this)"><label for="visa-6-5">Complete Immatrikulation (enrollment) at the university — get your student ID and semester ticket</label></div>
     </div>
   </details>
-
-  <details class="phase">
-    <summary>Phase 7 — Residence Permit & Settling In <span class="phase-arrow">▶</span></summary>
-    <div class="phase-body">
-      <div class="phase-intro">Your entry visa needs to be converted into a residence permit to stay for the full program.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-1" onchange="saveCheck(this)"><label for="visa-7-1">Book an appointment at the Ausländerbehörde (Foreigners' Registration Office) immediately after Anmeldung — slots can take weeks/months</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-2" onchange="saveCheck(this)"><label for="visa-7-2">Bring biometric photos and the residence permit fee to your appointment; collect your eAT (electronic residence permit) card</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-3" onchange="saveCheck(this)"><label for="visa-7-3">Switch from travel/incoming insurance to your chosen statutory provider (TK/AOK/Barmer) and get your insurance card</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-4" onchange="saveCheck(this)"><label for="visa-7-4">Understand part-time work limits on a student visa (Werkstudent rules) before taking any job</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-5" onchange="saveCheck(this)"><label for="visa-7-5">Apply for Deutschlandstipendium / DAAD scholarships once officially enrolled</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-6" onchange="saveCheck(this)"><label for="visa-7-6">Get your library card, attend orientation week, and join your program's WhatsApp/Discord group</label></div>
-    </div>
-  </details>
-
-  <details class="phase">
-    <summary>Phase 8 — Looking Ahead <span class="phase-arrow">▶</span></summary>
-    <div class="phase-body">
-      <div class="phase-intro">Beyond the degree — this is your long-term DevOps career runway.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-8-1" onchange="saveCheck(this)"><label for="visa-8-1">Track your residence permit expiry date and start renewal paperwork well before it lapses</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-8-2" onchange="saveCheck(this)"><label for="visa-8-2">After graduating, apply for the 18-month Job Seeker visa extension if you need more time to find work</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-8-3" onchange="saveCheck(this)"><label for="visa-8-3">Once employed, plan your path to the EU Blue Card for long-term residency</label></div>
-    </div>
-  </details>
-
-  <div class="note-box" style="margin-top:6px;">
-    <strong>⚠️ Always double-check live requirements.</strong> Blocked account amounts, visa fees, and consulate procedures are reviewed periodically by German authorities — confirm current figures on <a href="https://www.auswaertiges-amt.de/en" target="_blank">auswaertiges-amt.de ↗</a> and <a href="https://aps-india.de" target="_blank">aps-india.de ↗</a> before paying anything.
-  </div>
 </div>
 
-<!-- NOTES -->
 <div id="tab-notes" class="section">
   <div class="section-title">📝 My Notes — Per University</div>
   <div class="section-sub">A private journal for each university — interview prep, contacts, things to remember. Saved automatically in this browser.</div>
-
   <div class="notes-grid" id="notes-grid"></div>
 </div>
 
-<!-- RECOMMENDATION -->
 <div id="tab-recommendation" class="section">
   <div class="section-title">⭐ My Recommendation for You — Michael Joshua</div>
   <div class="section-sub">Based on your complete profile: 68.65% · CGPA 7.18 · 176 JNTUA credits · IELTS 6.5 · German A1 · 3+ yrs work exp · Goal: DevOps Engineer in Germany.</div>
@@ -1031,7 +956,6 @@
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best career outcome of all 21 universities. Applied Cloud Computing module + 2-semester paid internship at SAP/IBM/Siemens. IELTS 6.5 exact match. 3+ yrs work exp exceeds their 1-yr requirement. Yes, €3,300/sem — but recovered during internship. Currently applying.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
     <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Application Portal ↗</a></span></div>
   </div>
 
   <div class="rec-box">
@@ -1041,24 +965,6 @@
     <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Book Goethe A1 exam in Bangalore this week for German requirement</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
     <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f0f4ff;border-color:#a8bce8;">
-    <h4>📅 Priority 2 — Apply this week (<span class="rec-days" data-deadline="2026-06-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Koblenz — MSc Web and Data Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Your 68.65% qualifies (65% CGPA required). Free tuition. Web systems + data engineering. Near Frankfurt/Cologne. DAAD-funded FIT4SukCESS career programme supports your German job market entry throughout the degree.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong>15 June 2026</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f0f4ff;border-color:#a8bce8;">
-    <h4>📅 Priority 2 — Apply this week (no fixed deadline)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Siegen — MSc Computer Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">IELTS 6.5 exact match. No GRE. Free tuition. FIT in Siegen (DAAD-funded) actively supports international students into the German job market throughout the degree. Apply ASAP — no fixed deadline but early applications preferred.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">master-cs.eti.uni-siegen.de ↗</a></span></div>
   </div>
 
   <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
@@ -1067,56 +973,10 @@
     <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best DevOps curriculum of all 21 universities — Cloud & web apps, distributed systems, data engineering, IoT. Free tuition. Cheapest city. Lowest admission barrier. DAAD scholarship eligible. LOM still to write.</span></div>
     <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
     <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.eduapplication.de/" target="_blank">eduapplication.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>RheinMain UAS — MEng AI & Advanced IT</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">First cohort 2026 = less competition. Cloud Computing, IoT, ML modules. Free tuition. 20 min to Frankfurt job market. LOM still to write.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 4 — If GRE done (<span class="rec-days" data-deadline="2026-09-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Kiel UAS — MSc Computer Science</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best Cloud Computing curriculum anywhere on this list — Advanced Cloud Computing, Distributed DBs, Advanced Software Engineering all in semester 1. Worth the GRE effort.</span></div>
-    <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Register GRE now at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a>. Target August test date. Score 55%+ in quantitative.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 September 2026</span></div>
-  </div>
-
-  <div class="rec-box" style="background:#fffaf0;border-color:#e8d8a8;">
-    <h4>📅 Priority 5 — Apply Oct (<span class="rec-days" data-deadline="2026-10-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Frankfurt UAS — MSc High Integrity Systems</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Frankfurt is Germany's #1 DevOps job market. Cloud Computing elective, Distributed Systems, IoT. If you get into any earlier program, apply here too for summer 2027 as a backup or top-up plan.</span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 October 2026</span></div>
-    <div class="detail-row"><span class="detail-label">Apply at:</span><span class="detail-val"><a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a></span></div>
-  </div>
-
-  <div class="note-box" style="margin-top:16px;" id="rec-checklist">
-    <strong>📋 Complete checklist — in order:</strong>
-    <ol style="margin-top:8px;padding-left:20px;line-height:2.2;font-size:12px;">
-      <li>Submit <strong>Hof MEng</strong> application — <a href="https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en" target="_blank">Hof Portal ↗</a> — by 31 May</li>
-      <li>Submit <strong>Fulda</strong> via uni-assist — <a href="https://www.uni-assist.de/en" target="_blank">uni-assist.de ↗</a> — by 31 May</li>
-      <li>Book <strong>Goethe A1 exam</strong> in Bangalore — <a href="https://www.goethe.de/ins/in/en/sta/ban.html" target="_blank">goethe.de ↗</a> — this week</li>
-      <li>Write <strong>Siegen LOM</strong> and apply — <a href="http://www.master-cs.eti.uni-siegen.de/" target="_blank">Siegen portal ↗</a> — this week</li>
-      <li>Apply <strong>Koblenz</strong> via uni-assist — by 15 June</li>
-      <li>Write <strong>Chemnitz LOM</strong> and apply via eduapplication.de — by 15 July</li>
-      <li>Write <strong>RheinMain LOM</strong> and apply via uni-assist — by 15 July</li>
-      <li>Register <strong>GRE</strong> at <a href="https://www.ets.org/gre" target="_blank">ets.org/gre ↗</a> for August sitting</li>
-      <li>Apply <strong>Kiel</strong> via uni-assist (after GRE) — by 15 September</li>
-      <li>Apply <strong>Frankfurt</strong> via uni-assist — by 15 October</li>
-      <li>After admission — apply <strong>Deutschlandstipendium</strong> at Fulda, Chemnitz, Siegen</li>
-      <li>After admission — check <strong>DAAD scholarships</strong> at <a href="https://www.daad.de/en/study-and-research-in-germany/scholarships/" target="_blank">daad.de ↗</a></li>
-    </ol>
-  </div>
-
-  <div class="note-box">
-    <strong>🚀 Your DevOps career path after graduation:</strong> German Job Seeker Visa gives 18 months to find work. DevOps Engineers in Germany earn €55,000–€85,000/year starting salary. Top hiring cities: Frankfurt, Berlin, Munich, Hamburg. With a German Master's + internship experience at a German company (especially via Hof), you are in a very strong position. Germany's EU Blue Card makes permanent residency achievable within 2–3 years of employment.
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="script.js"></script>
 </body>
