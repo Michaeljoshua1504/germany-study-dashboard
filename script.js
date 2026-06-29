@@ -65,17 +65,21 @@ async function fetchAllCloudData() {
     if (e3) throw new Error(e3.message);
     notes?.forEach(row => notesData[row.uni_key] = row.note_text);
 
-    // Fetch Admission Requirements
-    const { data: admission, error: e4 } = await supabase.from('admission_requirements').select('*');
-    if (e4) throw new Error(e4.message);
-    admission?.forEach(row => admissionData[row.uni_key] = row);
-
-    // Hydrate UI once data is loaded
+    // Hydrate core UI — pipeline, checklists, notes
     applySubmittedState();
     restoreChecks();
     restoreNotes();
     refreshPipelineUI();
-    renderAdmission();
+
+    // Fetch Admission Requirements — isolated so it can't crash the main fetch
+    try {
+      const { data: admission, error: e4 } = await supabase.from('admission_requirements').select('*');
+      if (e4) throw new Error(e4.message);
+      admission?.forEach(row => admissionData[row.uni_key] = row);
+      renderAdmission();
+    } catch (admErr) {
+      console.warn('admission_requirements table not ready yet:', admErr.message);
+    }
 
     // SUCCESS! Make the dot green and blink
     if (dot) dot.className = 'status-dot connected';
