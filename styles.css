@@ -113,6 +113,26 @@ a:hover { text-decoration: underline; }
 /* Theme toggle & dark mode */
 #theme-toggle { position: fixed; top: 14px; right: 18px; z-index: 100; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
 #theme-toggle:hover { background: rgba(255,255,255,0.22); }
+
+/* Database Status Indicator — fixed top-right next to theme toggle */
+.db-status-pill {
+  position: fixed;
+  top: 14px;
+  right: 60px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(20, 33, 60, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #dde;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+}
 html[data-theme="dark"] body { background: #181a1f; color: #e6e4dd; }
 html[data-theme="dark"] .section-sub, html[data-theme="dark"] .city-uni, html[data-theme="dark"] .card-sub,
 html[data-theme="dark"] .city-label, html[data-theme="dark"] .detail-label, html[data-theme="dark"] .doc-sub,
@@ -241,49 +261,49 @@ html[data-theme="dark"] .progress-pct { color: #cdd6ff; }
   #theme-toggle { top: 8px; right: 8px; width: 26px; height: 26px; font-size: 12px; }
 }
 
-/* Database Status Indicator */
-.db-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #dde;
-  margin-top: 12px;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #888; /* Default gray while connecting */
-}
-
-/* The Green Blinking Animation */
-.status-dot.connected {
-  background-color: #2ecc71;
-  box-shadow: 0 0 8px rgba(46, 204, 113, 0.6);
-  animation: blink-green 1.5s infinite ease-in-out;
-}
-
-/* The Red Error State */
-.status-dot.offline {
-  background-color: #e74c3c;
-  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
-}
-
-@keyframes blink-green {
-  0% { opacity: 0.4; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
-  100% { opacity: 0.4; transform: scale(0.8); }
-}
-
 /* Dark mode adjustment for the pill background */
 html[data-theme="dark"] .db-status-pill {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
 }
+
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #888; flex-shrink: 0; }
+.status-dot.connected { background-color: #2ecc71; box-shadow: 0 0 8px rgba(46,204,113,0.6); animation: blink-green 1.5s infinite ease-in-out; }
+.status-dot.offline { background-color: #e74c3c; box-shadow: 0 0 8px rgba(231,76,60,0.6); }
+@keyframes blink-green { 0% { opacity:0.4; transform:scale(0.8); } 50% { opacity:1; transform:scale(1.1); } 100% { opacity:0.4; transform:scale(0.8); } }
+/* ═══════════════ ADMISSION CARDS ═══════════════ */
+.admission-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+.adm-loading { text-align: center; padding: 3rem; color: #aaa; font-size: 13px; }
+
+.adm-card { background: #fff; border-radius: 12px; border: 1px solid #e0ded6; border-top: 4px solid #e0ded6; overflow: hidden; display: flex; flex-direction: column; }
+.adm-border-green { border-top-color: #1a6b3c; }
+.adm-border-blue  { border-top-color: #1a4b8c; }
+.adm-border-amber { border-top-color: #8a5500; }
+
+.adm-card-header { padding: 14px 16px 12px; border-bottom: 1px solid #f0ede6; }
+.adm-uni-name { font-size: 13px; font-weight: 700; color: #14213c; margin-bottom: 2px; }
+.adm-uni-sub { font-size: 11px; color: #888; margin-bottom: 10px; }
+.adm-footer-pills { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.adm-chance { padding: 3px 10px; border-radius: 8px; font-size: 10.5px; font-weight: 700; display: inline-block; }
+.adm-chance.high   { background: #e6f4ec; color: #1a6b3c; }
+.adm-chance.medium { background: #fef3e0; color: #8a5500; }
+.adm-chance.low    { background: #fde8e8; color: #a01c1c; }
+
+.adm-card-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 0; flex: 1; }
+.adm-row { display: flex; gap: 8px; padding: 7px 0; border-bottom: 1px solid #f5f3ee; font-size: 12px; align-items: flex-start; }
+.adm-row:last-child { border-bottom: none; }
+.adm-row-focus { align-items: flex-start; }
+.adm-label { color: #888; font-size: 10.5px; font-weight: 600; min-width: 110px; flex-shrink: 0; padding-top: 1px; text-transform: uppercase; letter-spacing: 0.3px; }
+.adm-val { color: #2c2c2a; flex: 1; display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+.adm-focus-text { font-size: 11.5px; line-height: 1.5; color: #444; display: block; }
+.adm-special { margin-top: 10px; background: #fffbf0; border: 1px solid #f5d87c; border-radius: 8px; padding: 9px 12px; font-size: 11.5px; color: #5a3e00; line-height: 1.5; }
+.adm-special-label { display: block; font-size: 10px; font-weight: 700; color: #8a5500; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+
+/* Dark mode for admission cards */
+html[data-theme="dark"] .adm-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .adm-card-header { border-bottom-color: #32343c; }
+html[data-theme="dark"] .adm-uni-name { color: #e6e4dd; }
+html[data-theme="dark"] .adm-row { border-bottom-color: #2a2c34; }
+html[data-theme="dark"] .adm-val { color: #ccc9c0; }
+html[data-theme="dark"] .adm-focus-text { color: #aaa8a0; }
+html[data-theme="dark"] .adm-special { background: rgba(245,216,124,0.08); border-color: rgba(245,216,124,0.25); color: #d4a84b; }
