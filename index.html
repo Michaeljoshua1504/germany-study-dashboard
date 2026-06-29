@@ -5,10 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Germany University Comparison — Michael Joshua</title>
 <link rel="stylesheet" href="styles.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
 </head>
 <body>
 
 <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark / light theme">🌙</button>
+<div class="db-status-pill" id="db-status">
+  <div class="status-dot" id="db-dot"></div>
+  <span id="db-text">Connecting to Supabase...</span>
+</div>
 
 <header>
   <h1>🎓 Germany University Comparison — Michael Joshua Padamuthum</h1>
@@ -22,11 +27,6 @@
     <span class="pb">3+ yrs Work Exp</span>
     <span class="pb">APS Certificate ✓</span>
     <span class="pb">Goal: DevOps Engineer in Germany</span>
-  </div>
-
-  <div class="db-status-pill" id="db-status">
-    <div class="status-dot" id="db-dot"></div>
-    <span id="db-text">Connecting to Supabase...</span>
   </div>
 
 </header>
@@ -626,27 +626,9 @@
 
 <div id="tab-admission" class="section">
   <div class="section-title">Admission Requirements & Your Eligibility</div>
-  <div class="section-sub">Every requirement verified from official programme documents. Green = you meet it. Red = blocker.</div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>University</th>
-          <th>IELTS req.</th>
-          <th>German req.</th>
-          <th>GRE req.</th>
-          <th>Min grade</th>
-          <th>Special req.</th>
-          <th>Program focus</th>
-          <th>Integrated internship</th>
-          <th>Difficulty / Your chance</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td colspan="9" style="text-align:center;padding:2rem;opacity:.6;">⏳ Loading admission data from database…</td></tr>
-      </tbody>
-    </table>
+  <div class="section-sub">Every requirement verified from official programme documents. Green = you exceed it · Amber = exact match · Red = blocker or verify needed.</div>
+  <div class="admission-grid" id="admission-grid">
+    <div class="adm-loading">⏳ Loading admission data from database…</div>
   </div>
 </div>
 
