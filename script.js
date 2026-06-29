@@ -20,6 +20,7 @@ try {
 let pipelineData = {};
 let checksData = {};
 let notesData = {};
+let admissionData = {};
 
 // ─── University metadata ───
 const UNI_META = {
@@ -64,11 +65,17 @@ async function fetchAllCloudData() {
     if (e3) throw new Error(e3.message);
     notes?.forEach(row => notesData[row.uni_key] = row.note_text);
 
+    // Fetch Admission Requirements
+    const { data: admission, error: e4 } = await supabase.from('admission_requirements').select('*');
+    if (e4) throw new Error(e4.message);
+    admission?.forEach(row => admissionData[row.uni_key] = row);
+
     // Hydrate UI once data is loaded
     applySubmittedState();
     restoreChecks();
     restoreNotes();
     refreshPipelineUI();
+    renderAdmission();
 
     // SUCCESS! Make the dot green and blink
     if (dot) dot.className = 'status-dot connected';
@@ -614,7 +621,64 @@ function sortOverview(key) {
   if (ind) ind.textContent = dir === 'asc' ? '▲' : '▼';
 }
 
-// ═══════════════ 8. INIT ═══════════════
+// ═══════════════ 8. ADMISSION REQUIREMENTS RENDERER ═══════════════
+
+const UNI_ORDER = ['hof','chemnitz','fulda','rheinmain','koblenz','siegen','frankfurt','kiel'];
+
+const IELTS_PILL = {
+  match:  '<span class="pill amber">⚠️ Exact match</span>',
+  above:  '<span class="pill green">✅ You exceed this</span>',
+  verify: '<span class="pill red">🔍 Verify required</span>'
+};
+const GRE_PILL = {
+  required:     '<span class="pill red">⚠️ Required</span>',
+  not_required: '<span class="pill green">✅ Not required</span>'
+};
+const CHANCE_PILL = {
+  high:   '<span class="pill green">High ✅</span>',
+  medium: '<span class="pill amber">Medium ⚠️</span>',
+  low:    '<span class="pill red">Low ❌</span>'
+};
+const DIFF_PILL = {
+  low:          '<span class="pill green">Low</span>',
+  'low-medium': '<span class="pill amber">Low–Medium</span>',
+  medium:       '<span class="pill amber">Medium</span>'
+};
+
+function renderAdmission() {
+  const tbody = document.querySelector('#tab-admission tbody');
+  if (!tbody) return;
+
+  const keys = Object.keys(admissionData);
+  if (keys.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;opacity:.6;">⏳ Loading admission data from database…</td></tr>';
+    return;
+  }
+
+  // Sort by UNI_ORDER; anything not in the list goes to the end
+  const sorted = UNI_ORDER.filter(k => admissionData[k])
+    .concat(keys.filter(k => !UNI_ORDER.includes(k)));
+
+  tbody.innerHTML = sorted.map(key => {
+    const d = admissionData[key];
+    const meta = UNI_META[key] || {};
+    const name = meta.sub || key;
+
+    return `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${d.ielts_req}<br>${IELTS_PILL[d.ielts_status] || ''}</td>
+      <td>${d.german_req}</td>
+      <td>${d.gre_req}<br>${GRE_PILL[d.gre_status] || ''}</td>
+      <td>${d.min_grade}</td>
+      <td>${d.special_req}</td>
+      <td>${d.program_focus}</td>
+      <td>${d.internship}</td>
+      <td>${DIFF_PILL[d.difficulty] || d.difficulty}<br>${CHANCE_PILL[d.your_chance] || d.your_chance}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════ 9. INIT ═══════════════
 initTheme();
 renderDocChecklist();
 renderNotesGrid();
