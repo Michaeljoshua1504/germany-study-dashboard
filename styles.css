@@ -307,3 +307,59 @@ html[data-theme="dark"] .adm-row { border-bottom-color: #2a2c34; }
 html[data-theme="dark"] .adm-val { color: #ccc9c0; }
 html[data-theme="dark"] .adm-focus-text { color: #aaa8a0; }
 html[data-theme="dark"] .adm-special { background: rgba(245,216,124,0.08); border-color: rgba(245,216,124,0.25); color: #d4a84b; }
+
+/* ═══════════════ DASHBOARD TAB ═══════════════ */
+.dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.dash-stat { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 14px 16px; text-align: center; }
+.dash-stat-num { font-size: 28px; font-weight: 700; color: #14213c; line-height: 1; margin-bottom: 4px; }
+.dash-stat-label { font-size: 11px; color: #888; font-weight: 500; }
+
+.dash-alert { background: #fff3cd; border: 1px solid #f5c842; border-radius: 8px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #7a4a00; gap: 8px; align-items: center; }
+
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+
+.dash-card { background: #fff; border: 1px solid #e0ded6; border-radius: 12px; overflow: hidden; cursor: pointer; transition: box-shadow 0.15s, transform 0.1s; display: flex; flex-direction: column; }
+.dash-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.10); transform: translateY(-2px); }
+
+.dash-card-top { padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; border-bottom: 1px solid #f0ede6; }
+.dash-uni-name { font-size: 13px; font-weight: 700; color: #14213c; margin-bottom: 2px; }
+.dash-uni-prog { font-size: 10.5px; color: #888; line-height: 1.4; }
+.dash-fit-badge { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+
+.dash-card-mid { padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.dash-meta-row { display: flex; align-items: center; gap: 6px; font-size: 11.5px; flex-wrap: wrap; }
+.dash-meta-label { color: #888; font-size: 10.5px; font-weight: 600; min-width: 58px; }
+
+.dash-pill { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.dash-pill.green  { background: #e6f4ec; color: #1a6b3c; }
+.dash-pill.blue   { background: #e6f0fb; color: #1a4b8c; }
+.dash-pill.amber  { background: #fef3e0; color: #8a5500; }
+.dash-pill.red    { background: #fde8e8; color: #a01c1c; }
+.dash-pill.gray   { background: #f0eee8; color: #5f5e5a; }
+.dash-pill.urgent { background: #fde8e8; color: #a01c1c; animation: pulse-red 1.2s infinite; }
+.dash-pill.soon   { background: #fef3e0; color: #8a5500; }
+.dash-pill.ok     { background: #e6f4ec; color: #1a6b3c; }
+.dash-pill.closed { background: #f0eee8; color: #999; text-decoration: line-through; }
+@keyframes pulse-red { 0%,100%{opacity:1} 50%{opacity:0.6} }
+
+.dash-card-footer { padding: 10px 16px 12px; border-top: 1px solid #f0ede6; display: flex; gap: 8px; }
+.dash-apply-btn { background: #14213c; color: #fff; border: none; border-radius: 6px; padding: 6px 14px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.dash-apply-btn:hover { background: #1d3260; color: #fff; text-decoration: none; }
+.dash-submit-btn { background: #e6f4ec; color: #1a6b3c; border: 1.5px solid #a8d8bc; border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 600; cursor: pointer; }
+.dash-submit-btn.submitted { background: #f0eee8; color: #888; border-color: #d3d1c7; }
+.dash-submit-btn:hover { opacity: 0.8; }
+
+/* Dark mode */
+html[data-theme="dark"] .dash-stat { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .dash-stat-num { color: #e6e4dd; }
+html[data-theme="dark"] .dash-alert { background: rgba(245,200,66,0.1); border-color: rgba(245,200,66,0.3); color: #d4a84b; }
+html[data-theme="dark"] .dash-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .dash-card-top { border-bottom-color: #32343c; }
+html[data-theme="dark"] .dash-card-footer { border-top-color: #32343c; }
+html[data-theme="dark"] .dash-uni-name { color: #e6e4dd; }
+html[data-theme="dark"] .dash-card-mid { color: #ccc9c0; }
+
+@media (max-width: 600px) {
+  .dash-stats { grid-template-columns: repeat(2,1fr); }
+  .dash-grid  { grid-template-columns: 1fr; }
+}
