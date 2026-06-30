@@ -37,173 +37,45 @@
 </nav>
 
 <nav class="sub-nav" id="nav-admission">
-  <div class="tab active" onclick="showTab('overview',this)">📋 Overview Table</div>
-  <div class="tab" onclick="showTab('deadlines',this)">📅 Deadlines & Apply</div>
-  <div class="tab" id="tab-nav-submitted" onclick="showTab('submitted',this)">🚦 Pipeline <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
-  <div class="tab" id="tab-nav-accepted" onclick="showTab('accepted',this)">🎓 Accepted <span id="accepted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
-  <div class="tab" onclick="showTab('documents',this)">📄 Documents</div>
-  <div class="tab" onclick="showTab('costs',this)">💶 Costs & Financials</div>
-  <div class="tab" onclick="showTab('admission',this)">🎯 Admission & Eligibility</div>
-  <div class="tab" onclick="showTab('cities',this)">🏙️ City Guide</div>
+  <div class="tab active" onclick="showTab('dashboard',this)">🏠 Dashboard</div>
+  <div class="tab" onclick="showTab('universities',this)">📋 Universities</div>
+  <div class="tab" onclick="showTab('applications',this)">🚦 My Applications <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
   <div class="tab" onclick="showTab('visa',this)">✈️ Visa & Relocation</div>
-  <div class="tab" onclick="showTab('notes',this)">📝 Notes</div>
-  <div class="tab" onclick="showTab('recommendation',this)">⭐ My Recommendation</div>
 </nav>
 
-<div id="tab-overview" class="section active">
-  <div class="section-title">Overview — Apply List (8 Universities)</div>
-  <div class="section-sub">Filtered from 21 universities. 12 rejected with clear reasons. 1 borderline risk. These 8 are worth applying to.</div>
+<div id="tab-dashboard" class="section active">
 
-  <div class="filter-bar">
-    <span style="font-size:11px;color:#888;font-weight:500;">Filter:</span>
-    <button class="filter-btn active" onclick="filterRows('all',this)">All 8</button>
-    <button class="filter-btn" onclick="filterRows('strong',this)">⭐ Strong Fit</button>
-    <button class="filter-btn" onclick="filterRows('good',this)">✅ Good Fit</button>
-    <button class="filter-btn" onclick="filterRows('conditional',this)">⚠️ Conditional</button>
-    <div class="search-box" style="margin-left:auto;">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="overview-search" placeholder="Search university, city, program…" oninput="applyOverviewFilters()">
+  <!-- Stat strip -->
+  <div class="dash-stats">
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="stat-submitted">0</div>
+      <div class="dash-stat-label">Submitted</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="stat-deadlines">0</div>
+      <div class="dash-stat-label">Deadlines This Month</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num" id="stat-accepted">0</div>
+      <div class="dash-stat-label">Offers Received</div>
+    </div>
+    <div class="dash-stat">
+      <div class="dash-stat-num">8</div>
+      <div class="dash-stat-label">Universities Tracked</div>
     </div>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th class="sortable" onclick="sortOverview('name')">University <span class="sort-ind" id="sort-ind-name"></span></th>
-          <th>Program</th>
-          <th>City</th>
-          <th>Duration</th>
-          <th>Language</th>
-          <th>Apply Via</th>
-          <th class="sortable" onclick="sortOverview('tuition')">Tuition <span class="sort-ind" id="sort-ind-tuition"></span></th>
-          <th class="sortable" onclick="sortOverview('semfee')">Sem Fee <span class="sort-ind" id="sort-ind-semfee"></span></th>
-          <th class="sortable" onclick="sortOverview('living')">Living/mo <span class="sort-ind" id="sort-ind-living"></span></th>
-          <th class="sortable" onclick="sortOverview('fit')">DevOps Fit <span class="sort-ind" id="sort-ind-fit"></span></th>
-          <th class="sortable" onclick="sortOverview('chance')">My Chance <span class="sort-ind" id="sort-ind-chance"></span></th>
-          <th>Fit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr data-fit="strong" data-sort='{"tuition":3300,"semfee":150,"living":900,"fit":9,"chance":3}'>
-          <td>Hof UAS (MEng)</td>
-          <td>MEng Software Eng. Industrial</td>
-          <td>Hof</td>
-          <td>4 sems</td>
-          <td>English 100%</td>
-          <td>Direct portal</td>
-          <td><span class="pill amber">€3,300/sem</span></td>
-          <td>€150</td>
-          <td>€900</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:90%;background:#1D9E75"></div></div><span class="score-num">9/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill green">Strong ⭐</span></td>
-        </tr>
-        <tr data-fit="strong" data-sort='{"tuition":0,"semfee":330,"living":970,"fit":9,"chance":3}'>
-          <td>Chemnitz TU</td>
-          <td>MSc Web Engineering</td>
-          <td>Chemnitz</td>
-          <td>4 sems</td>
-          <td>English 100%</td>
-          <td>eduapplication.de</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€330</td>
-          <td>€970</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:90%;background:#1D9E75"></div></div><span class="score-num">9/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill green">Strong ⭐</span></td>
-        </tr>
-        <tr data-fit="good" data-sort='{"tuition":0,"semfee":360,"living":925,"fit":7,"chance":3}'>
-          <td>Fulda UAS</td>
-          <td>MSc Global Software Dev.</td>
-          <td>Fulda</td>
-          <td>3–4 sems</td>
-          <td>English 100%</td>
-          <td>uni-assist</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€360</td>
-          <td>€925</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:70%;background:#378ADD"></div></div><span class="score-num">7/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill blue">Good ✅</span></td>
-        </tr>
-        <tr data-fit="good" data-sort='{"tuition":0,"semfee":370,"living":950,"fit":7,"chance":3}'>
-          <td>RheinMain UAS</td>
-          <td>MEng AI & Advanced IT</td>
-          <td>Rüsselsheim</td>
-          <td>3 sems</td>
-          <td>English 100%</td>
-          <td>uni-assist</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€370</td>
-          <td>€950</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:75%;background:#378ADD"></div></div><span class="score-num">7/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill blue">Good ✅</span></td>
-        </tr>
-        <tr data-fit="good" data-sort='{"tuition":0,"semfee":290,"living":992,"fit":6,"chance":3}'>
-          <td>Koblenz Uni</td>
-          <td>MSc Web & Data Science</td>
-          <td>Koblenz</td>
-          <td>4 sems</td>
-          <td>English 100%</td>
-          <td>uni-assist</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€290</td>
-          <td>€992</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:65%;background:#378ADD"></div></div><span class="score-num">6/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill blue">Good ✅</span></td>
-        </tr>
-        <tr data-fit="good" data-sort='{"tuition":0,"semfee":320,"living":875,"fit":6,"chance":3}'>
-          <td>Siegen Uni</td>
-          <td>MSc Computer Science</td>
-          <td>Siegen</td>
-          <td>4 sems</td>
-          <td>English 100%</td>
-          <td>Direct portal</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€320</td>
-          <td>€875</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:60%;background:#378ADD"></div></div><span class="score-num">6/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill blue">Good ✅</span></td>
-        </tr>
-        <tr data-fit="good" data-sort='{"tuition":0,"semfee":360,"living":1000,"fit":7,"chance":3}'>
-          <td>Frankfurt UAS</td>
-          <td>MSc High Integrity Systems</td>
-          <td>Frankfurt</td>
-          <td>4 sems</td>
-          <td>English 100%</td>
-          <td>uni-assist</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€360</td>
-          <td>€1,000</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:70%;background:#378ADD"></div></div><span class="score-num">7/10</span></div></td>
-          <td><span class="chance high">High</span></td>
-          <td><span class="pill blue">Good ✅</span></td>
-        </tr>
-        <tr data-fit="conditional" data-sort='{"tuition":0,"semfee":378,"living":992,"fit":9,"chance":2}'>
-          <td>Kiel UAS</td>
-          <td>MSc Computer Science</td>
-          <td>Kiel</td>
-          <td>3 sems</td>
-          <td>English 100%</td>
-          <td>uni-assist</td>
-          <td><span class="pill green">Free</span></td>
-          <td>€378</td>
-          <td>€992</td>
-          <td><div class="score-bar"><div class="bar"><div class="bar-fill" style="width:90%;background:#BA7517"></div></div><span class="score-num">9/10</span></div></td>
-          <td><span class="chance medium">Medium (GRE needed)</span></td>
-          <td><span class="pill amber">Conditional ⚠️</span></td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Urgent alert strip — hidden when no urgent deadlines -->
+  <div class="dash-alert" id="dash-alert" style="display:none;"></div>
+
+  <!-- University cards grid -->
+  <div class="dash-grid" id="dash-grid"></div>
+
+  <!-- Rejected note -->
+  <div class="note-box" style="margin-top:16px;">
+    <strong>🚫 13 universities rejected:</strong> Augsburg (deadline passed + outstanding grades), Stuttgart (deadline passed + tuition), Bingen (210 ECTS required), Bamberg (grade 2.0 + GRE), Göttingen (deadline passed), SRH Heidelberg (€6,950/sem private), Potsdam/HPI (C1 English required), Rostock (IELTS 7.0 + CGPA 85%), Deggendorf (embedded systems, wrong field), Heilbronn (210 ECTS + tuition), Hildesheim (research-focused, no DevOps), Hof MSc (oral exam + 18-week internship cert required), Hof Applied Research (same).
   </div>
 
-  <div class="note-box">
-    <strong>🚫 13 universities rejected:</strong> Augsburg (deadline passed + outstanding grades), Stuttgart (deadline passed + tuition), Bingen (210 ECTS required), Bamberg (grade 2.0 + GRE), Göttingen (deadline passed), SRH Heidelberg (€6,950/sem private), Potsdam/HPI (C1 English required), Rostock (IELTS 7.0 + CGPA 85%), Deggendorf (embedded systems, wrong field), Heilbronn (210 ECTS + tuition), Hildesheim (research-focused, no DevOps), Hof MSc (oral exam + 18-week internship cert required), Hof Applied Research (same). See Rejected tab in the final analysis file for full details.
-  </div>
 </div>
 
 <div id="tab-deadlines" class="section">
@@ -830,36 +702,6 @@
   <div class="section-title">📝 My Notes — Per University</div>
   <div class="section-sub">A private journal for each university — interview prep, contacts, things to remember. Saved automatically in this browser.</div>
   <div class="notes-grid" id="notes-grid"></div>
-</div>
-
-<div id="tab-recommendation" class="section">
-  <div class="section-title">⭐ My Recommendation for You — Michael Joshua</div>
-  <div class="section-sub">Based on your complete profile: 68.65% · CGPA 7.18 · 176 JNTUA credits · IELTS 6.5 · German A1 · 3+ yrs work exp · Goal: DevOps Engineer in Germany.</div>
-
-  <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Hof UAS — MEng Software Engineering for Industrial Applications</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best career outcome of all 21 universities. Applied Cloud Computing module + 2-semester paid internship at SAP/IBM/Siemens. IELTS 6.5 exact match. 3+ yrs work exp exceeds their 1-yr requirement. Yes, €3,300/sem — but recovered during internship. Currently applying.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-  </div>
-
-  <div class="rec-box">
-    <h4>🔥 Priority 1 — Apply TODAY (<span class="rec-days" data-deadline="2026-05-31"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Fulda UAS — MSc Global Software Development</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Free tuition. IELTS 6.5 exact match. Distributed systems + intercultural deployment focus. 20-week IT internship option. Deutschlandstipendium eligible. LOM ready.</span></div>
-    <div class="detail-row"><span class="detail-label">⚠️ Action needed:</span><span class="detail-val">Book Goethe A1 exam in Bangalore this week for German requirement</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val"><strong style="color:#e05">31 May 2026</strong></span></div>
-  </div>
-
-  <div class="rec-box" style="background:#f5f5fc;border-color:#c0c8e8;">
-    <h4>📅 Priority 3 — Apply by July 15 (<span class="rec-days" data-deadline="2026-07-15"></span>)</h4>
-    <div class="detail-row"><span class="detail-label">University:</span><span class="detail-val"><strong>Chemnitz TU — MSc Web Engineering</strong></span></div>
-    <div class="detail-row"><span class="detail-label">Why:</span><span class="detail-val">Best DevOps curriculum of all 21 universities — Cloud & web apps, distributed systems, data engineering, IoT. Free tuition. Cheapest city. Lowest admission barrier. DAAD scholarship eligible. LOM still to write.</span></div>
-    <div class="detail-row"><span class="detail-label">Your chance:</span><span class="detail-val"><span class="chance high">High</span></span></div>
-    <div class="detail-row"><span class="detail-label">Deadline:</span><span class="detail-val">15 July 2026</span></div>
-  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
