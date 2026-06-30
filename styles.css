@@ -520,3 +520,19 @@ html[data-theme="dark"] .duo-entry-date { color: #e6e4dd; }
 html[data-theme="dark"] .duo-icon-btn:hover { background: #2a2c34; }
 html[data-theme="dark"] .duo-entry-text { color: #ccc9c0; }
 html[data-theme="dark"] .duo-date-input, html[data-theme="dark"] .duo-streak-input { background: #1a1c22; border-color: #3a3c44; color: #ccc; }
+
+/* ═══════════════ GERMAN TEACHING NOTES (LIVE-TAUGHT CONTENT) ═══════════════ */
+.ger-taught-badge { background: #e6f0fb; color: #1a4b8c; padding: 1px 7px; border-radius: 6px; font-size: 9.5px; font-weight: 700; }
+
+.ger-teaching-notes { font-size: 12.5px; line-height: 1.65; color: #2c2c2a; background: #f5f6fa; border: 1px solid #dde2ef; border-radius: 8px; padding: 12px 14px; }
+.ger-teaching-notes p { margin: 0 0 8px; }
+.ger-teaching-notes p:last-child { margin-bottom: 0; }
+.ger-notes-heading { font-size: 11.5px; font-weight: 700; color: #14213c; text-transform: uppercase; letter-spacing: 0.3px; margin: 12px 0 6px; }
+.ger-notes-heading:first-child { margin-top: 0; }
+.ger-notes-placeholder { color: #999; font-style: italic; }
+
+/* Dark mode */
+html[data-theme="dark"] .ger-taught-badge { background: rgba(90,123,196,0.18); color: #8fb4e8; }
+html[data-theme="dark"] .ger-teaching-notes { background: #1e2028; border-color: #32343c; color: #ccc9c0; }
+html[data-theme="dark"] .ger-notes-heading { color: #e6e4dd; }
+html[data-theme="dark"] .ger-notes-placeholder { color: #777; }
