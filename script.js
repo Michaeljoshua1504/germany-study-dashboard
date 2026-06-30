@@ -24,14 +24,22 @@ let admissionData = {};
 
 // ─── University metadata ───
 const UNI_META = {
-  hof: { title: 'Hof University — MEng Software Engineering', sub: 'MEng Software Engineering for Industrial Applications · Hof', fit: 'Strong Fit ⭐', fitClass: 'green', tuition: '€3,300/sem', deadline: '31 May 2026', applyVia: 'Direct Hof portal (Primuss)', link: 'https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en', deadlineKey: '2026-05-31', sems: 4, tuitionNum: 3300, semFeeNum: 150, livingNum: 900 },
-  fulda: { title: 'Fulda University of Applied Sciences', sub: 'MSc Global Software Development · Fulda', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '31 May 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-05-31', sems: 4, tuitionNum: 0, semFeeNum: 360, livingNum: 925 },
-  koblenz: { title: 'University of Koblenz', sub: 'MSc Web and Data Science · Koblenz', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 June 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-06-15', sems: 4, tuitionNum: 0, semFeeNum: 290, livingNum: 992 },
-  siegen: { title: 'University of Siegen', sub: 'MSc Computer Science · Siegen', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: 'No fixed deadline', applyVia: 'Direct Siegen portal', link: 'http://www.master-cs.eti.uni-siegen.de/', deadlineKey: null, sems: 4, tuitionNum: 0, semFeeNum: 320, livingNum: 875 },
-  chemnitz: { title: 'Chemnitz University of Technology', sub: 'MSc Web Engineering · Chemnitz', fit: 'Strong Fit ⭐', fitClass: 'green', tuition: 'Free', deadline: '15 July 2026', applyVia: 'eduapplication.de', link: 'https://www.eduapplication.de/', deadlineKey: '2026-07-15', sems: 4, tuitionNum: 0, semFeeNum: 330, livingNum: 970 },
-  rheinmain: { title: 'RheinMain University of Applied Sciences', sub: 'MEng AI & Advanced IT · Rüsselsheim', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 July 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-07-15', sems: 3, tuitionNum: 0, semFeeNum: 370, livingNum: 950 },
-  frankfurt: { title: 'Frankfurt University of Applied Sciences', sub: 'MSc High Integrity Systems · Frankfurt', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 October 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-10-15', sems: 4, tuitionNum: 0, semFeeNum: 360, livingNum: 1000 },
-  kiel: { title: 'Kiel University of Applied Sciences', sub: 'MSc Computer Science · Kiel', fit: 'Conditional ⚠️', fitClass: 'amber', tuition: 'Free', deadline: '15 September 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-09-15', sems: 3, tuitionNum: 0, semFeeNum: 378, livingNum: 992 }
+  hof: { title: 'Hof University — MEng Software Engineering', sub: 'MEng Software Engineering for Industrial Applications · Hof', fit: 'Strong Fit ⭐', fitClass: 'green', tuition: '€3,300/sem', deadline: '31 May 2026', applyVia: 'Direct Hof portal (Primuss)', link: 'https://www3.primuss.de/cgi-bin/bew_anmeldung_v2/index.pl?FH=fhh&Portal=1&Language=en', deadlineKey: '2026-05-31', sems: 4, tuitionNum: 3300, semFeeNum: 150, livingNum: 900,
+    programPage: 'https://www.hof-university.com', cityName: 'Hof', cityEmoji: '🏭', housingCost: '€350–550', insurance: '~€120', scholarship: null, scholarshipLink: null, eligNote: 'Paid internship (yr 3–4) ~€800–1,200/mo offsets tuition', costLevel: 'Low (€900/mo)', costLevelClass: 'green', housingDifficulty: 'Easy', housingDifficultyClass: 'green', jobMarket: '★★★★☆ Good (via internship)', transport: 'Regional train; Nuremberg 1.5 hr', rent: '€350–550/mo', companies: 'SAP, IBM, Siemens, Continental, JPM' },
+  fulda: { title: 'Fulda University of Applied Sciences', sub: 'MSc Global Software Development · Fulda', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '31 May 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-05-31', sems: 4, tuitionNum: 0, semFeeNum: 360, livingNum: 925,
+    programPage: 'https://www.hs-fulda.de/en/studyprogramme/global-software-development-msc', cityName: 'Fulda', cityEmoji: '🏫', housingCost: '€400–500', insurance: '~€120', scholarship: 'Deutschlandstipendium', scholarshipLink: 'https://www.hs-fulda.de/en/studieren/my-studies/finance-studies/scholarships/deutschlandstipendium', eligNote: 'Eligible after enrolment — competitive', costLevel: 'Low-Medium (€925/mo)', costLevelClass: 'green', housingDifficulty: 'Easy', housingDifficultyClass: 'green', jobMarket: '★★★☆☆ Moderate', transport: 'Train to Frankfurt ~1 hr', rent: '€400–500/mo', companies: 'Krones, regional IT firms' },
+  koblenz: { title: 'University of Koblenz', sub: 'MSc Web and Data Science · Koblenz', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 June 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-06-15', sems: 4, tuitionNum: 0, semFeeNum: 290, livingNum: 992,
+    programPage: 'https://www.uni-koblenz.de/en/degree-programs/web-and-data-science-master-of-science', cityName: 'Koblenz', cityEmoji: '🌉', housingCost: '€350–500', insurance: '~€120', scholarship: null, scholarshipLink: null, eligNote: 'DAAD FIT4SukCESS funded career support programme', costLevel: 'Medium (€992/mo)', costLevelClass: 'blue', housingDifficulty: 'Moderate', housingDifficultyClass: 'blue', jobMarket: '★★★★☆ Good (near Frankfurt/Cologne)', transport: 'Train; Frankfurt 1 hr; Cologne 1 hr', rent: '€350–500/mo', companies: 'Historic Rhine valley, UNESCO heritage' },
+  siegen: { title: 'University of Siegen', sub: 'MSc Computer Science · Siegen', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: 'No fixed deadline', applyVia: 'Direct Siegen portal', link: 'http://www.master-cs.eti.uni-siegen.de/', deadlineKey: null, sems: 4, tuitionNum: 0, semFeeNum: 320, livingNum: 875,
+    programPage: 'http://www.master-cs.eti.uni-siegen.de/', cityName: 'Siegen', cityEmoji: '⚒️', housingCost: '€270–450', insurance: '~€120', scholarship: 'Deutschlandstipendium', scholarshipLink: 'https://www.sff.uni-siegen.de/index.html.en?lang=en', eligNote: 'Eligible — apply after admission', costLevel: 'Low-Medium (€875/mo)', costLevelClass: 'green', housingDifficulty: 'Easy', housingDifficultyClass: 'green', jobMarket: '★★★☆☆ Moderate (Cologne 1 hr)', transport: 'Train; Cologne 1.5 hr', rent: '€270–450/mo', companies: 'FIT in Siegen DAAD-funded programme' },
+  chemnitz: { title: 'Chemnitz University of Technology', sub: 'MSc Web Engineering · Chemnitz', fit: 'Strong Fit ⭐', fitClass: 'green', tuition: 'Free', deadline: '15 July 2026', applyVia: 'eduapplication.de', link: 'https://www.eduapplication.de/', deadlineKey: '2026-07-15', sems: 4, tuitionNum: 0, semFeeNum: 330, livingNum: 970,
+    programPage: 'https://www.tu-chemnitz.de', cityName: 'Chemnitz', cityEmoji: '⚙️', housingCost: '€270–350', insurance: '~€120', scholarship: 'Yes — DAAD + internal', scholarshipLink: 'https://www.tu-chemnitz.de/international/incoming/stipendien/index.php.en', eligNote: 'Eligible — apply after admission', costLevel: 'Low (€970/mo incl. transport)', costLevelClass: 'green', housingDifficulty: 'Easy — very affordable', housingDifficultyClass: 'green', jobMarket: '★★★☆☆ Moderate', transport: 'Tram + train; Dresden 1 hr', rent: '€270–350/mo', companies: 'VW, BMW plants nearby, mid-size tech' },
+  rheinmain: { title: 'RheinMain University of Applied Sciences', sub: 'MEng AI & Advanced IT · Rüsselsheim', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 July 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-07-15', sems: 3, tuitionNum: 0, semFeeNum: 370, livingNum: 950,
+    programPage: 'https://www.hs-rm.de/en/international/from-abroad/international-students/studium/english-masters-programs', cityName: 'Rüsselsheim (near Frankfurt)', cityEmoji: '🏘️', housingCost: '€400–600', insurance: '~€120', scholarship: null, scholarshipLink: null, eligNote: '—', costLevel: 'Medium (€950/mo)', costLevelClass: 'blue', housingDifficulty: 'Moderate', housingDifficultyClass: 'blue', jobMarket: '★★★★★ Excellent (via Frankfurt)', transport: 'S-Bahn to Frankfurt 20 min', rent: '€450–650/mo', companies: 'Opel, T-Systems, Fraport, all Frankfurt tech' },
+  frankfurt: { title: 'Frankfurt University of Applied Sciences', sub: 'MSc High Integrity Systems · Frankfurt', fit: 'Good Fit ✅', fitClass: 'blue', tuition: 'Free', deadline: '15 October 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-10-15', sems: 4, tuitionNum: 0, semFeeNum: 360, livingNum: 1000,
+    programPage: 'https://www.frankfurt-university.de/en/', cityName: 'Frankfurt am Main', cityEmoji: '🏙️', housingCost: '€500–800', insurance: '~€120', scholarship: null, scholarshipLink: null, eligNote: '—', costLevel: 'High (€1,000+/mo)', costLevelClass: 'amber', housingDifficulty: 'Hard — very high demand', housingDifficultyClass: 'red', jobMarket: '★★★★★ Best in Germany', transport: 'Excellent U-Bahn + S-Bahn', rent: '€600–900/mo', companies: 'SAP, AWS, Google, Deutsche Bank, T-Systems' },
+  kiel: { title: 'Kiel University of Applied Sciences', sub: 'MSc Computer Science · Kiel', fit: 'Conditional ⚠️', fitClass: 'amber', tuition: 'Free', deadline: '15 September 2026', applyVia: 'uni-assist', link: 'https://www.uni-assist.de/en', deadlineKey: '2026-09-15', sems: 3, tuitionNum: 0, semFeeNum: 378, livingNum: 992,
+    programPage: 'https://www.haw-kiel.de/en/degree-courses/courses/computer-science', cityName: 'Kiel', cityEmoji: '🌊', housingCost: '€400–600', insurance: '~€120', scholarship: null, scholarshipLink: null, eligNote: '—', costLevel: 'Medium (€992/mo)', costLevelClass: 'blue', housingDifficulty: 'Moderate', housingDifficultyClass: 'blue', jobMarket: '★★★☆☆ Moderate (Hamburg 1.5 hr)', transport: 'Good local; Hamburg 1.5 hr', rent: '€400–600/mo', companies: 'Beautiful coastal city, Baltic Sea' }
 };
 
 const SHARED_DOCS = [ 'Valid passport (18+ months validity remaining)', 'Passport-size biometric photographs', 'APS Certificate (Akademische Prüfstelle) — ✓ already obtained', 'IELTS certificate (6.5) — confirm it won\'t expire before intake', '10th & 12th marksheets', "Bachelor's degree certificate + provisional certificate", 'Semester-wise transcripts / consolidated marksheet (CGPA 7.18)', 'Updated CV / résumé', 'Statement of Purpose / Letter of Motivation (tailored per university)', '2 Letters of Recommendation (academic or professional)', 'Work experience certificates / relieving letters (3+ yrs)', 'uni-assist VPD / university application form', 'Application fee payment receipt (where applicable)' ];
@@ -77,6 +85,7 @@ async function fetchAllCloudData() {
       if (e4) throw new Error(e4.message);
       admission?.forEach(row => admissionData[row.uni_key] = row);
       renderAdmission();
+      renderUniDetail();
     } catch (admErr) {
       console.warn('admission_requirements table not ready yet:', admErr.message);
     }
@@ -155,7 +164,7 @@ function setOfferField(key, field, value) {
 }
 
 // ─── UI renderers for Pipeline ───
-function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); }
+function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); }
 
 function applySubmittedState() {
   Object.keys(UNI_META).forEach(key => {
@@ -554,30 +563,8 @@ function updateAll() {
   const today = new Date();
   document.getElementById('today-display').textContent = 'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
   renderDashboard();
-  
-  const urgent = Object.entries(deadlines)
-    .filter(([k]) => !pipelineData[k] || pipelineData[k].stage === 'not_started')
-    .map(([k, d]) => ({ key: k, days: daysLeft(d) }))
-    .filter(x => x.days >= 0 && x.days <= 14)
-    .sort((a, b) => a.days - b.days);
-    
-  const urgencyEl = document.getElementById('urgency-note');
-  if (urgencyEl) {
-    if (urgent.length === 0) {
-      urgencyEl.innerHTML = '<strong>ℹ️ No deadlines within the next 14 days.</strong> Check the cards above for upcoming dates.';
-    } else {
-      const names = { hof:'Hof', fulda:'Fulda', koblenz:'Koblenz', chemnitz:'Chemnitz', rheinmain:'RheinMain', frankfurt:'Frankfurt', kiel:'Kiel' };
-      const list = urgent.map(x => `<strong>${names[x.key]}</strong> (${x.days === 0 ? 'today' : x.days + ' days'})`).join(', ');
-      urgencyEl.innerHTML = `<strong>🔥 Most urgent right now:</strong> ${list}. Submit these applications immediately.`;
-    }
-  }
-
-  document.querySelectorAll('.rec-days[data-deadline]').forEach(el => {
-    const d = daysLeft(el.dataset.deadline);
-    if (d < 0) { el.textContent = 'deadline passed'; el.style.color = '#999'; }
-    else if (d === 0) { el.textContent = 'TODAY'; el.style.color = '#c0392b'; el.style.fontWeight = '700'; }
-    else { el.textContent = d + ' day' + (d===1?'':'s') + ' left'; el.style.color = d<=14?'#c0392b':d<=30?'#8a5500':'#1a4b8c'; el.style.fontWeight = d<=14?'700':'600'; }
-  });
+  renderUniSidebar();
+  renderUniDetail();
 }
 
 let currentFitFilter = 'all';
@@ -719,9 +706,122 @@ function renderDashboard() {
   }
 }
 
+// ═══════════════ 8b. UNIVERSITIES TAB RENDERER ═══════════════
+
+let selectedUni = 'hof';
+
+function renderUniSidebar() {
+  const sidebar = document.getElementById('uni-sidebar');
+  if (!sidebar) return;
+
+  sidebar.innerHTML = UNI_ORDER.map(key => {
+    const m = UNI_META[key];
+    const active = key === selectedUni ? 'active' : '';
+    const stage = getStage(key);
+    const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
+    const urgentDot = (dl !== null && dl >= 0 && dl <= 14 && stage === 'not_started') ? '<span class="uni-side-dot"></span>' : '';
+    return `
+    <div class="uni-side-item ${active}" onclick="selectUni('${key}')">
+      <div class="uni-side-name">${m.cityEmoji} ${m.cityName.split(' ')[0]} ${urgentDot}</div>
+      <div class="uni-side-sub">${m.sub.split('·')[0].trim()}</div>
+    </div>`;
+  }).join('');
+}
+
+function selectUni(key) {
+  selectedUni = key;
+  renderUniSidebar();
+  renderUniDetail();
+}
+
+function renderUniDetail() {
+  const panel = document.getElementById('uni-detail');
+  if (!panel) return;
+
+  const m = UNI_META[selectedUni];
+  const d = admissionData[selectedUni];
+  const stage = getStage(selectedUni);
+  const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
+
+  let dlBadge = '<span class="dash-pill gray">No fixed deadline</span>';
+  if (dl !== null) {
+    if (dl < 0) dlBadge = '<span class="dash-pill closed">Deadline passed</span>';
+    else if (dl <= 14) dlBadge = `<span class="dash-pill urgent">🔥 ${dl}d left</span>`;
+    else if (dl <= 30) dlBadge = `<span class="dash-pill soon">${dl} days left</span>`;
+    else dlBadge = `<span class="dash-pill ok">${dl} days left</span>`;
+  }
+
+  const stageColors = { not_started:'gray', submitted:'blue', interview:'amber', decision:'amber', accepted:'green', rejected:'red', visa:'green', enrolled:'green' };
+  const stagePill = `<span class="dash-pill ${stageColors[stage] || 'gray'}">${STAGE_LABELS[stage] || 'Not Started'}</span>`;
+
+  let elig = '<div class="adm-loading" style="padding:1.5rem;">⏳ Loading eligibility data…</div>';
+  if (d) {
+    elig = `
+      <div class="adm-row"><div class="adm-label">🎤 IELTS</div><div class="adm-val">${d.ielts_req} ${IELTS_PILL[d.ielts_status]||''}</div></div>
+      <div class="adm-row"><div class="adm-label">🇩🇪 German</div><div class="adm-val">${d.german_req}</div></div>
+      <div class="adm-row"><div class="adm-label">📝 GRE</div><div class="adm-val">${d.gre_req} ${GRE_PILL[d.gre_status]||''}</div></div>
+      <div class="adm-row"><div class="adm-label">🎓 Min Grade</div><div class="adm-val">${d.min_grade}</div></div>
+      <div class="adm-row"><div class="adm-label">💼 Internship</div><div class="adm-val">${d.internship}</div></div>
+      <div class="adm-row adm-row-focus"><div class="adm-label">📚 Focus</div><div class="adm-val adm-focus-text">${d.program_focus}</div></div>
+      ${d.special_req ? `<div class="adm-special"><span class="adm-special-label">📌 Note</span>${d.special_req}</div>` : ''}
+    `;
+  }
+
+  panel.innerHTML = `
+    <div class="uni-detail-header">
+      <div>
+        <div class="uni-detail-title">${m.title}</div>
+        <div class="uni-detail-sub">${m.sub}</div>
+      </div>
+      <div class="dash-fit-badge" style="background:${m.fitClass==='green'?'#e6f4ec':m.fitClass==='amber'?'#fef3e0':'#e6f0fb'};color:${m.fitClass==='green'?'#1a6b3c':m.fitClass==='amber'?'#8a5500':'#1a4b8c'};">${m.fit}</div>
+    </div>
+
+    <div class="uni-detail-pills">
+      ${dlBadge} ${stagePill}
+      ${m.tuitionNum > 0 ? `<span class="dash-pill amber">€${m.tuitionNum.toLocaleString()}/sem tuition</span>` : '<span class="dash-pill green">Free tuition</span>'}
+    </div>
+
+    <div class="uni-detail-actions">
+      <a href="${m.link}" target="_blank" class="dash-apply-btn">Apply via ${m.applyVia} →</a>
+      <a href="${m.programPage}" target="_blank" class="uni-secondary-btn">Programme Page ↗</a>
+      ${stage === 'not_started' ? `<button class="dash-submit-btn" onclick="markSubmitted('${selectedUni}')">✅ Mark Submitted</button>` : `<button class="dash-submit-btn submitted" onclick="undoSubmitted('${selectedUni}')">↩ Undo Submit</button>`}
+    </div>
+
+    <div class="uni-detail-grid">
+      <div class="uni-detail-card">
+        <div class="uni-detail-card-title">🎯 Eligibility</div>
+        ${elig}
+      </div>
+
+      <div class="uni-detail-card">
+        <div class="uni-detail-card-title">💶 Costs</div>
+        <div class="adm-row"><div class="adm-label">Tuition</div><div class="adm-val">${m.tuition}</div></div>
+        <div class="adm-row"><div class="adm-label">Sem. Fee</div><div class="adm-val">€${m.semFeeNum}/sem</div></div>
+        <div class="adm-row"><div class="adm-label">Living</div><div class="adm-val">€${m.livingNum}/mo</div></div>
+        <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val">${m.housingCost}/mo</div></div>
+        <div class="adm-row"><div class="adm-label">Insurance</div><div class="adm-val">${m.insurance}/mo</div></div>
+        <div class="adm-row"><div class="adm-label">Scholarship</div><div class="adm-val">${m.scholarship ? (m.scholarshipLink ? `<a href="${m.scholarshipLink}" target="_blank">${m.scholarship} ↗</a>` : m.scholarship) : 'None listed'}</div></div>
+        ${m.eligNote && m.eligNote !== '—' ? `<div class="adm-special"><span class="adm-special-label">📌 Note</span>${m.eligNote}</div>` : ''}
+      </div>
+
+      <div class="uni-detail-card">
+        <div class="uni-detail-card-title">${m.cityEmoji} ${m.cityName}</div>
+        <div class="adm-row"><div class="adm-label">Cost Level</div><div class="adm-val"><span class="pill ${m.costLevelClass}">${m.costLevel}</span></div></div>
+        <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val"><span class="pill ${m.housingDifficultyClass}">${m.housingDifficulty}</span></div></div>
+        <div class="adm-row"><div class="adm-label">Job Market</div><div class="adm-val">${m.jobMarket}</div></div>
+        <div class="adm-row"><div class="adm-label">Transport</div><div class="adm-val">${m.transport}</div></div>
+        <div class="adm-row"><div class="adm-label">Rent</div><div class="adm-val">${m.rent}</div></div>
+        <div class="adm-row adm-row-focus"><div class="adm-label">Companies</div><div class="adm-val adm-focus-text">${m.companies}</div></div>
+      </div>
+    </div>
+  `;
+}
+
 function openUniDetail(key) {
-  // Will wire up to Universities tab in next session
+  selectedUni = key;
   showTab('universities', document.querySelector('.tab[onclick*="universities"]'));
+  renderUniSidebar();
+  renderUniDetail();
 }
 
 
