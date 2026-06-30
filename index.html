@@ -33,6 +33,7 @@
 
 <nav class="main-nav">
   <div class="main-tab active" onclick="showMainTab('admission', this)">🎯 Admission Phase</div>
+  <div class="main-tab" onclick="showMainTab('german', this)">🇩🇪 German Language</div>
   <div class="main-tab locked" onclick="alert('This will unlock when you land in Germany!')">🇩🇪 Life Tracker 🔒</div>
 </nav>
 
@@ -41,6 +42,11 @@
   <div class="tab" onclick="showTab('universities',this)">📋 Universities</div>
   <div class="tab" onclick="showTab('applications',this)">🚦 My Applications <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
   <div class="tab" onclick="showTab('visa',this)">✈️ Visa & Relocation</div>
+</nav>
+
+<nav class="sub-nav" id="nav-german" style="display:none;">
+  <div class="tab active" onclick="showTab('learn',this)">📚 Learn</div>
+  <div class="tab" onclick="showTab('german-notes',this)">📝 My Notes & Progress</div>
 </nav>
 
 <div id="tab-dashboard" class="section active">
@@ -246,6 +252,39 @@
   <div class="section-title">📝 My Notes — Per University</div>
   <div class="section-sub">A private journal for each university — interview prep, contacts, things to remember. Saved automatically in this browser.</div>
   <div class="notes-grid" id="notes-grid"></div>
+</div>
+
+<div id="tab-learn" class="section">
+  <div class="section-title">🇩🇪 German A1 — 31-Day Curriculum</div>
+  <div class="section-sub">Goal: Reach A1 (Goethe-Zertifikat Start Deutsch 1 level) by 31 July 2026. One lesson a day, ~30–45 minutes. Click any day to expand it.</div>
+
+  <div class="dash-stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px;">
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-day">—</div><div class="dash-stat-label">Today's Day</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-completed">0</div><div class="dash-stat-label">Days Completed</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-words">0</div><div class="dash-stat-label">Words Learned</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-pct">0%</div><div class="dash-stat-label">A1 Progress</div></div>
+  </div>
+
+  <div class="progress-row" style="margin-bottom:18px;">
+    <div class="progress-track"><div class="progress-fill" id="ger-progress-fill" style="width:0%;"></div></div>
+    <div class="progress-pct" id="ger-progress-pct">0%</div>
+  </div>
+
+  <div id="german-weeks"></div>
+</div>
+
+<div id="tab-german-notes" class="section">
+  <div class="section-title">📝 My Notes & Progress</div>
+  <div class="section-sub">Your own notes for each day — what was hard, your own example sentences, doubts to revisit. Saved automatically.</div>
+
+  <div class="dash-stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px;">
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-day-2">—</div><div class="dash-stat-label">Today's Day</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-completed-2">0</div><div class="dash-stat-label">Days Completed</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-words-2">0</div><div class="dash-stat-label">Words Learned</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="ger-stat-pct-2">0%</div><div class="dash-stat-label">A1 Progress</div></div>
+  </div>
+
+  <div id="german-notes-grid"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
