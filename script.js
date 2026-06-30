@@ -155,7 +155,7 @@ function setOfferField(key, field, value) {
 }
 
 // ─── UI renderers for Pipeline ───
-function refreshPipelineUI() { renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); }
+function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); }
 
 function applySubmittedState() {
   Object.keys(UNI_META).forEach(key => {
@@ -553,6 +553,7 @@ function updateAll() {
   for (const [key, date] of Object.entries(deadlines)) applyCountdown(key, date);
   const today = new Date();
   document.getElementById('today-display').textContent = 'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  renderDashboard();
   
   const urgent = Object.entries(deadlines)
     .filter(([k]) => !pipelineData[k] || pipelineData[k].stage === 'not_started')
@@ -625,7 +626,105 @@ function sortOverview(key) {
   if (ind) ind.textContent = dir === 'asc' ? '▲' : '▼';
 }
 
-// ═══════════════ 8. ADMISSION REQUIREMENTS RENDERER ═══════════════
+// ═══════════════ 8. DASHBOARD RENDERER ═══════════════
+
+function renderDashboard() {
+  const grid = document.getElementById('dash-grid');
+  if (!grid) return;
+
+  const FIT_ACCENT = { hof:'#1D9E75', chemnitz:'#1D9E75', fulda:'#378ADD', rheinmain:'#378ADD', koblenz:'#378ADD', siegen:'#378ADD', frankfurt:'#378ADD', kiel:'#BA7517' };
+  const FIT_BG    = { hof:'#e6f4ec', chemnitz:'#e6f4ec', fulda:'#e6f0fb', rheinmain:'#e6f0fb', koblenz:'#e6f0fb', siegen:'#e6f0fb', frankfurt:'#e6f0fb', kiel:'#fef3e0' };
+
+  grid.innerHTML = UNI_ORDER.map(key => {
+    const m = UNI_META[key];
+    const stage = getStage(key);
+    const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
+    const accent = FIT_ACCENT[key];
+    const fitBg  = FIT_BG[key];
+
+    // Deadline pill
+    let dlPill = '<span class="dash-pill gray">No fixed deadline</span>';
+    if (dl !== null) {
+      if (dl < 0) dlPill = '<span class="dash-pill closed">Deadline passed</span>';
+      else if (dl === 0) dlPill = '<span class="dash-pill urgent">TODAY!</span>';
+      else if (dl <= 14) dlPill = `<span class="dash-pill urgent">🔥 ${dl}d left</span>`;
+      else if (dl <= 30) dlPill = `<span class="dash-pill soon">${dl} days left</span>`;
+      else dlPill = `<span class="dash-pill ok">${dl} days left</span>`;
+    }
+
+    // Stage pill
+    const stageColors = { not_started:'gray', submitted:'blue', interview:'amber', decision:'amber', accepted:'green', rejected:'red', visa:'green', enrolled:'green' };
+    const stagePill = `<span class="dash-pill ${stageColors[stage] || 'gray'}">${STAGE_LABELS[stage] || 'Not Started'}</span>`;
+
+    // Tuition
+    const tuitionStr = m.tuitionNum > 0 ? `<span class="dash-pill amber">€${m.tuitionNum.toLocaleString()}/sem</span>` : '<span class="dash-pill green">Free</span>';
+
+    return `
+    <div class="dash-card" style="border-top:3px solid ${accent};" onclick="openUniDetail('${key}')">
+      <div class="dash-card-top">
+        <div>
+          <div class="dash-uni-name">${m.title}</div>
+          <div class="dash-uni-prog">${m.sub}</div>
+        </div>
+        <div class="dash-fit-badge" style="background:${fitBg};color:${accent};">${m.fit.replace(' ⭐','').replace(' ✅','').replace(' ⚠️','')}</div>
+      </div>
+      <div class="dash-card-mid">
+        <div class="dash-meta-row">
+          <span class="dash-meta-label">Deadline</span>
+          <span>${m.deadlineKey ? new Date(m.deadlineKey+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'Rolling'}</span>
+          ${dlPill}
+        </div>
+        <div class="dash-meta-row">
+          <span class="dash-meta-label">Status</span>
+          ${stagePill}
+        </div>
+        <div class="dash-meta-row">
+          <span class="dash-meta-label">Tuition</span>
+          ${tuitionStr}
+          <span class="dash-pill gray">€${m.livingNum}/mo living</span>
+        </div>
+      </div>
+      <div class="dash-card-footer">
+        <a href="${m.link}" target="_blank" class="dash-apply-btn" onclick="event.stopPropagation()">Apply →</a>
+        ${stage === 'not_started' ? `<button class="dash-submit-btn" onclick="event.stopPropagation();markSubmitted('${key}')">✅ Mark Submitted</button>` : `<button class="dash-submit-btn submitted" onclick="event.stopPropagation();undoSubmitted('${key}')">↩ Undo Submit</button>`}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Stat cards
+  const subCount = Object.keys(UNI_META).filter(k => getStage(k) !== 'not_started').length;
+  const accCount = Object.keys(UNI_META).filter(k => ['accepted','visa','enrolled'].includes(getStage(k))).length;
+  const now = new Date();
+  const monthEnd = new Date(now.getFullYear(), now.getMonth()+1, 0);
+  const dlThisMonth = Object.values(deadlines).filter(d => { const dd = new Date(d+'T00:00:00'); return dd >= now && dd <= monthEnd; }).length;
+  const s = document.getElementById('stat-submitted'); if (s) s.textContent = subCount;
+  const a = document.getElementById('stat-accepted');  if (a) a.textContent = accCount;
+  const dl2 = document.getElementById('stat-deadlines'); if (dl2) dl2.textContent = dlThisMonth;
+
+  // Alert strip
+  const alertEl = document.getElementById('dash-alert');
+  if (alertEl) {
+    const urgent = Object.entries(deadlines)
+      .filter(([k]) => getStage(k) === 'not_started')
+      .map(([k,d]) => ({key:k, days:daysLeft(d)}))
+      .filter(x => x.days >= 0 && x.days <= 14)
+      .sort((a,b) => a.days - b.days);
+    if (urgent.length > 0) {
+      const names = { hof:'Hof UAS', fulda:'Fulda UAS', koblenz:'Koblenz', chemnitz:'Chemnitz TU', rheinmain:'RheinMain UAS', frankfurt:'Frankfurt UAS', kiel:'Kiel UAS', siegen:'Siegen' };
+      alertEl.style.display = 'flex';
+      alertEl.innerHTML = `<span>🔥 <strong>Urgent:</strong> ${urgent.map(x=>`${names[x.key]} (${x.days===0?'today':x.days+'d'})`).join(' · ')}</span>`;
+    } else {
+      alertEl.style.display = 'none';
+    }
+  }
+}
+
+function openUniDetail(key) {
+  // Will wire up to Universities tab in next session
+  showTab('universities', document.querySelector('.tab[onclick*="universities"]'));
+}
+
+
 
 const UNI_ORDER = ['hof','chemnitz','fulda','rheinmain','koblenz','siegen','frankfurt','kiel'];
 
