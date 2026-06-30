@@ -164,7 +164,7 @@ function setOfferField(key, field, value) {
 }
 
 // ─── UI renderers for Pipeline ───
-function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); }
+function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); updateAllDocToggleLabels(); }
 
 function applySubmittedState() {
   Object.keys(UNI_META).forEach(key => {
@@ -187,54 +187,61 @@ function applySubmittedState() {
 
 function renderPipeline() {
   const grid = document.getElementById('submitted-cards-grid');
-  const empty = document.getElementById('submitted-empty');
+  const section = document.getElementById('inprogress-section');
   if (!grid) return;
-  const started = Object.keys(UNI_META).filter(k => getStage(k) !== 'not_started');
-  
+  // In-progress = submitted, interview, decision, rejected (accepted/visa/enrolled live in renderAccepted)
+  const started = Object.keys(UNI_META).filter(k => {
+    const s = getStage(k);
+    return s !== 'not_started' && !['accepted','visa','enrolled'].includes(s);
+  });
+
   if (started.length === 0) {
-    empty.style.display = 'block'; grid.innerHTML = ''; return;
+    if (section) section.style.display = 'none';
+    grid.innerHTML = '';
+  } else {
+    if (section) section.style.display = 'block';
+    grid.innerHTML = started.map(key => buildPipelineCard(key)).join('');
   }
-  empty.style.display = 'none';
-  
-  grid.innerHTML = started.map(key => {
-    const m = UNI_META[key];
-    const stage = getStage(key);
-    const curForStepper = stage === 'rejected' ? 'decision' : stage;
-    const curIdx = STAGE_ORDER.indexOf(curForStepper);
-    
-    const stepperHtml = STAGE_ORDER.map((s, i) => {
-      let cls = 'stage-step';
-      if (stage === 'rejected' && s === 'decision') cls += ' rejected-step';
-      else if (i < curIdx) cls += ' done';
-      else if (i === curIdx) cls += ' current';
-      return `<span class="${cls}">${STAGE_LABELS[s]}</span>`;
-    }).join('');
-    
-    let actions = '';
-    if (stage === 'submitted') actions = `<button class="pipeline-btn primary" onclick="moveToInterview('${key}')">📞 Interview Scheduled</button><button class="pipeline-btn ghost" onclick="moveToDecision('${key}')">📨 Skip to Decision</button>`;
-    else if (stage === 'interview') actions = `<button class="pipeline-btn primary" onclick="moveToDecision('${key}')">📨 Decision Received</button>`;
-    else if (stage === 'decision') actions = `<button class="pipeline-btn accept" onclick="setDecision('${key}','accepted')">✅ Accepted</button><button class="pipeline-btn reject" onclick="setDecision('${key}','rejected')">❌ Rejected</button>`;
-    else if (stage === 'accepted') actions = `<button class="pipeline-btn primary" onclick="startVisaProcess('${key}')">🛫 Start Visa Process</button>`;
-    else if (stage === 'visa') actions = `<button class="pipeline-btn primary" onclick="markEnrolled('${key}')">🎉 Mark Enrolled</button>`;
-    else if (stage === 'enrolled') actions = `<span style="font-size:11px;color:#1a6b3c;font-weight:700;">🎓 Enrolled — congratulations!</span>`;
-    else if (stage === 'rejected') actions = `<span style="font-size:11px;color:#a01c1c;font-weight:700;">This one said no — onward to the next.</span>`;
-    
-    return `
-    <div class="card" id="pipeline-card-${key}">
-      <div class="card-header">
-        <div class="card-title">${m.title}</div>
-        <div class="card-sub">${m.sub}</div>
-        <div class="badges"><span class="badge ${m.fitClass}">${m.fit}</span></div>
-      </div>
-      <div class="card-body">
-        <div class="stage-stepper">${stepperHtml}</div>
-        <div class="pipeline-actions">${actions}</div>
-        <div style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:8px;">
-          <button class="undo-btn" style="display:inline-flex;margin:0;" onclick="undoStage('${key}')">↩ Undo last step</button>
-        </div>
-      </div>
-    </div>`;
+  updateAppsEmptyState();
+}
+
+function buildPipelineCard(key) {
+  const m = UNI_META[key];
+  const stage = getStage(key);
+  const curForStepper = stage === 'rejected' ? 'decision' : stage;
+  const curIdx = STAGE_ORDER.indexOf(curForStepper);
+
+  const stepperHtml = STAGE_ORDER.map((s, i) => {
+    let cls = 'stage-step';
+    if (stage === 'rejected' && s === 'decision') cls += ' rejected-step';
+    else if (i < curIdx) cls += ' done';
+    else if (i === curIdx) cls += ' current';
+    return `<span class="${cls}">${STAGE_LABELS[s]}</span>`;
   }).join('');
+
+  let actions = '';
+  if (stage === 'submitted') actions = `<button class="pipeline-btn primary" onclick="moveToInterview('${key}')">📞 Interview Scheduled</button><button class="pipeline-btn ghost" onclick="moveToDecision('${key}')">📨 Skip to Decision</button>`;
+  else if (stage === 'interview') actions = `<button class="pipeline-btn primary" onclick="moveToDecision('${key}')">📨 Decision Received</button>`;
+  else if (stage === 'decision') actions = `<button class="pipeline-btn accept" onclick="setDecision('${key}','accepted')">✅ Accepted</button><button class="pipeline-btn reject" onclick="setDecision('${key}','rejected')">❌ Rejected</button>`;
+  else if (stage === 'rejected') actions = `<span style="font-size:11px;color:#a01c1c;font-weight:700;">This one said no — onward to the next.</span>`;
+
+  return `
+  <div class="card" id="pipeline-card-${key}">
+    <div class="card-header">
+      <div class="card-title">${m.title}</div>
+      <div class="card-sub">${m.sub}</div>
+      <div class="badges"><span class="badge ${m.fitClass}">${m.fit}</span></div>
+    </div>
+    <div class="card-body">
+      <div class="stage-stepper">${stepperHtml}</div>
+      <div class="pipeline-actions">${actions}</div>
+      <div style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+        <button class="docs-toggle-btn" onclick="toggleDocsPanel('${key}')">📄 Documents <span id="docs-pct-${key}"></span></button>
+        <button class="undo-btn" style="display:inline-flex;margin:0;" onclick="undoStage('${key}')">↩ Undo last step</button>
+      </div>
+      <div class="docs-inline-panel" id="docs-panel-${key}" style="display:none;"></div>
+    </div>
+  </div>`;
 }
 
 function updateSubmittedBadge() {
@@ -255,51 +262,120 @@ function updateAcceptedBadge() {
 
 function renderAccepted() {
   const acceptedKeys = Object.keys(UNI_META).filter(k => ['accepted','visa','enrolled'].includes(getStage(k)));
-  const empty = document.getElementById('accepted-empty');
-  const wrap = document.getElementById('accepted-table-wrap');
-  const note = document.getElementById('accepted-note');
-  const tbody = document.getElementById('accepted-table-body');
-  if (!empty || !wrap || !tbody) return;
-  
+  const grid = document.getElementById('accepted-cards-grid');
+  const section = document.getElementById('accepted-section');
+  if (!grid) return;
+
   if (acceptedKeys.length === 0) {
-    empty.style.display = 'block'; wrap.style.display = 'none'; note.style.display = 'none';
+    if (section) section.style.display = 'none';
+    grid.innerHTML = '';
+    updateAppsEmptyState();
     return;
   }
-  
-  empty.style.display = 'none'; wrap.style.display = 'block'; note.style.display = 'block';
-  
-  tbody.innerHTML = acceptedKeys.map(key => {
+
+  if (section) section.style.display = 'block';
+
+  grid.innerHTML = acceptedKeys.map(key => {
     const m = UNI_META[key];
     const stage = getStage(key);
     const extra = pipelineData[key] || {};
     const offerType = extra.offer_type || 'unconditional';
     const acceptBy = extra.accept_by || '';
-    
-    let timeLeft = '—';
+
+    let timeLeft = '';
     if (acceptBy) {
       const d = daysLeft(acceptBy);
-      timeLeft = d < 0 ? '<span class="pill red">Past due</span>' : d <= 7 ? `<span class="pill red">${d}d left</span>` : d <= 21 ? `<span class="pill amber">${d}d left</span>` : `<span class="pill blue">${d}d left</span>`;
+      timeLeft = d < 0 ? '<span class="dash-pill closed">Past due</span>' : d <= 7 ? `<span class="dash-pill urgent">${d}d left to accept</span>` : d <= 21 ? `<span class="dash-pill soon">${d}d left to accept</span>` : `<span class="dash-pill ok">${d}d left to accept</span>`;
     }
-    
+
     let nextBtn = '';
-    if (stage === 'accepted') nextBtn = `<button class="pipeline-btn primary" onclick="startVisaProcess('${key}')">🛫 Start Visa</button>`;
+    if (stage === 'accepted') nextBtn = `<button class="pipeline-btn primary" onclick="startVisaProcess('${key}')">🛫 Start Visa Process</button>`;
     else if (stage === 'visa') nextBtn = `<button class="pipeline-btn primary" onclick="markEnrolled('${key}')">🎉 Mark Enrolled</button>`;
-    else nextBtn = `<span style="font-size:11px;color:#1a6b3c;font-weight:700;">🎓 Enrolled</span>`;
-    
+    else nextBtn = `<span style="font-size:11px;color:#1a6b3c;font-weight:700;">🎓 Enrolled — congratulations!</span>`;
+
     return `
-    <tr>
-      <td>${m.title}</td>
-      <td>${m.sub.split('·')[0].trim()}</td>
-      <td><span class="pill green">${STAGE_LABELS[stage]}</span></td>
-      <td><select onchange="setOfferField('${key}','offer_type',this.value)" style="border:1px solid #d3d1c7;border-radius:6px;padding:4px 6px;font-size:11px;">
-            <option value="unconditional" ${offerType === 'unconditional' ? 'selected' : ''}>Unconditional</option>
-            <option value="conditional" ${offerType === 'conditional' ? 'selected' : ''}>Conditional</option>
-          </select></td>
-      <td><input type="date" value="${acceptBy}" onchange="setOfferField('${key}','accept_by',this.value)" style="border:1px solid #d3d1c7;border-radius:6px;padding:4px 6px;font-size:11px;"></td>
-      <td>${timeLeft}</td>
-      <td>${nextBtn}</td>
-    </tr>`;
+    <div class="card accepted-card" id="accepted-card-${key}">
+      <div class="card-header">
+        <div class="card-title">${m.title}</div>
+        <div class="card-sub">${m.sub}</div>
+        <div class="badges"><span class="badge green">${STAGE_LABELS[stage]}</span> ${timeLeft}</div>
+      </div>
+      <div class="card-body">
+        <div class="offer-fields">
+          <div class="offer-field">
+            <label>Offer type</label>
+            <select onchange="setOfferField('${key}','offer_type',this.value)">
+              <option value="unconditional" ${offerType === 'unconditional' ? 'selected' : ''}>Unconditional</option>
+              <option value="conditional" ${offerType === 'conditional' ? 'selected' : ''}>Conditional</option>
+            </select>
+          </div>
+          <div class="offer-field">
+            <label>Accept-by date</label>
+            <input type="date" value="${acceptBy}" onchange="setOfferField('${key}','accept_by',this.value)">
+          </div>
+        </div>
+        <div class="pipeline-actions">${nextBtn}</div>
+        <div style="margin-top:10px;border-top:1px solid #f0ede6;padding-top:8px;">
+          <button class="docs-toggle-btn" onclick="toggleDocsPanel('${key}')">📄 Documents <span id="docs-pct-${key}"></span></button>
+        </div>
+        <div class="docs-inline-panel" id="docs-panel-${key}" style="display:none;"></div>
+      </div>
+    </div>`;
   }).join('');
+
+  updateAppsEmptyState();
+}
+
+function updateAppsEmptyState() {
+  const empty = document.getElementById('apps-empty');
+  if (!empty) return;
+  const anyStarted = Object.keys(UNI_META).some(k => getStage(k) !== 'not_started');
+  empty.style.display = anyStarted ? 'none' : 'block';
+}
+
+// ─── Inline document checklist (used inside pipeline & accepted cards) ───
+function docCountFromCache(key) {
+  const allDocs = SHARED_DOCS.concat(UNI_EXTRA_DOCS[key] || []);
+  const total = allDocs.length;
+  let checked = 0;
+  for (let i = 0; i < total; i++) {
+    if (checksData['doc-' + key + '-' + i]) checked++;
+  }
+  return { checked, total };
+}
+
+function updateAllDocToggleLabels() {
+  Object.keys(UNI_META).forEach(key => {
+    const toggleLabel = document.getElementById('docs-pct-' + key);
+    if (!toggleLabel) return;
+    const { checked, total } = docCountFromCache(key);
+    toggleLabel.textContent = `(${checked}/${total})`;
+  });
+}
+
+function toggleDocsPanel(key) {
+  const panel = document.getElementById('docs-panel-' + key);
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  if (isOpen) {
+    panel.style.display = 'none';
+  } else {
+    panel.innerHTML = buildDocsPanelHtml(key);
+    panel.style.display = 'block';
+    restoreChecks();
+  }
+}
+
+function buildDocsPanelHtml(key) {
+  const allDocs = SHARED_DOCS.concat(UNI_EXTRA_DOCS[key] || []);
+  const items = allDocs.map((doc, i) => {
+    const id = 'doc-' + key + '-' + i;
+    return `<div class="checklist-item"><input type="checkbox" class="persist-check" id="${id}" onchange="saveCheck(this)"><label for="${id}">${doc}</label></div>`;
+  }).join('');
+  return `
+    <div class="progress-row"><div class="progress-track"><div class="progress-fill" id="docprog-fill-${key}" style="width:0%;"></div></div><div class="progress-pct" id="docprog-pct-${key}">0%</div></div>
+    ${items}
+  `;
 }
 
 
@@ -333,16 +409,19 @@ function restoreChecks() {
 
 function updateDocProgress() {
   Object.keys(UNI_META).forEach(key => {
-    const card = document.querySelector('.doc-card[data-doc-group="' + key + '"]');
-    if (!card) return;
-    const boxes = card.querySelectorAll('input[type="checkbox"]');
+    const panel = document.getElementById('docs-panel-' + key);
+    const toggleLabel = document.getElementById('docs-pct-' + key);
+    if (!panel) return;
+    const boxes = panel.querySelectorAll('input[type="checkbox"]');
     const total = boxes.length;
-    const checked = card.querySelectorAll('input[type="checkbox"]:checked').length;
-    const pct = total ? Math.round((checked / total) * 100) : 0;
+    if (!total) { if (toggleLabel) toggleLabel.textContent = ''; return; }
+    const checked = panel.querySelectorAll('input[type="checkbox"]:checked').length;
+    const pct = Math.round((checked / total) * 100);
     const fill = document.getElementById('docprog-fill-' + key);
     const pctEl = document.getElementById('docprog-pct-' + key);
     if (fill) fill.style.width = pct + '%';
     if (pctEl) pctEl.textContent = pct + '%';
+    if (toggleLabel) toggleLabel.textContent = `(${checked}/${total})`;
   });
 }
 
