@@ -127,64 +127,29 @@
   </div>
 </div>
 
-<div id="tab-submitted" class="section">
-  <div class="section-title">🚦 Application Status Pipeline</div>
-  <div class="section-sub">Track every application from submission through to enrollment. Click a stage button on a card to move it forward — use "↩ Undo" if you click the wrong one.</div>
+<div id="tab-applications" class="section">
+  <div class="section-title">🚦 My Applications</div>
+  <div class="section-sub">Every application you've submitted, its current stage, and its document checklist — all in one place.</div>
 
-  <div id="submitted-empty" class="submitted-empty" style="display:none;">
+  <div id="apps-empty" class="submitted-empty" style="display:none;">
     <div class="empty-icon">📭</div>
     <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No applications submitted yet</p>
-    <p>Go to <strong>📅 Deadlines &amp; Apply</strong> and click <strong>✅ Mark as Submitted</strong> on any university — it will appear here so you can track it through to enrollment.</p>
+    <p>Go to <strong>📋 Universities</strong> and click <strong>✅ Mark Submitted</strong> on any university — it will appear here so you can track it through to enrollment.</p>
   </div>
 
-  <div class="cards" id="submitted-cards-grid"></div>
+  <div id="accepted-section" style="display:none;">
+    <div class="apps-section-label">🎉 Offers Received</div>
+    <div class="cards" id="accepted-cards-grid"></div>
+  </div>
+
+  <div id="inprogress-section" style="display:none;">
+    <div class="apps-section-label">🚦 In Progress</div>
+    <div class="cards" id="submitted-cards-grid"></div>
+  </div>
 
   <div id="submitted-footer" style="margin-top:16px;" class="note-box">
-    <strong>🚀 How the pipeline works:</strong> Not Submitted → Submitted → Interview (if applicable) → Decision → Accepted 🎉 / Rejected → Visa Process → Enrolled. Once a university reaches "Accepted", it will also show up in the <strong>🎓 Accepted</strong> tab.
+    <strong>🚀 How the pipeline works:</strong> Not Submitted → Submitted → Interview (if applicable) → Decision → Accepted 🎉 / Rejected → Visa Process → Enrolled. Click "📄 Documents" on any card to check off paperwork for that university.
   </div>
-</div>
-
-<div id="tab-accepted" class="section">
-  <div class="section-title">🎓 Accepted Universities</div>
-  <div class="section-sub">Every offer you've received, in one place. Mark a university "Accepted" in the 🚦 Pipeline tab and it will show up here automatically.</div>
-
-  <div id="accepted-empty" class="empty-state">
-    <span class="empty-icon">🎓</span>
-    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No offers yet</p>
-    <p>Keep applying! As soon as you mark a university "Accepted" in the <strong>🚦 Pipeline</strong> tab, it'll appear here with offer details, your accept-by deadline, and a direct link into the visa &amp; relocation checklist.</p>
-  </div>
-
-  <div class="accepted-table-wrap" id="accepted-table-wrap" style="display:none;">
-    <table>
-      <thead>
-        <tr>
-          <th>University</th>
-          <th>Program</th>
-          <th>Stage</th>
-          <th>Offer type</th>
-          <th>Accept-by date</th>
-          <th>Time left</th>
-          <th>Next step</th>
-        </tr>
-      </thead>
-      <tbody id="accepted-table-body"></tbody>
-    </table>
-  </div>
-
-  <div class="note-box" id="accepted-note" style="display:none;">
-    <strong>🎉 Got an offer?</strong> Once you decide which university to enroll at, head to the <strong>✈️ Visa &amp; Relocation</strong> tab and start Phase 1.
-  </div>
-</div>
-
-<div id="tab-documents" class="section">
-  <div class="section-title">📄 Document Checklist — Per University</div>
-  <div class="section-sub">Tick off documents as you prepare them. Progress is saved automatically in this browser.</div>
-
-  <div class="note-box">
-    <strong>💡 Tip:</strong> Most documents below are shared across all 8 universities — prepare them once and reuse them everywhere.
-  </div>
-
-  <div class="doc-grid" id="doc-grid"></div>
 </div>
 
 <div id="tab-visa" class="section">
