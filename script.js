@@ -100,6 +100,16 @@ async function fetchAllCloudData() {
       console.warn('german_progress table not ready yet:', gerErr.message);
     }
 
+    // Fetch Duolingo Log — isolated so it can't crash the main fetch
+    try {
+      const { data: duo, error: e6 } = await sbClient.from('duolingo_log').select('*').order('entry_date', { ascending: false });
+      if (e6) throw new Error(e6.message);
+      duolingoEntries = duo || [];
+      renderDuolingoLog();
+    } catch (duoErr) {
+      console.warn('duolingo_log table not ready yet:', duoErr.message);
+    }
+
     // SUCCESS! Make the dot green and blink
     if (dot) dot.className = 'status-dot connected';
     if (text) text.textContent = 'Connected to Supabase';
@@ -1267,6 +1277,164 @@ function renderGermanTab() {
   renderGermanWeeks();
   renderGermanNotesGrid();
   updateGermanStats();
+  renderDuolingoLog();
+}
+
+// ═══════════════ 11. DUOLINGO PRACTICE LOG ═══════════════
+
+let duolingoEntries = []; // [{ id, entry_date, entry_text, streak, created_at }]
+let duolingoEditingId = null;
+
+function todayDateStr() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function addDuolingoEntry() {
+  const tempId = 'temp-' + Date.now();
+  duolingoEntries.unshift({ id: tempId, entry_date: todayDateStr(), entry_text: '', streak: null, _isNew: true });
+  duolingoEditingId = tempId;
+  renderDuolingoLog();
+  setTimeout(() => {
+    const ta = document.getElementById('duo-text-' + tempId);
+    if (ta) ta.focus();
+  }, 50);
+}
+
+function saveDuolingoEntry(localId) {
+  const dateEl = document.getElementById('duo-date-' + localId);
+  const textEl = document.getElementById('duo-text-' + localId);
+  const streakEl = document.getElementById('duo-streak-' + localId);
+  if (!dateEl || !textEl) return;
+
+  const entry_date = dateEl.value || todayDateStr();
+  const entry_text = textEl.value.trim();
+  const streak = streakEl && streakEl.value ? parseInt(streakEl.value, 10) : null;
+
+  if (!entry_text) {
+    alert('Write something about what you practiced before saving.');
+    return;
+  }
+
+  const idx = duolingoEntries.findIndex(e => e.id === localId);
+  if (idx === -1) return;
+
+  if (sbClient) {
+    const payload = { entry_date, entry_text, streak };
+    if (!duolingoEntries[idx]._isNew) payload.id = localId;
+
+    sbClient.from('duolingo_log').upsert(payload).select().then(({ data, error }) => {
+      if (error) { console.error('Failed to save Duolingo entry:', error.message); return; }
+      if (data && data[0]) {
+        duolingoEntries[idx] = data[0];
+        duolingoEditingId = null;
+        renderDuolingoLog();
+      }
+    });
+  } else {
+    duolingoEntries[idx] = { ...duolingoEntries[idx], entry_date, entry_text, streak, _isNew: false };
+    duolingoEditingId = null;
+    renderDuolingoLog();
+  }
+}
+
+function editDuolingoEntry(id) {
+  duolingoEditingId = id;
+  renderDuolingoLog();
+}
+
+function cancelDuolingoEdit(id) {
+  const entry = duolingoEntries.find(e => e.id === id);
+  if (entry && entry._isNew) {
+    duolingoEntries = duolingoEntries.filter(e => e.id !== id);
+  }
+  duolingoEditingId = null;
+  renderDuolingoLog();
+}
+
+function deleteDuolingoEntry(id) {
+  if (!confirm('Delete this entry? This cannot be undone.')) return;
+  duolingoEntries = duolingoEntries.filter(e => e.id !== id);
+  renderDuolingoLog();
+  const isTemp = typeof id === 'string' && id.startsWith('temp-');
+  if (sbClient && !isTemp) {
+    sbClient.from('duolingo_log').delete().eq('id', id).then(({error}) => {
+      if (error) console.error('Failed to delete Duolingo entry:', error.message);
+    });
+  }
+}
+
+function updateDuolingoStats() {
+  const total = duolingoEntries.filter(e => !e._isNew).length;
+  const entriesEl = document.getElementById('duo-stat-entries');
+  if (entriesEl) entriesEl.textContent = total;
+
+  const lastEl = document.getElementById('duo-stat-lastdate');
+  if (lastEl) {
+    const sorted = duolingoEntries.filter(e => !e._isNew).sort((a,b) => b.entry_date.localeCompare(a.entry_date));
+    lastEl.textContent = sorted.length ? new Date(sorted[0].entry_date + 'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '—';
+  }
+
+  const streakEl = document.getElementById('duo-stat-streak');
+  if (streakEl) {
+    const withStreak = duolingoEntries.filter(e => !e._isNew && e.streak != null).sort((a,b) => b.entry_date.localeCompare(a.entry_date));
+    streakEl.textContent = withStreak.length ? withStreak[0].streak : '0';
+  }
+}
+
+function renderDuolingoLog() {
+  const list = document.getElementById('duolingo-log-list');
+  const empty = document.getElementById('duolingo-empty');
+  if (!list) return;
+
+  if (duolingoEntries.length === 0) {
+    if (empty) empty.style.display = 'block';
+    list.innerHTML = '';
+    updateDuolingoStats();
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  const sorted = [...duolingoEntries].sort((a,b) => {
+    if (a._isNew) return -1;
+    if (b._isNew) return 1;
+    return b.entry_date.localeCompare(a.entry_date);
+  });
+
+  list.innerHTML = sorted.map(e => {
+    const isEditing = e._isNew || duolingoEditingId === e.id;
+    const dateLabel = e.entry_date ? new Date(e.entry_date + 'T00:00:00').toLocaleDateString('en-GB',{weekday:'short', day:'numeric', month:'short', year:'numeric'}) : '';
+
+    if (isEditing) {
+      return `
+      <div class="duo-entry-card editing">
+        <div class="duo-entry-edit-row">
+          <input type="date" id="duo-date-${e.id}" value="${e.entry_date || todayDateStr()}" class="duo-date-input">
+          <input type="number" id="duo-streak-${e.id}" placeholder="Streak (optional)" value="${e.streak ?? ''}" class="duo-streak-input" min="0">
+        </div>
+        <textarea id="duo-text-${e.id}" class="ger-note-textarea" style="min-height:80px;" placeholder="What did you practice today? New words, a lesson you found tricky, anything...">${e.entry_text || ''}</textarea>
+        <div class="duo-entry-actions">
+          <button class="dash-apply-btn" onclick="saveDuolingoEntry('${e.id}')">💾 Save Entry</button>
+          <button class="uni-secondary-btn" onclick="cancelDuolingoEdit('${e.id}')">Cancel</button>
+        </div>
+      </div>`;
+    }
+
+    return `
+    <div class="duo-entry-card">
+      <div class="duo-entry-header">
+        <span class="duo-entry-date">${dateLabel}</span>
+        ${e.streak != null ? `<span class="dash-pill amber">🔥 ${e.streak} day streak</span>` : ''}
+        <div class="duo-entry-actions-inline">
+          <button class="duo-icon-btn" onclick="editDuolingoEntry('${e.id}')" title="Edit">✏️</button>
+          <button class="duo-icon-btn" onclick="deleteDuolingoEntry('${e.id}')" title="Delete">🗑️</button>
+        </div>
+      </div>
+      <div class="duo-entry-text">${e.entry_text}</div>
+    </div>`;
+  }).join('');
+
+  updateDuolingoStats();
 }
 
 
