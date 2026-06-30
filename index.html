@@ -47,6 +47,7 @@
 <nav class="sub-nav" id="nav-german" style="display:none;">
   <div class="tab active" onclick="showTab('learn',this)">📚 Learn</div>
   <div class="tab" onclick="showTab('german-notes',this)">📝 My Notes & Progress</div>
+  <div class="tab" onclick="showTab('duolingo',this)">🦉 Duolingo Practice</div>
 </nav>
 
 <div id="tab-dashboard" class="section active">
@@ -285,6 +286,27 @@
   </div>
 
   <div id="german-notes-grid"></div>
+</div>
+
+<div id="tab-duolingo" class="section">
+  <div class="section-title">🦉 Duolingo Practice Log</div>
+  <div class="section-sub">Whatever you practice on Duolingo, log it here — day by day, in your own words.</div>
+
+  <div class="dash-stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:18px;">
+    <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-entries">0</div><div class="dash-stat-label">Entries Logged</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-streak">0</div><div class="dash-stat-label">Day Streak (your input)</div></div>
+    <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-lastdate">—</div><div class="dash-stat-label">Last Logged</div></div>
+  </div>
+
+  <button class="dash-apply-btn" style="margin-bottom:16px;" onclick="addDuolingoEntry()">+ Add Today's Entry</button>
+
+  <div id="duolingo-empty" class="submitted-empty" style="display:none;">
+    <div class="empty-icon">🦉</div>
+    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No entries yet</p>
+    <p>Click <strong>+ Add Today's Entry</strong> above after your next Duolingo session to start your log.</p>
+  </div>
+
+  <div id="duolingo-log-list"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
