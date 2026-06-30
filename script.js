@@ -530,12 +530,24 @@ function renderNotesGrid() {
 
 // ═══════════════ 6. TABS & UI NAVIGATION (BULLETPROOFED) ═══════════════
 
+const MAIN_TAB_DEFAULTS = {
+  admission: 'dashboard',
+  german: 'learn'
+};
+
 function showMainTab(mainTabId, el) {
   document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.querySelectorAll('.sub-nav').forEach(nav => nav.style.display = 'none');
   const targetNav = document.getElementById('nav-' + mainTabId);
   if (targetNav) targetNav.style.display = 'flex';
+
+  // Auto-activate the first sub-tab of this main tab, so content always matches the visible nav
+  const defaultSubTab = MAIN_TAB_DEFAULTS[mainTabId];
+  if (defaultSubTab && targetNav) {
+    const firstTabEl = targetNav.querySelector('.tab');
+    showTab(defaultSubTab, firstTabEl);
+  }
 }
 
 function showTab(name, el) {
