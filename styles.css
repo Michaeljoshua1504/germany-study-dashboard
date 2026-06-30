@@ -431,3 +431,67 @@ html[data-theme="dark"] .offer-field select, html[data-theme="dark"] .offer-fiel
 html[data-theme="dark"] .docs-toggle-btn { background: #2a2c34; color: #ccc; border-color: #3a3c44; }
 html[data-theme="dark"] .docs-toggle-btn:hover { background: #32343c; }
 html[data-theme="dark"] .docs-inline-panel { border-top-color: #32343c; }
+
+/* ═══════════════ GERMAN LANGUAGE TAB ═══════════════ */
+.ger-week-block { margin-bottom: 22px; }
+.ger-week-title { font-size: 14px; font-weight: 700; color: #14213c; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid #e0ded6; }
+.ger-week-range { font-size: 11px; font-weight: 500; color: #888; margin-left: 8px; }
+
+.ger-days-list { display: flex; flex-direction: column; gap: 8px; }
+.ger-day-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; overflow: hidden; }
+.ger-day-card.today { border-color: #378ADD; border-width: 1.5px; }
+.ger-day-card.done { border-left: 3px solid #1a6b3c; }
+
+.ger-day-header { display: flex; align-items: center; gap: 12px; padding: 10px 14px; cursor: pointer; }
+.ger-day-header:hover { background: #fafaf7; }
+.ger-day-num { font-size: 11px; font-weight: 700; color: #378ADD; background: #e6f0fb; padding: 3px 9px; border-radius: 8px; flex-shrink: 0; min-width: 50px; text-align: center; }
+.ger-day-card.done .ger-day-num { color: #1a6b3c; background: #e6f4ec; }
+.ger-day-topic { flex: 1; }
+.ger-day-title { font-size: 12.5px; font-weight: 600; color: #2c2c2a; }
+.ger-day-date { font-size: 10.5px; color: #888; margin-top: 1px; }
+.ger-day-check { width: 16px; height: 16px; cursor: pointer; accent-color: #1a6b3c; flex-shrink: 0; }
+
+.ger-day-body { padding: 0 14px 14px 14px; border-top: 1px solid #f0ede6; }
+.ger-day-section-label { font-size: 10.5px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.3px; margin: 12px 0 6px; }
+.ger-grammar-text, .ger-practice-text { font-size: 12px; line-height: 1.6; color: #444; }
+.ger-practice-text { background: #fffbf0; border: 1px solid #f5d87c; border-radius: 8px; padding: 9px 12px; color: #5a3e00; }
+
+.vocab-table { display: flex; flex-direction: column; gap: 0; border: 1px solid #ece9e0; border-radius: 8px; overflow: hidden; }
+.vocab-row { display: grid; grid-template-columns: 1.2fr 1.2fr 1fr; gap: 8px; padding: 7px 12px; font-size: 12px; border-bottom: 1px solid #f5f3ee; align-items: center; }
+.vocab-row:last-child { border-bottom: none; }
+.vocab-row:nth-child(even) { background: #fafaf7; }
+.vocab-de { font-weight: 700; color: #14213c; }
+.vocab-en { color: #555; }
+.vocab-pron { color: #888; font-style: italic; font-size: 11px; }
+
+.ger-note-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.ger-note-card.done { border-left: 3px solid #1a6b3c; }
+.ger-note-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.ger-note-day { font-size: 11px; font-weight: 700; color: #378ADD; background: #e6f0fb; padding: 3px 9px; border-radius: 8px; }
+.ger-note-topic { font-size: 12px; font-weight: 600; color: #2c2c2a; flex: 1; }
+.ger-note-textarea { width: 100%; min-height: 70px; border: 1px solid #d3d1c7; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-family: inherit; resize: vertical; color: #2c2c2a; background: #fafaf7; }
+.ger-note-textarea:focus { outline: none; border-color: #378ADD; background: #fff; }
+.note-saved-indicator { font-size: 10.5px; color: #1a6b3c; font-weight: 600; opacity: 0; transition: opacity 0.3s; margin-top: 4px; height: 14px; }
+.note-saved-indicator.show { opacity: 1; }
+
+/* Dark mode */
+html[data-theme="dark"] .ger-week-title { color: #e6e4dd; border-bottom-color: #32343c; }
+html[data-theme="dark"] .ger-day-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .ger-day-header:hover { background: #262830; }
+html[data-theme="dark"] .ger-day-title { color: #e6e4dd; }
+html[data-theme="dark"] .ger-day-body { border-top-color: #32343c; }
+html[data-theme="dark"] .ger-grammar-text { color: #ccc9c0; }
+html[data-theme="dark"] .vocab-table { border-color: #32343c; }
+html[data-theme="dark"] .vocab-row { border-bottom-color: #2a2c34; }
+html[data-theme="dark"] .vocab-row:nth-child(even) { background: #1a1c22; }
+html[data-theme="dark"] .vocab-de { color: #e6e4dd; }
+html[data-theme="dark"] .vocab-en { color: #aaa; }
+html[data-theme="dark"] .ger-note-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .ger-note-topic { color: #e6e4dd; }
+html[data-theme="dark"] .ger-note-textarea { background: #1a1c22; border-color: #3a3c44; color: #ccc; }
+html[data-theme="dark"] .ger-note-textarea:focus { background: #20222a; }
+html[data-theme="dark"] .note-saved-indicator { color: #2ecc71; }
+
+@media (max-width: 600px) {
+  .vocab-row { grid-template-columns: 1fr; gap: 2px; }
+}
