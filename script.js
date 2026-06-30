@@ -1038,19 +1038,19 @@ function renderAdmission() {
 let germanProgress = {}; // { [day]: { completed: bool, note_text: string } }
 
 const GERMAN_WEEKS = [
-  { num: 1, title: 'Week 1 — Greetings & Basics', range: 'Days 1–7', dates: 'Jul 1–7' },
-  { num: 2, title: 'Week 2 — Daily Life & Family', range: 'Days 8–14', dates: 'Jul 8–14' },
-  { num: 3, title: 'Week 3 — Food, Shopping & Directions', range: 'Days 15–21', dates: 'Jul 15–21' },
-  { num: 4, title: 'Week 4 — Travel, Health & Review', range: 'Days 22–31', dates: 'Jul 22–31' }
+  { num: 1, title: 'Phase 1 — Foundations', range: 'Days 1–7', dates: 'Jul 1–7' },
+  { num: 2, title: 'Phase 2 — Your World', range: 'Days 8–14', dates: 'Jul 8–14' },
+  { num: 3, title: 'Phase 3 — Out in the World', range: 'Days 15–21', dates: 'Jul 15–21' },
+  { num: 4, title: 'Phase 4 — Getting Things Done', range: 'Days 22–31', dates: 'Jul 22–31' }
 ];
 
 const GERMAN_DAYS = {
-  1: { week:1, date:'1 Jul', topic:'Greetings & Introducing Yourself', grammar:'Personal pronoun "ich" (I) + verb "sein" (to be): ich bin = I am. German sentences are Subject + Verb, just like English at this stage.',
-    vocab:[['Hallo','Hello','HAH-loh'],['Guten Morgen','Good morning','GOO-ten MOR-gen'],['Guten Tag','Good day / Hello','GOO-ten TAHK'],['Guten Abend','Good evening','GOO-ten AH-bent'],['Tschüss','Bye (informal)','chooss'],['Auf Wiedersehen','Goodbye (formal)','owf VEE-der-zayn'],['Ich bin...','I am...','ikh bin'],['Wie heißt du?','What is your name?','vee HYSST doo']],
-    practice:'Write 2 sentences: greet someone, then introduce yourself. Example: "Guten Tag! Ich bin Michael."' },
-  2: { week:1, date:'2 Jul', topic:'The German Alphabet & Pronunciation', grammar:'German has 4 extra letters: ä, ö, ü (umlauts) and ß (eszett, sounds like "ss"). Every letter is pronounced — there are no silent letters like in English.',
+  1: { week:1, date:'1 Jul', topic:'Pronunciation & The German Alphabet', grammar:'German has 4 extra letters: ä, ö, ü (umlauts) and ß (eszett, sounds like "ss"). Every letter is pronounced — there are no silent letters like in English.',
     vocab:[['A, Ä','ah, eh','ah / air-ish'],['O, Ö','oh, ooh-eh','oh / "ur" sound'],['U, Ü','oo, ueh','oo / "ew" sound'],['ß (Eszett)','sharp s','ss'],['W','v sound','vee'],['V','f sound','fow'],['Z','ts sound','tset'],['J','y sound','yot']],
     practice:'Practice saying your name letter by letter in German pronunciation. Say "schön" (beautiful) and "schon" (already) — notice the ö difference.' },
+  2: { week:1, date:'2 Jul', topic:'Greetings, Politeness & Introducing Yourself', grammar:'Personal pronoun "ich" (I) + verb "sein" (to be): ich bin = I am. German sentences are Subject + Verb, just like English at this stage. This day also introduces du vs Sie — the informal and formal ways to say "you".',
+    vocab:[['Hallo','Hello','HAH-loh'],['Guten Morgen','Good morning','GOO-ten MOR-gen'],['Guten Tag','Good day / Hello','GOO-ten TAHK'],['Guten Abend','Good evening','GOO-ten AH-bent'],['Tschüss','Bye (informal)','chooss'],['Auf Wiedersehen','Goodbye (formal)','owf VEE-der-zayn'],['Ich bin...','I am...','ikh bin'],['Wie heißt du?','What is your name? (informal)','vee HYSST doo']],
+    practice:'Write 2 sentences: greet someone, then introduce yourself. Example: "Guten Tag! Ich bin Michael."' },
   3: { week:1, date:'3 Jul', topic:'Numbers 0–20', grammar:'Numbers 13–19 are built by adding "-zehn" to the base number (drei+zehn = dreizehn = 13). This pattern repeats at every ten, so learning the base numbers unlocks the whole system.',
     vocab:[['null, eins, zwei','0, 1, 2','nool, eyenss, tsvy'],['drei, vier, fünf','3, 4, 5','dry, feer, fewnf'],['sechs, sieben, acht','6, 7, 8','zex, ZEE-ben, ahkt'],['neun, zehn','9, 10','noyn, tsayn'],['elf, zwölf','11, 12','elf, tsverlf'],['zwanzig','20','TSVAHN-tsikh']],
     practice:'Count from 0 to 20 out loud. Then write down your phone number in German digits.' },
@@ -1060,10 +1060,10 @@ const GERMAN_DAYS = {
   5: { week:1, date:'5 Jul', topic:'The Verb "sein" (to be) — Full Conjugation', grammar:'"Sein" is irregular and used constantly. ich bin / du bist / er-sie-es ist / wir sind / ihr seid / sie-Sie sind. Memorize this table — it\'s the single most useful verb in German.',
     vocab:[['ich bin','I am','ikh bin'],['du bist','you are (informal)','doo bisst'],['er/sie/es ist','he/she/it is','air/zee/ess isst'],['wir sind','we are','veer zint'],['ihr seid','you all are','eer zyte'],['sie/Sie sind','they/You(formal) are','zee zint']],
     practice:'Fill in: "___ bin müde" (I am tired), "Du ___ nett" (You are nice), "Wir ___ Studenten" (We are students).' },
-  6: { week:1, date:'6 Jul', topic:'Polite Phrases & Small Talk', grammar:'"Wie geht es dir?" (informal) vs "Wie geht es Ihnen?" (formal) — German has two forms of "you": du (informal/friends) and Sie (formal/strangers, capitalized). Always use Sie with strangers, officials, professors.',
-    vocab:[['Wie geht es dir?','How are you? (informal)','vee gayt ess deer'],['Mir geht es gut.','I am doing well.','meer gayt ess goot'],['Danke','Thank you','DAHN-keh'],['Bitte','Please / You\'re welcome','BIT-teh'],['Entschuldigung','Excuse me / Sorry','ent-SHOOL-dee-goong'],['Es tut mir leid.','I\'m sorry.','ess toot meer lite']],
-    practice:'Write a 3-line dialogue: greet someone, ask how they are, thank them and say goodbye.' },
-  7: { week:1, date:'7 Jul', topic:'Week 1 Review + Mini Quiz', grammar:'Review: sein conjugation, greetings by time of day, numbers 0–20, du vs Sie. No new grammar today — consolidate what you\'ve learned.',
+  6: { week:1, date:'6 Jul', topic:'Basic Sentence Structure & First W-Questions', grammar:'German statements follow Subject-Verb-Object (S-V-O), same as English: "Ich bin Michael." (I am Michael.) For yes/no questions, the verb simply moves to the very front: "Bist du müde?" (Are you tired?). For W-questions, the question word comes first, then the verb: "Wie heißt du?" (What is your name?) — was (what), wer (who), wo (where) are your first three.',
+    vocab:[['Was?','What?','vahss'],['Wer?','Who?','vair'],['Wo?','Where?','voh'],['Bist du...?','Are you...?','bisst doo'],['Kommst du...?','Are you coming...?','komst doo'],['Danke','Thank you','DAHN-keh'],['Bitte','Please / You\'re welcome','BIT-teh']],
+    practice:'Turn 3 statements into yes/no questions by moving the verb to the front: "Du bist müde." → "Bist du müde?" Then write one W-question using "wo": "Wo wohnst du?" (Where do you live?)' },
+  7: { week:1, date:'7 Jul', topic:'Phase 1 Review + Voice Test', grammar:'Review: sein conjugation, the alphabet & pronunciation, numbers 0–20, greetings & du/Sie, nationality, sentence structure & W-questions. No new grammar today — consolidate everything from Phase 1, then a live voice check covering all of it.',
     vocab:[['Wiederholung','Review','vee-der-HOH-loong'],['die Woche','the week','dee VOH-kheh'],['das Wort','the word','dahss vort'],['der Satz','the sentence','dair zahts'],['üben','to practice','EW-ben']],
     practice:'Self-test: introduce yourself fully out loud — name, nationality, city — using only what you learned this week. No notes allowed.' },
 
@@ -1085,7 +1085,7 @@ const GERMAN_DAYS = {
   13: { week:2, date:'13 Jul', topic:'Possessive Pronouns (mein, dein, sein)', grammar:'"Mein" (my) changes ending based on the noun\'s gender: mein Vater (my father - masc.), meine Mutter (my mother - fem.), mein Kind (my child - neuter). This is your first taste of German adjective endings.',
     vocab:[['mein/meine','my (masc/fem)','mine / MY-neh'],['dein/deine','your (masc/fem)','dine / DY-neh'],['sein/seine','his (masc/fem)','zine / ZY-neh'],['ihr/ihre','her (masc/fem)','eer / EE-reh'],['unser/unsere','our (masc/fem)','OON-zer / OON-zeh-reh']],
     practice:'Translate: "My father, your mother, his sister, our family" → "Mein Vater, deine Mutter, seine Schwester, unsere Familie."' },
-  14: { week:2, date:'14 Jul', topic:'Week 2 Review + Mini Quiz', grammar:'Review: haben conjugation, separable verbs (aufstehen), days of the week, possessive pronouns. Try building longer sentences combining time + routine + family.',
+  14: { week:2, date:'14 Jul', topic:'Phase 2 Review + Voice Test', grammar:'Review: haben conjugation, separable verbs (aufstehen), days of the week, possessive pronouns. Try building longer sentences combining time + routine + family.',
     vocab:[['das Leben','the life','dahss LAY-ben'],['der Alltag','the everyday routine','dair AHL-tahk'],['zusammen','together','tsoo-ZAH-men'],['wissen','to know (a fact)','VISS-en'],['verstehen','to understand','fair-SHTAY-en']],
     practice:'Write a 5-sentence paragraph about a typical day: wake-up time, breakfast, work, family, sleep — all in German.' },
 
@@ -1107,7 +1107,7 @@ const GERMAN_DAYS = {
   20: { week:3, date:'20 Jul', topic:'Adjectives — Describing Things', grammar:'Basic adjectives come before the noun (groß = big → "ein großes Haus") or after "sein" with no ending change (das Haus ist groß = the house is big). After "sein", adjectives never change — much simpler than adjectives before nouns.',
     vocab:[['groß','big','grohss'],['klein','small','kline'],['gut','good','goot'],['schlecht','bad','shlekht'],['schön','beautiful','shern'],['neu','new','noy'],['alt','old','ahlt'],['teuer','expensive','TOY-er'],['billig','cheap','BIL-likh']],
     practice:'Describe 4 things using "ist" + adjective: "Mein Haus ist groß. Mein Auto ist alt." etc.' },
-  21: { week:3, date:'21 Jul', topic:'Week 3 Review + Mini Quiz', grammar:'Review: food vocab, Akkusativ basics (den/einen), shopping phrases, directions, prepositions of place, simple adjectives. This week introduced your first grammatical case — re-read Day 16 if "den" vs "der" still feels unclear.',
+  21: { week:3, date:'21 Jul', topic:'Phase 3 Review + Voice Test', grammar:'Review: food vocab, Akkusativ basics (den/einen), shopping phrases, directions, prepositions of place, simple adjectives. This phase introduced your first grammatical case — re-read Day 16 if "den" vs "der" still feels unclear.',
     vocab:[['einkaufen','to go shopping','EYEN-kow-fen'],['der Weg','the way/path','dair vayk'],['die Richtung','the direction','dee RIKH-toong'],['beschreiben','to describe','beh-SHRY-ben']],
     practice:'Write a short story (5–6 sentences): you go to the supermarket, buy 3 food items, ask for directions to the checkout, and describe one item using an adjective.' },
 
