@@ -94,7 +94,7 @@ async function fetchAllCloudData() {
     try {
       const { data: german, error: e5 } = await sbClient.from('german_progress').select('*');
       if (e5) throw new Error(e5.message);
-      german?.forEach(row => germanProgress[row.day_num] = { completed: row.completed, note_text: row.note_text });
+      german?.forEach(row => germanProgress[row.day_num] = { completed: row.completed, note_text: row.note_text, teaching_notes: row.teaching_notes || '' });
       renderGermanTab();
     } catch (gerErr) {
       console.warn('german_progress table not ready yet:', gerErr.message);
@@ -1186,12 +1186,34 @@ function toggleGermanDay(day) {
   const current = germanProgress[day]?.completed || false;
   germanProgress[day] = { ...(germanProgress[day] || {}), completed: !current };
   if (sbClient) {
-    sbClient.from('german_progress').upsert({ day_num: day, completed: !current, note_text: germanProgress[day].note_text || '' }).then(({error}) => {
+    sbClient.from('german_progress').upsert({
+      day_num: day,
+      completed: !current,
+      note_text: germanProgress[day].note_text || '',
+      teaching_notes: germanProgress[day].teaching_notes || ''
+    }).then(({error}) => {
       if (error) console.error('Failed to save German progress:', error.message);
     });
   }
   renderGermanWeeks();
   updateGermanStats();
+}
+
+function saveGermanTeachingNotes(day, text) {
+  germanProgress[day] = { ...(germanProgress[day] || {}), teaching_notes: text };
+  if (sbClient) {
+    sbClient.from('german_progress').upsert({
+      day_num: day,
+      completed: germanProgress[day].completed || false,
+      note_text: germanProgress[day].note_text || '',
+      teaching_notes: text
+    }).then(({error}) => {
+      if (error) console.error('Failed to save German teaching notes:', error.message);
+      else { renderGermanWeeks(); }
+    });
+  } else {
+    renderGermanWeeks();
+  }
 }
 
 function renderGermanWeeks() {
@@ -1205,6 +1227,8 @@ function renderGermanWeeks() {
       const lesson = GERMAN_DAYS[d];
       const isDone = germanProgress[d]?.completed || false;
       const isToday = d === todayNum;
+      const teachingNotes = germanProgress[d]?.teaching_notes || '';
+      const wasTaught = teachingNotes.trim().length > 0;
       const vocabRows = lesson.vocab.map(([de, en, pron]) => `
         <div class="vocab-row"><span class="vocab-de">${de}</span><span class="vocab-en">${en}</span><span class="vocab-pron">${pron}</span></div>
       `).join('');
@@ -1215,17 +1239,20 @@ function renderGermanWeeks() {
           <div class="ger-day-num">Day ${d}</div>
           <div class="ger-day-topic">
             <div class="ger-day-title">${lesson.topic}</div>
-            <div class="ger-day-date">${lesson.date}${isToday ? ' · Today' : ''}</div>
+            <div class="ger-day-date">${lesson.date}${isToday ? ' · Today' : ''}${wasTaught ? ' · <span class="ger-taught-badge">📋 Taught</span>' : ''}</div>
           </div>
           <input type="checkbox" class="ger-day-check" ${isDone ? 'checked' : ''} onclick="event.stopPropagation();toggleGermanDay(${d})">
         </div>
         <div class="ger-day-body" id="ger-day-body-${d}" style="display:none;">
-          <div class="ger-day-section-label">📖 Grammar Point</div>
+          <div class="ger-day-section-label">📖 Grammar Point (Lesson Plan)</div>
           <div class="ger-grammar-text">${lesson.grammar}</div>
           <div class="ger-day-section-label">🗂️ Vocabulary</div>
           <div class="vocab-table">${vocabRows}</div>
           <div class="ger-day-section-label">✍️ Practice</div>
           <div class="ger-practice-text">${lesson.practice}</div>
+
+          <div class="ger-day-section-label">📋 Full Teaching Notes — What We Actually Covered</div>
+          <div class="ger-teaching-notes" id="ger-teaching-notes-${d}">${wasTaught ? formatTeachingNotes(teachingNotes) : '<span class="ger-notes-placeholder">Not taught yet. Once this lesson is taught live, the full session writeup will appear here.</span>'}</div>
         </div>
       </div>`;
     }).join('');
@@ -1236,6 +1263,22 @@ function renderGermanWeeks() {
       <div class="ger-days-list">${daysHtml}</div>
     </div>`;
   }).join('');
+}
+
+function formatTeachingNotes(text) {
+  // Lightweight markdown-ish rendering: **bold**, line breaks, and simple "### " headers
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  return escaped
+    .split('\n')
+    .map(line => {
+      if (line.startsWith('### ')) return `<div class="ger-notes-heading">${line.slice(4)}</div>`;
+      if (line.trim() === '') return '<br>';
+      return `<p>${line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`;
+    })
+    .join('');
 }
 
 function toggleGermanDayOpen(day) {
@@ -1278,7 +1321,12 @@ function saveGermanNote(day, value) {
   clearTimeout(germanNoteTimeout);
   germanNoteTimeout = setTimeout(() => {
     if (sbClient) {
-      sbClient.from('german_progress').upsert({ day_num: day, completed: germanProgress[day].completed || false, note_text: value }).then(({error}) => {
+      sbClient.from('german_progress').upsert({
+        day_num: day,
+        completed: germanProgress[day].completed || false,
+        note_text: value,
+        teaching_notes: germanProgress[day].teaching_notes || ''
+      }).then(({error}) => {
         if (error) console.error('Failed to save German note:', error.message);
       });
     }
