@@ -90,6 +90,16 @@ async function fetchAllCloudData() {
       console.warn('admission_requirements table not ready yet:', admErr.message);
     }
 
+    // Fetch German Progress — isolated so it can't crash the main fetch
+    try {
+      const { data: german, error: e5 } = await sbClient.from('german_progress').select('*');
+      if (e5) throw new Error(e5.message);
+      german?.forEach(row => germanProgress[row.day_num] = { completed: row.completed, note_text: row.note_text });
+      renderGermanTab();
+    } catch (gerErr) {
+      console.warn('german_progress table not ready yet:', gerErr.message);
+    }
+
     // SUCCESS! Make the dot green and blink
     if (dot) dot.className = 'status-dot connected';
     if (text) text.textContent = 'Connected to Supabase';
@@ -1001,11 +1011,218 @@ function renderAdmission() {
   }).join('');
 }
 
+// ═══════════════ 10. GERMAN A1 CURRICULUM (1–31 July 2026) ═══════════════
+
+let germanProgress = {}; // { [day]: { completed: bool, note_text: string } }
+
+const GERMAN_WEEKS = [
+  { num: 1, title: 'Week 1 — Greetings & Basics', range: 'Days 1–7', dates: 'Jul 1–7' },
+  { num: 2, title: 'Week 2 — Daily Life & Family', range: 'Days 8–14', dates: 'Jul 8–14' },
+  { num: 3, title: 'Week 3 — Food, Shopping & Directions', range: 'Days 15–21', dates: 'Jul 15–21' },
+  { num: 4, title: 'Week 4 — Travel, Health & Review', range: 'Days 22–31', dates: 'Jul 22–31' }
+];
+
+const GERMAN_DAYS = {
+  1: { week:1, date:'1 Jul', topic:'Greetings & Introducing Yourself', grammar:'Personal pronoun "ich" (I) + verb "sein" (to be): ich bin = I am. German sentences are Subject + Verb, just like English at this stage.',
+    vocab:[['Hallo','Hello','HAH-loh'],['Guten Morgen','Good morning','GOO-ten MOR-gen'],['Guten Tag','Good day / Hello','GOO-ten TAHK'],['Guten Abend','Good evening','GOO-ten AH-bent'],['Tschüss','Bye (informal)','chooss'],['Auf Wiedersehen','Goodbye (formal)','owf VEE-der-zayn'],['Ich bin...','I am...','ikh bin'],['Wie heißt du?','What is your name?','vee HYSST doo']],
+    practice:'Write 2 sentences: greet someone, then introduce yourself. Example: "Guten Tag! Ich bin Michael."' },
+  2: { week:1, date:'2 Jul', topic:'The German Alphabet & Pronunciation', grammar:'German has 4 extra letters: ä, ö, ü (umlauts) and ß (eszett, sounds like "ss"). Every letter is pronounced — there are no silent letters like in English.',
+    vocab:[['A, Ä','ah, eh','ah / air-ish'],['O, Ö','oh, ooh-eh','oh / "ur" sound'],['U, Ü','oo, ueh','oo / "ew" sound'],['ß (Eszett)','sharp s','ss'],['W','v sound','vee'],['V','f sound','fow'],['Z','ts sound','tset'],['J','y sound','yot']],
+    practice:'Practice saying your name letter by letter in German pronunciation. Say "schön" (beautiful) and "schon" (already) — notice the ö difference.' },
+  3: { week:1, date:'3 Jul', topic:'Numbers 0–20', grammar:'Numbers 13–19 are built by adding "-zehn" to the base number (drei+zehn = dreizehn = 13). This pattern repeats at every ten, so learning the base numbers unlocks the whole system.',
+    vocab:[['null, eins, zwei','0, 1, 2','nool, eyenss, tsvy'],['drei, vier, fünf','3, 4, 5','dry, feer, fewnf'],['sechs, sieben, acht','6, 7, 8','zex, ZEE-ben, ahkt'],['neun, zehn','9, 10','noyn, tsayn'],['elf, zwölf','11, 12','elf, tsverlf'],['zwanzig','20','TSVAHN-tsikh']],
+    practice:'Count from 0 to 20 out loud. Then write down your phone number in German digits.' },
+  4: { week:1, date:'4 Jul', topic:'Nationality & Where You\'re From', grammar:'"Ich komme aus..." = I come from... Use "aus" (from) + country name. Most country names don\'t need "der/die/das" (the) in front — just say "aus Indien", "aus Deutschland".',
+    vocab:[['Ich komme aus...','I come from...','ikh KOM-meh ows'],['Indien','India','IN-dee-en'],['Deutschland','Germany','DOYTCH-lahnt'],['Woher kommst du?','Where are you from?','vo-HAIR komst doo'],['Ich bin Inder.','I am Indian (male).','ikh bin IN-der'],['die Stadt','the city','dee shtaht'],['das Land','the country','dahss lahnt']],
+    practice:'Write: "Ich komme aus Indien. Ich bin aus Bangalore." (I come from India. I am from Bangalore.)' },
+  5: { week:1, date:'5 Jul', topic:'The Verb "sein" (to be) — Full Conjugation', grammar:'"Sein" is irregular and used constantly. ich bin / du bist / er-sie-es ist / wir sind / ihr seid / sie-Sie sind. Memorize this table — it\'s the single most useful verb in German.',
+    vocab:[['ich bin','I am','ikh bin'],['du bist','you are (informal)','doo bisst'],['er/sie/es ist','he/she/it is','air/zee/ess isst'],['wir sind','we are','veer zint'],['ihr seid','you all are','eer zyte'],['sie/Sie sind','they/You(formal) are','zee zint']],
+    practice:'Fill in: "___ bin müde" (I am tired), "Du ___ nett" (You are nice), "Wir ___ Studenten" (We are students).' },
+  6: { week:1, date:'6 Jul', topic:'Polite Phrases & Small Talk', grammar:'"Wie geht es dir?" (informal) vs "Wie geht es Ihnen?" (formal) — German has two forms of "you": du (informal/friends) and Sie (formal/strangers, capitalized). Always use Sie with strangers, officials, professors.',
+    vocab:[['Wie geht es dir?','How are you? (informal)','vee gayt ess deer'],['Mir geht es gut.','I am doing well.','meer gayt ess goot'],['Danke','Thank you','DAHN-keh'],['Bitte','Please / You\'re welcome','BIT-teh'],['Entschuldigung','Excuse me / Sorry','ent-SHOOL-dee-goong'],['Es tut mir leid.','I\'m sorry.','ess toot meer lite']],
+    practice:'Write a 3-line dialogue: greet someone, ask how they are, thank them and say goodbye.' },
+  7: { week:1, date:'7 Jul', topic:'Week 1 Review + Mini Quiz', grammar:'Review: sein conjugation, greetings by time of day, numbers 0–20, du vs Sie. No new grammar today — consolidate what you\'ve learned.',
+    vocab:[['Wiederholung','Review','vee-der-HOH-loong'],['die Woche','the week','dee VOH-kheh'],['das Wort','the word','dahss vort'],['der Satz','the sentence','dair zahts'],['üben','to practice','EW-ben']],
+    practice:'Self-test: introduce yourself fully out loud — name, nationality, city — using only what you learned this week. No notes allowed.' },
+
+  8: { week:2, date:'8 Jul', topic:'Family Members', grammar:'German nouns have gender: der (masculine), die (feminine), das (neuter). Family words follow biological gender mostly: der Vater (father), die Mutter (mother). Memorize the article WITH the noun, not separately.',
+    vocab:[['die Familie','the family','dee fah-MEE-lee-eh'],['der Vater','the father','dair FAH-ter'],['die Mutter','the mother','dee MOOT-ter'],['der Bruder','the brother','dair BROO-der'],['die Schwester','the sister','dee SHVESS-ter'],['die Eltern','the parents','dee EL-tern'],['das Kind','the child','dahss kint']],
+    practice:'Write 3 sentences about your own family using "Mein Vater ist..." / "Meine Mutter ist..." (My father is.../My mother is...).' },
+  9: { week:2, date:'9 Jul', topic:'The Verb "haben" (to have)', grammar:'"Haben" is the second essential irregular verb. ich habe / du hast / er-sie-es hat / wir haben / ihr habt / sie-Sie haben. Used for possession and many fixed expressions (e.g. "Ich habe Hunger" = I am hungry, literally "I have hunger").',
+    vocab:[['ich habe','I have','ikh HAH-beh'],['du hast','you have','doo hahst'],['er/sie hat','he/she has','air/zee haht'],['wir haben','we have','veer HAH-ben'],['Ich habe Hunger.','I am hungry.','ikh HAH-beh HOON-ger'],['Ich habe Durst.','I am thirsty.','ikh HAH-beh doorst']],
+    practice:'Translate: "I have a brother and a sister." → "Ich habe einen Bruder und eine Schwester."' },
+  10: { week:2, date:'10 Jul', topic:'Daily Routine — Part 1 (Morning)', grammar:'Separable verbs: some German verbs split, with the prefix moving to the end. "aufstehen" (to get up) → "Ich stehe um 7 Uhr auf." (I get up at 7 o\'clock.) This feels strange at first but becomes natural with practice.',
+    vocab:[['aufstehen','to get up','OWF-shtay-en'],['frühstücken','to have breakfast','FREW-shtew-ken'],['sich duschen','to shower','zikh DOO-shen'],['die Uhr','the clock/o\'clock','dee oor'],['um... Uhr','at... o\'clock','oom oor'],['jeden Tag','every day','YAY-den tahk']],
+    practice:'Write your real morning routine in German using "Ich stehe um ___ Uhr auf. Ich frühstücke um ___ Uhr."' },
+  11: { week:2, date:'11 Jul', topic:'Daily Routine — Part 2 (Work & Evening)', grammar:'Time expressions use "um" for clock time (um 9 Uhr) and "am" for days (am Montag). Word order: time expressions usually come right after the verb in a simple sentence.',
+    vocab:[['arbeiten','to work','AR-by-ten'],['die Arbeit','the work/job','dee AR-byte'],['nach Hause gehen','to go home','nahkh HOW-zeh GAY-en'],['schlafen','to sleep','SHLAH-fen'],['der Abend','the evening','dair AH-bent'],['die Nacht','the night','dee nahkht']],
+    practice:'Write 3 sentences about your work day using "Ich arbeite...", and one about going to sleep "Ich schlafe um... Uhr."' },
+  12: { week:2, date:'12 Jul', topic:'Days of the Week & "am"', grammar:'Days of the week are always capitalized and masculine (der Montag). To say "on Monday" use "am Montag" (am = an + dem, a contraction you\'ll see often in German).',
+    vocab:[['Montag','Monday','MOHN-tahk'],['Dienstag','Tuesday','DEENS-tahk'],['Mittwoch','Wednesday','MIT-vokh'],['Donnerstag','Thursday','DON-ners-tahk'],['Freitag','Friday','FRY-tahk'],['Samstag/Sonnabend','Saturday','ZAHMS-tahk'],['Sonntag','Sunday','ZON-tahk']],
+    practice:'Write what you do on 3 different days: "Am Montag arbeite ich. Am Samstag schlafe ich lange."' },
+  13: { week:2, date:'13 Jul', topic:'Possessive Pronouns (mein, dein, sein)', grammar:'"Mein" (my) changes ending based on the noun\'s gender: mein Vater (my father - masc.), meine Mutter (my mother - fem.), mein Kind (my child - neuter). This is your first taste of German adjective endings.',
+    vocab:[['mein/meine','my (masc/fem)','mine / MY-neh'],['dein/deine','your (masc/fem)','dine / DY-neh'],['sein/seine','his (masc/fem)','zine / ZY-neh'],['ihr/ihre','her (masc/fem)','eer / EE-reh'],['unser/unsere','our (masc/fem)','OON-zer / OON-zeh-reh']],
+    practice:'Translate: "My father, your mother, his sister, our family" → "Mein Vater, deine Mutter, seine Schwester, unsere Familie."' },
+  14: { week:2, date:'14 Jul', topic:'Week 2 Review + Mini Quiz', grammar:'Review: haben conjugation, separable verbs (aufstehen), days of the week, possessive pronouns. Try building longer sentences combining time + routine + family.',
+    vocab:[['das Leben','the life','dahss LAY-ben'],['der Alltag','the everyday routine','dair AHL-tahk'],['zusammen','together','tsoo-ZAH-men'],['wissen','to know (a fact)','VISS-en'],['verstehen','to understand','fair-SHTAY-en']],
+    practice:'Write a 5-sentence paragraph about a typical day: wake-up time, breakfast, work, family, sleep — all in German.' }
+};
+
+function germanDayNum() {
+  const today = new Date();
+  const start = new Date('2026-07-01T00:00:00');
+  const end = new Date('2026-07-31T23:59:59');
+  if (today < start) return 0;
+  if (today > end) return 31;
+  return Math.floor((today - start) / 86400000) + 1;
+}
+
+function germanWordCount() {
+  let total = 0;
+  Object.keys(GERMAN_DAYS).forEach(d => {
+    if (germanProgress[d] && germanProgress[d].completed) total += GERMAN_DAYS[d].vocab.length;
+  });
+  return total;
+}
+
+function germanCompletedCount() {
+  return Object.keys(GERMAN_DAYS).filter(d => germanProgress[d] && germanProgress[d].completed).length;
+}
+
+function updateGermanStats() {
+  const dayNum = germanDayNum();
+  const completed = germanCompletedCount();
+  const words = germanWordCount();
+  const pct = Math.round((completed / 31) * 100);
+
+  const dayLabel = dayNum === 0 ? 'Not started' : dayNum > 31 ? 'Complete!' : `Day ${dayNum}`;
+  ['ger-stat-day','ger-stat-day-2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = dayLabel; });
+  ['ger-stat-completed','ger-stat-completed-2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = completed + '/31'; });
+  ['ger-stat-words','ger-stat-words-2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = words; });
+  ['ger-stat-pct','ger-stat-pct-2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = pct + '%'; });
+
+  const fill = document.getElementById('ger-progress-fill');
+  const pctEl = document.getElementById('ger-progress-pct');
+  if (fill) fill.style.width = pct + '%';
+  if (pctEl) pctEl.textContent = pct + '%';
+}
+
+function toggleGermanDay(day) {
+  const current = germanProgress[day]?.completed || false;
+  germanProgress[day] = { ...(germanProgress[day] || {}), completed: !current };
+  if (sbClient) {
+    sbClient.from('german_progress').upsert({ day_num: day, completed: !current, note_text: germanProgress[day].note_text || '' }).then(({error}) => {
+      if (error) console.error('Failed to save German progress:', error.message);
+    });
+  }
+  renderGermanWeeks();
+  updateGermanStats();
+}
+
+function renderGermanWeeks() {
+  const container = document.getElementById('german-weeks');
+  if (!container) return;
+  const todayNum = germanDayNum();
+
+  container.innerHTML = GERMAN_WEEKS.map(week => {
+    const dayKeys = Object.keys(GERMAN_DAYS).filter(d => GERMAN_DAYS[d].week === week.num).map(Number).sort((a,b)=>a-b);
+    const daysHtml = dayKeys.map(d => {
+      const lesson = GERMAN_DAYS[d];
+      const isDone = germanProgress[d]?.completed || false;
+      const isToday = d === todayNum;
+      const vocabRows = lesson.vocab.map(([de, en, pron]) => `
+        <div class="vocab-row"><span class="vocab-de">${de}</span><span class="vocab-en">${en}</span><span class="vocab-pron">${pron}</span></div>
+      `).join('');
+
+      return `
+      <div class="ger-day-card ${isDone ? 'done' : ''} ${isToday ? 'today' : ''}">
+        <div class="ger-day-header" onclick="toggleGermanDayOpen(${d})">
+          <div class="ger-day-num">Day ${d}</div>
+          <div class="ger-day-topic">
+            <div class="ger-day-title">${lesson.topic}</div>
+            <div class="ger-day-date">${lesson.date}${isToday ? ' · Today' : ''}</div>
+          </div>
+          <input type="checkbox" class="ger-day-check" ${isDone ? 'checked' : ''} onclick="event.stopPropagation();toggleGermanDay(${d})">
+        </div>
+        <div class="ger-day-body" id="ger-day-body-${d}" style="display:none;">
+          <div class="ger-day-section-label">📖 Grammar Point</div>
+          <div class="ger-grammar-text">${lesson.grammar}</div>
+          <div class="ger-day-section-label">🗂️ Vocabulary</div>
+          <div class="vocab-table">${vocabRows}</div>
+          <div class="ger-day-section-label">✍️ Practice</div>
+          <div class="ger-practice-text">${lesson.practice}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `
+    <div class="ger-week-block">
+      <div class="ger-week-title">${week.title} <span class="ger-week-range">${week.range} · ${week.dates}</span></div>
+      <div class="ger-days-list">${daysHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleGermanDayOpen(day) {
+  const body = document.getElementById('ger-day-body-' + day);
+  if (!body) return;
+  body.style.display = body.style.display === 'none' ? 'block' : 'none';
+}
+
+function renderGermanNotesGrid() {
+  const grid = document.getElementById('german-notes-grid');
+  if (!grid) return;
+  const dayKeys = Object.keys(GERMAN_DAYS).map(Number).sort((a,b)=>a-b);
+
+  grid.innerHTML = dayKeys.map(d => {
+    const lesson = GERMAN_DAYS[d];
+    const noteVal = germanProgress[d]?.note_text || '';
+    const isDone = germanProgress[d]?.completed || false;
+    return `
+    <div class="ger-note-card ${isDone ? 'done' : ''}">
+      <div class="ger-note-header">
+        <span class="ger-note-day">Day ${d}</span>
+        <span class="ger-note-topic">${lesson.topic}</span>
+        ${isDone ? '<span class="dash-pill green">✓ Done</span>' : ''}
+      </div>
+      <textarea class="ger-note-textarea" id="ger-note-${d}" placeholder="What did you find hard? Write your own example sentences, doubts, anything..." oninput="saveGermanNote(${d}, this.value)">${noteVal}</textarea>
+      <div class="note-saved-indicator" id="ger-note-saved-${d}">✓ Saved</div>
+    </div>`;
+  }).join('');
+}
+
+let germanNoteTimeout;
+function saveGermanNote(day, value) {
+  germanProgress[day] = { ...(germanProgress[day] || {}), note_text: value };
+  const indicator = document.getElementById('ger-note-saved-' + day);
+  if (indicator) {
+    indicator.classList.add('show');
+    clearTimeout(indicator._t);
+    indicator._t = setTimeout(() => indicator.classList.remove('show'), 1500);
+  }
+  clearTimeout(germanNoteTimeout);
+  germanNoteTimeout = setTimeout(() => {
+    if (sbClient) {
+      sbClient.from('german_progress').upsert({ day_num: day, completed: germanProgress[day].completed || false, note_text: value }).then(({error}) => {
+        if (error) console.error('Failed to save German note:', error.message);
+      });
+    }
+  }, 1000);
+}
+
+function renderGermanTab() {
+  renderGermanWeeks();
+  renderGermanNotesGrid();
+  updateGermanStats();
+}
+
+
 // ═══════════════ 9. INIT ═══════════════
 initTheme();
 renderDocChecklist();
 renderNotesGrid();
 initCalculator();
+renderGermanTab();
 
 // Fetch from cloud to boot the app
 fetchAllCloudData().then(() => {
