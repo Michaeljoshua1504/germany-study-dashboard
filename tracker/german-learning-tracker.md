@@ -114,11 +114,13 @@ Transport, health, weather, modal verbs, question words, and connectors. By the 
 
 ```
 STATUS: clear
-LAST UPDATED: —
-CURRENT DAY: —
-CONTEXT: —
-WHAT'S BEEN COVERED THIS DAY SO FAR: —
-NEXT STEP: —
+LAST UPDATED: 30 Jun 2026
+CURRENT DAY: 1 — Pronunciation & The German Alphabet (not yet started)
+CONTEXT: Day 1 has not been taught yet. This entire session (30 Jun) was spent building infrastructure, not teaching: (1) confirmed pacing plan — 3-4 hrs/day is achievable for real A1, (2) wrote this tracker file with all 4 phases mapped, (3) fixed Day 1/2/6 content mismatches on the dashboard so the tracker and Learn tab agree exactly, (4) relabeled Week→Phase throughout the Learn tab, (5) built a new "Full Teaching Notes" section on each day's card in the Learn tab — collapsed by default, shows a 📋 Taught badge once filled in. This is where the REAL session writeup goes after each day is taught live, same pattern as the DevOps tracker's saved sessions — NOT the generic pre-written vocab/grammar content, which stays as the lesson plan Claude teaches FROM.
+WHAT'S BEEN COVERED THIS DAY SO FAR: Nothing yet. Day 1 lesson itself has not started.
+NEXT STEP: Start Day 1 — Pronunciation & The German Alphabet. Teach live in chat (Hour 1 lesson, Hour 2 practice, Hour 3 voice chat). When Mikey says "Day 1 is done", write the Full Teaching Notes for Day 1 based on the actual conversation and call saveGermanTeachingNotes(1, text) to push it to the dashboard. Then update this tracker file: mark Day 1 status, add Session History row, update Current Status, push to GitHub.
+
+ONE OUTSTANDING ACTION ITEM BEFORE OR DURING NEXT SESSION: Mikey needs to run this SQL in Supabase if not already done — "ALTER TABLE german_progress ADD COLUMN IF NOT EXISTS teaching_notes TEXT DEFAULT '';" — without it, teaching notes won't persist across refreshes (site still works fine either way, isolated fetch pattern).
 ```
 
 ---
@@ -152,19 +154,53 @@ NEXT STEP: —
 ## Notes and Corrections
 
 - 30 Jun 2026: Tracker file created. Confirmed pacing plan — 3–4 hrs/day across 31 days (93–124 total hours), which is within real A1 range (80–200 hrs typically cited). Speaking/listening to be covered via live voice chat with Claude, not self-study alone. Goal reframed as "A1 in substance by July 31" rather than rushing to pass the official Goethe exam by that exact date — exam attempt to be revisited in August once spoken practice has accumulated.
+- 30 Jun 2026 (later same day): Fixed Day 1/2 swap and Day 6 topic mismatch between tracker and dashboard Learn tab — now both agree exactly: Day 1 Alphabet, Day 2 Greetings, Day 6 Word Order & W-Questions. Relabeled "Week" to "Phase" throughout the Learn tab UI to match this file. Added a new "Full Teaching Notes" section to each day's card on the Learn tab — collapsed by default, shows a 📋 Taught badge once filled. This is where the real live-session writeup gets saved after each day is taught (mirrors the DevOps tracker's saved-session pattern) — separate from the pre-written generic vocab/grammar content, which remains the lesson plan Claude teaches from. Requires a `teaching_notes` column added to the `german_progress` Supabase table (SQL provided, not yet confirmed run).
+
+---
 
 ---
 
 ## What Claude Must Do at the Start of Every German Learning Session
 
-1. Fetch this tracker file fresh from GitHub
-2. Read the Current Status and Handoff Note sections first
-3. If Handoff Note STATUS is `active`, announce: "We were mid-lesson on Day X — [context]. Picking up from there." Then continue.
-4. If STATUS is `clear`, announce: "Continuing from Day X — [topic name]." Then begin teaching that day live in chat.
-5. Teach the day fully: grammar explained in plain English with a real-life example from Mikey's own situation, written practice, then a voice chat session for speaking/listening.
-6. Do not mark a day ✅ Done until Mikey explicitly confirms ("Day X is done").
-7. When confirmed, update: that day's Status + Session Notes, Session History table, Mindset Moments (if any occurred), Current Status section, and push the updated file back to GitHub.
+1. Fetch this tracker file fresh from GitHub using the token in the germany-study-dashboard Claude Project instructions file
+2. Read the **Handoff Note** and **Current Status** sections first — these tell you exactly where to start
+3. If Handoff Note STATUS is `active`, announce: "We were mid-lesson on Day X — [context]. Picking up from there." Then continue exactly from WHAT'S BEEN COVERED THIS DAY SO FAR.
+4. If STATUS is `clear`, announce: "Starting Day X — [topic name]. Here's how today works..." Then begin teaching that day live in chat using the 4-hour structure.
+5. Teach the day fully:
+   - Hour 1: Explain grammar in plain English with a real-life example from Mikey's own life (Bangalore, EXEDOS, his move to Germany) — not generic textbook examples
+   - Hour 2: Give written exercises, wait for Mikey's answers, correct them line by line
+   - Hour 3: Switch to voice chat for speaking and listening — ask questions in slow A1-paced German, correct pronunciation
+   - Hour 4 (some days): Spaced repetition of past vocab, short quiz on prior days
+6. **Do not mark a day ✅ Done until Mikey explicitly says "Day X is done"** — never assume from context alone
+7. When "Day X is done" is received:
+   - Write the Full Teaching Notes for that day — a detailed writeup of what was actually covered (explanations used, examples given, questions Mikey asked, corrections made, things that clicked or didn't) — formatted with ### headings and **bold** for key terms so it renders cleanly on the dashboard
+   - Call saveGermanTeachingNotes(day_number, notes_text) to push the notes to the dashboard Learn tab card
+   - Update this tracker file: mark that day's row ✅ Done with session notes, add a row to Session History, add any Mindset Moments if they occurred, update Current Status to reflect the next day
+   - Push the updated tracker file back to GitHub
+8. After every 7 days (Day 7, 14, 21, 31) — it's a Phase Review + Voice Test day. Run a spoken conversation covering everything from that phase. Don't just ask "do you remember?" — actually test by speaking in German and expecting German responses.
 
 ---
 
-*Last updated: 30 Jun 2026 — Tracker file created, mirroring the structure of the DevOps learning tracker. Phase 1–4 fully mapped across all 31 days. 0 of 31 days completed.*
+## Dashboard — What Claude Must Know About the Site
+
+- **Repo:** github.com/Michaeljoshua1504/germany-study-dashboard
+- **Live site:** michaeljoshua1504.github.io/germany-study-dashboard
+- **Token and full site instructions:** in the Claude Project instructions file (germany-dashboard-claude-project-instructions.md) uploaded to this project
+- **German Language tab:** Top-level nav → 🇩🇪 German Language → 3 sub-tabs: 📚 Learn / 📝 My Notes & Progress / 🦉 Duolingo Practice
+- **Teaching Notes are saved via:** `saveGermanTeachingNotes(day, text)` in script.js → upserts to `german_progress` table in Supabase with `teaching_notes` column
+- **Supabase tables used for German:** `german_progress` (day_num, completed, note_text, teaching_notes) and `duolingo_log` (id, entry_date, entry_text, streak)
+- **Outstanding SQL to run if not yet done:** `ALTER TABLE german_progress ADD COLUMN IF NOT EXISTS teaching_notes TEXT DEFAULT '';`
+
+---
+
+## Dashboard Site — Current Full State (as of 30 Jun 2026)
+
+| Tab | Sub-tabs | Status |
+|---|---|---|
+| 🎯 Admission Phase | Dashboard, Universities, My Applications, Visa & Relocation | ✅ Fully built and live |
+| 🇩🇪 German Language | Learn, My Notes & Progress, Duolingo Practice | ✅ Fully built — Learn tab has all 31 days across 4 phases, Teaching Notes section per day ready but empty |
+| 🇩🇪 Life Tracker 🔒 | Locked | ⏳ Unlocks when Mikey arrives in Germany |
+
+---
+
+*Last updated: 30 Jun 2026 — Full infrastructure session. Tracker file written. Dashboard Learn tab aligned to 4-phase structure (Week → Phase, Day 1/2/6 corrected). Full Teaching Notes per-day section built and pushed. 0 of 31 days taught. Day 1 starts next session.*
