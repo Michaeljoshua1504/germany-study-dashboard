@@ -1380,17 +1380,29 @@ function saveDuolingoEntry(localId) {
   if (idx === -1) return;
 
   if (sbClient) {
-    const payload = { entry_date, entry_text, streak };
-    if (!duolingoEntries[idx]._isNew) payload.id = localId;
+    const isNew = duolingoEntries[idx]._isNew;
 
-    sbClient.from('duolingo_log').upsert(payload).select().then(({ data, error }) => {
-      if (error) { console.error('Failed to save Duolingo entry:', error.message); return; }
-      if (data && data[0]) {
-        duolingoEntries[idx] = data[0];
-        duolingoEditingId = null;
-        renderDuolingoLog();
-      }
-    });
+    if (isNew) {
+      // New entry — insert (no id yet)
+      sbClient.from('duolingo_log').insert({ entry_date, entry_text, streak }).select().then(({ data, error }) => {
+        if (error) { console.error('Failed to save Duolingo entry:', error.message); return; }
+        if (data && data[0]) {
+          duolingoEntries[idx] = data[0];
+          duolingoEditingId = null;
+          renderDuolingoLog();
+        }
+      });
+    } else {
+      // Existing entry — update by id, never insert
+      sbClient.from('duolingo_log').update({ entry_date, entry_text, streak }).eq('id', localId).select().then(({ data, error }) => {
+        if (error) { console.error('Failed to update Duolingo entry:', error.message); return; }
+        if (data && data[0]) {
+          duolingoEntries[idx] = data[0];
+          duolingoEditingId = null;
+          renderDuolingoLog();
+        }
+      });
+    }
   } else {
     duolingoEntries[idx] = { ...duolingoEntries[idx], entry_date, entry_text, streak, _isNew: false };
     duolingoEditingId = null;
