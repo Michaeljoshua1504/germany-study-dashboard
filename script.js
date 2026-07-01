@@ -1372,7 +1372,13 @@ function saveDuolingoEntry(localId) {
   const streak = streakEl && streakEl.value ? parseInt(streakEl.value, 10) : null;
 
   if (!entry_text) {
-    alert('Write something about what you practiced before saving.');
+    const ta = document.getElementById('duo-text-' + localId);
+    if (ta) {
+      ta.style.border = '1.5px solid #e05555';
+      ta.placeholder = '⚠️ Write something before saving...';
+      ta.focus();
+      setTimeout(() => { ta.style.border = ''; ta.placeholder = 'What did you practice today? New words, a lesson you found tricky, anything...'; }, 2500);
+    }
     return;
   }
 
@@ -1424,8 +1430,15 @@ function cancelDuolingoEdit(id) {
   renderDuolingoLog();
 }
 
+let duoConfirmDeleteId = null;
+
 function deleteDuolingoEntry(id) {
-  if (!confirm('Delete this entry? This cannot be undone.')) return;
+  duoConfirmDeleteId = id;
+  renderDuolingoLog();
+}
+
+function confirmDeleteDuolingo(id) {
+  duoConfirmDeleteId = null;
   duolingoEntries = duolingoEntries.filter(e => e.id !== id);
   renderDuolingoLog();
   const isTemp = typeof id === 'string' && id.startsWith('temp-');
@@ -1434,6 +1447,11 @@ function deleteDuolingoEntry(id) {
       if (error) console.error('Failed to delete Duolingo entry:', error.message);
     });
   }
+}
+
+function cancelDeleteDuolingo() {
+  duoConfirmDeleteId = null;
+  renderDuolingoLog();
 }
 
 function updateDuolingoStats() {
@@ -1498,8 +1516,13 @@ function renderDuolingoLog() {
         <span class="duo-entry-date">${dateLabel}</span>
         ${e.streak != null ? `<span class="dash-pill amber">🔥 ${e.streak} day streak</span>` : ''}
         <div class="duo-entry-actions-inline">
-          <button class="duo-icon-btn" onclick="editDuolingoEntry('${e.id}')" title="Edit">✏️</button>
-          <button class="duo-icon-btn" onclick="deleteDuolingoEntry('${e.id}')" title="Delete">🗑️</button>
+          ${duoConfirmDeleteId === e.id
+            ? `<span style="font-size:12px;color:#e05555;font-weight:600;margin-right:6px;">Delete?</span>
+               <button class="duo-icon-btn" onclick="confirmDeleteDuolingo('${e.id}')" title="Yes, delete" style="color:#e05555;">✅</button>
+               <button class="duo-icon-btn" onclick="cancelDeleteDuolingo()" title="Cancel">❌</button>`
+            : `<button class="duo-icon-btn" onclick="editDuolingoEntry('${e.id}')" title="Edit">✏️</button>
+               <button class="duo-icon-btn" onclick="deleteDuolingoEntry('${e.id}')" title="Delete">🗑️</button>`
+          }
         </div>
       </div>
       <div class="duo-entry-text">${e.entry_text}</div>
