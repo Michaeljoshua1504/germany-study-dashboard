@@ -1,88 +1,98 @@
-# Claude Project Instructions — German Language Learning
+# Tracker File 2 — German Language Learning
 
-*(File 2 of 2 — Mikey's German learning journey, curriculum, and progress tracking. For dashboard code and application status, see File 1: Dashboard-and-Application-Instructions.md)*
-
----
-
-## WHAT THIS FILE IS FOR
-
-Mikey is learning German from scratch (currently A1, no certificate) as part of his preparation to study and work in Germany. This file tracks his curriculum, teaching format, current progress, and the technical setup for the German section of his dashboard. Use this as the source of truth for German teaching sessions — don't ask Mikey to re-explain where he left off.
+*This file contains everything related to Mikey's German language learning — curriculum, teaching format, session rules, progress, and dashboard German section setup. Nothing about the dashboard code or university applications belongs here.*
 
 ---
 
 ## CURRENT STATUS
 
 - **Level:** A1 beginner, self-taught, no official certificate yet
-- **Last session completed:** Day 1 — Pronunciation & The German Alphabet, Hour 1 delivered (phonetic consistency, letter sound differences W/V/Z/J/S, special characters ä/ö/ü/ß, ei/ie combinations, sch, ch variants)
-- **Next up:** Day 1, Hours 2–3, then Day 2 onward
-- **Note on certification:** an A1 certificate is *not* required for English-taught Master's programs or for the German student visa — this is being learned for genuine integration and long-term career reasons, not as an admission requirement.
+- **Day 1 status:** Not started yet
+- **Next session:** Day 1 — Pronunciation & The German Alphabet, Hour 1
+- **Note:** A1 certificate is not required for English-taught programs or the German student visa. Learning German is for genuine integration and long-term career reasons in Germany.
 
 ---
 
-## CURRICULUM STRUCTURE — 31-DAY, 4-PHASE PLAN
+## 31-DAY CURRICULUM — 4 PHASES
 
 | Phase | Days | Focus |
 |---|---|---|
-| Phase 1 — Foundations | 1–7 | Alphabet, pronunciation, basic grammar, greetings, numbers |
-| Phase 2 — Your World | 8–14 | Family, home, daily routine, food, shopping |
-| Phase 3 — Out in the World | 15–21 | Travel, directions, public transport, appointments |
-| Phase 4 — Getting Things Done | 22–31 | Work, formal German, bureaucracy, university/job-related vocabulary |
+| Phase 1 — Foundations | Days 1–7 | Alphabet, pronunciation, basic grammar, greetings, numbers |
+| Phase 2 — Your World | Days 8–14 | Family, home, daily routine, food, shopping |
+| Phase 3 — Out in the World | Days 15–21 | Travel, directions, public transport, appointments |
+| Phase 4 — Getting Things Done | Days 22–31 | Work, formal German, university/job vocabulary, bureaucracy |
+
+### Day-by-Day Plan (Phase 1 detail)
+
+| Day | Topic |
+|---|---|
+| Day 1 | Pronunciation & The German Alphabet |
+| Day 2 | Greetings & Introductions |
+| Day 3 | Numbers, Dates & Time |
+| Day 4 | Articles & Gender (der/die/das) |
+| Day 5 | Basic Sentence Structure |
+| Day 6 | Common Verbs (sein, haben, machen) |
+| Day 7 | Phase 1 Review & Mini Test |
 
 ---
 
-## TEACHING SESSION FORMAT (follow for every day)
+## TEACHING SESSION FORMAT
 
-- **Hour 1:** Text lesson — new grammar/vocabulary concept explained
-- **Hour 2:** Written practice with live correction
-- **Hour 3:** Speaking practice (roleplay, pronunciation drilling)
-- **Hour 4 (occasional):** Review of previous days
+Every day follows this structure:
 
-After each session, write teaching notes into the tracker file (see Tools & Resources below) so the next session can pick up exactly where it left off.
+- **Hour 1:** Text lesson — new grammar or vocabulary concept explained clearly with examples
+- **Hour 2:** Written practice with live correction from Claude
+- **Hour 3:** Speaking practice — roleplay, pronunciation drilling
+- **Hour 4 (occasional):** Review of previous days when needed
+
+**Rules:**
+- Never move to the next Hour until Mikey confirms the current one is done
+- Never mark a Day as complete unless Mikey explicitly says "Day X is done"
+- If Mikey seems unsure of content, do a quick test before moving forward
+- Keep explanations simple and practical — Mikey is A1, not a linguist
 
 ---
 
 ## SUPPLEMENTARY RESOURCES
 
-- **Duolingo** — daily vocabulary reps, logged in the dashboard's Duolingo Practice section
-- **DW Learn German (learngerman.dw.com)** — free, structured supplement via "Nico's Weg" course (A1→B1 story-driven course), good for extra reading/listening practice between structured sessions. Self-study only — doesn't replace live speaking practice, which Hour 3 sessions are meant to cover.
-- **Goethe Institut Bangalore** — where an A1 certificate exam could eventually be booked, if Mikey decides to formalize the level later (not currently required for anything in his pipeline)
+- **Duolingo** — daily vocabulary reps, logged in the dashboard's Duolingo Practice section. Good for maintaining streaks between structured sessions.
+- **DW Learn German (learngerman.dw.com)** — "Nico's Weg" course (A1→B1, story-driven, free). Use for extra reading/listening practice between structured sessions — not a replacement for Hour 3 speaking practice.
+- **Goethe Institut Bangalore** — where an A1 certificate exam can be booked if Mikey decides to formalize later. Not currently required for anything in the pipeline.
 
 ---
 
-## DASHBOARD — GERMAN LANGUAGE SECTION
+## DASHBOARD — GERMAN SECTION SETUP
 
-Lives within the dashboard alongside the Admission Phase tabs. Structure:
+The dashboard has a dedicated German language section with three sub-tabs:
 - **Learn** — lesson content delivery
-- **My Notes & Progress** — teaching notes + level tracking
+- **My Notes & Progress** — teaching notes and level tracking
 - **Duolingo Practice** — daily practice log
 
-### Backend (Supabase)
-- `german_progress` table — tracks completion state, notes, and teaching notes per day/topic. Upsert calls must always include all three fields: `completed`, `note_text`, `teaching_notes`.
-- `duolingo_log` table — logs daily Duolingo practice sessions. A duplicate-entry bug was previously fixed here.
-- `tracker/german-learning-tracker.md` in the repo — the canonical teaching notes file, updated after each session.
+### Supabase Tables
 
-### Outstanding setup (run once, if not already done)
+**german_progress** — tracks completion and notes per lesson/day
+- Always upsert with all three fields together: `completed`, `note_text`, `teaching_notes`
+- Never do separate sequential upsert calls for the same row
+
+**duolingo_log** — logs daily Duolingo practice sessions
+- A duplicate-entry bug was previously fixed here
+
+### Outstanding SQL (run once if not already done)
 ```sql
 ALTER TABLE german_progress ADD COLUMN IF NOT EXISTS teaching_notes TEXT DEFAULT '';
 ```
-Also confirm `duolingo_log` table exists (see schema note above) — create if missing.
 
-### UI notes
-- No browser popups (`confirm()`/`alert()`) anywhere on the dashboard, including the German section — all confirmations must be handled inline, matching the rest of the site.
-
----
-
-## HOW CLAUDE SHOULD RUN A GERMAN SESSION
-
-1. Check this file for the current Day/Hour to resume from.
-2. If unsure or the tracker seems out of date, ask Mikey directly rather than assuming.
-3. Deliver the session in the Hour 1–4 format above.
-4. At the end, summarize what was covered and update the **CURRENT STATUS** section of this file (or note it for Mikey to update, if Claude can't write back to Project files directly — see note below).
-5. If Mikey wants this synced to the actual dashboard database, use the Supabase upsert pattern for `german_progress` (all three fields together) rather than separate sequential calls.
-
-**Note on updating this file:** Claude cannot write changes back into Project knowledge files automatically — files here are read-only references. After each session, Claude should tell Mikey what changed so he can manually update this file's CURRENT STATUS section, or Claude can generate a fresh copy of this file with status updated for Mikey to re-upload.
+### UI Rules
+- No browser popups (`confirm()` / `alert()`) in the German section — inline only, same as the rest of the site
 
 ---
 
-*File split from original combined instructions file: 2 Jul 2026.*
-*This file replaces the absence of a dedicated German-learning section in the original combined instructions — content compiled from session history and dashboard architecture notes.*
+## AFTER EACH SESSION
+
+1. Update the **CURRENT STATUS** section at the top of this file with the day and hour completed
+2. Write a brief session note: what was taught, what Mikey found easy/hard, anything to revisit
+3. Since Claude cannot write back to Project files automatically — generate a fresh copy of this file with updated status for Mikey to re-upload to the Project
+
+---
+
+*Created: 2 Jul 2026. Covers: German curriculum, teaching format, session rules, progress tracking, dashboard German section Supabase setup.*
