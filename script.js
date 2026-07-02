@@ -308,7 +308,7 @@ function renderAccepted() {
     const stage = getStage(key);
     const extra = pipelineData[key] || {};
     const offerType = extra.offer_type || 'unconditional';
-    const acceptBy = extra.accept_by || '';
+    const acceptBy = extra.accept_by || m.secureDeadline || '';
 
     let timeLeft = '';
     if (acceptBy) {
