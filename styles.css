@@ -555,6 +555,48 @@ html[data-theme="dark"] .duo-dup-text { color: #bbb; }
 html[data-theme="dark"] .duo-merge-line { color: #ccc; }
 html[data-theme="dark"] .duo-merge-line:hover { background: #2a2c34; }
 
+/* ── MODE SWITCHER ── */
+.duo-mode-switcher { display: flex; gap: 0; margin-bottom: 20px; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+.duo-mode-btn { flex: 1; padding: 10px 8px; font-size: 13px; font-weight: 600; border: none; background: var(--card-bg); color: #888; cursor: pointer; transition: background 0.18s, color 0.18s; border-right: 1px solid var(--border); }
+.duo-mode-btn:last-child { border-right: none; }
+.duo-mode-btn.active { background: #14213c; color: #fff; }
+html[data-theme="dark"] .duo-mode-btn.active { background: #378ADD; color: #fff; }
+html[data-theme="dark"] .duo-mode-btn { background: #1e2028; color: #888; }
+
+/* ── WORD / SENTENCE ITEM CARDS ── */
+.duo-item-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.duo-item-card.editing { border-color: #378ADD; border-width: 1.5px; background: #f8fbff; }
+.duo-item-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.duo-item-de { font-size: 15px; font-weight: 700; color: #14213c; }
+.duo-item-cat { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.duo-item-meaning { font-size: 13px; color: #555; margin-bottom: 4px; }
+.duo-item-pronunciation { font-size: 12px; color: #378ADD; margin-bottom: 4px; font-style: italic; }
+.duo-item-meta { font-size: 11px; color: #aaa; margin-top: 4px; }
+.duo-item-actions { display: flex; gap: 8px; margin-top: 10px; }
+.duo-del-confirm { font-size: 12px; color: #e05555; font-weight: 600; margin-right: 4px; }
+
+/* ── EDIT FORM FIELDS ── */
+.duo-item-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.duo-field-group { display: flex; flex-direction: column; gap: 4px; }
+.duo-field-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
+.duo-field-input { padding: 8px 10px; border: 1.5px solid #d3d1c7; border-radius: 7px; font-size: 13px; background: #fff; color: #14213c; outline: none; transition: border-color 0.15s; }
+.duo-field-input:focus { border-color: #378ADD; }
+.duo-field-select { padding: 8px 10px; border: 1.5px solid #d3d1c7; border-radius: 7px; font-size: 13px; background: #fff; color: #14213c; cursor: pointer; }
+.duo-dup-inline { font-size: 12px; color: #b8860b; background: #fff8e1; border: 1px solid #f5c842; border-radius: 6px; padding: 4px 8px; margin-top: 2px; }
+.duo-empty-mode { text-align: center; padding: 36px 20px; color: #888; font-size: 14px; }
+
+/* ── DARK MODE for new elements ── */
+html[data-theme="dark"] .duo-item-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .duo-item-card.editing { background: #1a1e2a; border-color: #5a9bdc; }
+html[data-theme="dark"] .duo-item-de { color: #e6e4dd; }
+html[data-theme="dark"] .duo-item-meaning { color: #bbb; }
+html[data-theme="dark"] .duo-item-meta { color: #666; }
+html[data-theme="dark"] .duo-field-input { background: #1a1c22; border-color: #3a3c44; color: #e0e0e0; }
+html[data-theme="dark"] .duo-field-input:focus { border-color: #5a9bdc; }
+html[data-theme="dark"] .duo-field-select { background: #1a1c22; border-color: #3a3c44; color: #e0e0e0; }
+html[data-theme="dark"] .duo-field-label { color: #aaa; }
+html[data-theme="dark"] .duo-dup-inline { background: #2a2510; border-color: #6b5a00; color: #f5c842; }
+
 /* ═══════════════ GERMAN TEACHING NOTES (LIVE-TAUGHT CONTENT) ═══════════════ */
 .ger-taught-badge { background: #e6f0fb; color: #1a4b8c; padding: 1px 7px; border-radius: 6px; font-size: 9.5px; font-weight: 700; }
 
