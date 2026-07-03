@@ -1386,10 +1386,85 @@ function renderGermanTab() {
 
 let duolingoEntries = []; // [{ id, entry_date, entry_text, streak, created_at }]
 let duolingoEditingId = null;
+let duolingoSearchQuery = '';
+let duoDuplicateModal = null; // holds current duplicate groups for modal
 
 function todayDateStr() {
   const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+// ── AUTO STREAK: count consecutive calendar days (ending today or yesterday) ──
+function calcAutoStreak() {
+  const saved = duolingoEntries.filter(e => !e._isNew && e.entry_date);
+  if (!saved.length) return 0;
+  const uniqueDates = [...new Set(saved.map(e => e.entry_date))].sort().reverse();
+  const today = todayDateStr();
+  const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })();
+  // streak must anchor on today or yesterday
+  if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) return 0;
+  let streak = 1;
+  for (let i = 1; i < uniqueDates.length; i++) {
+    const prev = new Date(uniqueDates[i-1] + 'T00:00:00');
+    const curr = new Date(uniqueDates[i] + 'T00:00:00');
+    const diff = Math.round((prev - curr) / 86400000);
+    if (diff === 1) streak++;
+    else break;
+  }
+  return streak;
+}
+
+// ── DUPLICATE DETECTION: extract meaningful words (3+ chars) from text ──
+function extractWords(text) {
+  return text.toLowerCase().match(/\b[a-zäöüß]{3,}\b/g) || [];
+}
+
+// Find which saved entries share words with the current typing text
+function findDuplicateHints(typingText, excludeId) {
+  if (!typingText || typingText.trim().length < 3) return [];
+  const typedWords = new Set(extractWords(typingText));
+  if (typedWords.size === 0) return [];
+  const matches = [];
+  for (const e of duolingoEntries) {
+    if (e._isNew || e.id === excludeId) continue;
+    const entryWords = extractWords(e.entry_text);
+    const shared = entryWords.filter(w => typedWords.has(w));
+    if (shared.length >= 1) {
+      matches.push({ entry: e, sharedWords: [...new Set(shared)] });
+    }
+  }
+  return matches;
+}
+
+// ── FIND ALL DUPLICATE GROUPS across all saved entries (for the modal) ──
+function findAllDuplicateGroups() {
+  const saved = duolingoEntries.filter(e => !e._isNew);
+  // Build inverted index: word → entries that contain it
+  const wordMap = {};
+  for (const e of saved) {
+    const words = new Set(extractWords(e.entry_text));
+    for (const w of words) {
+      if (!wordMap[w]) wordMap[w] = [];
+      wordMap[w].push(e.id);
+    }
+  }
+  // Find pairs/groups that share 2+ words
+  const pairScores = {};
+  for (const [word, ids] of Object.entries(wordMap)) {
+    if (ids.length < 2) continue;
+    for (let i = 0; i < ids.length; i++) {
+      for (let j = i+1; j < ids.length; j++) {
+        const key = [ids[i], ids[j]].sort().join('||');
+        if (!pairScores[key]) pairScores[key] = { ids: [ids[i], ids[j]], words: [] };
+        pairScores[key].words.push(word);
+      }
+    }
+  }
+  // Only return pairs with 2+ shared words
+  return Object.values(pairScores).filter(p => p.words.length >= 2).map(p => ({
+    entries: p.ids.map(id => saved.find(e => e.id === id)).filter(Boolean),
+    sharedWords: p.words
+  }));
 }
 
 function addDuolingoEntry() {
@@ -1406,12 +1481,10 @@ function addDuolingoEntry() {
 function saveDuolingoEntry(localId) {
   const dateEl = document.getElementById('duo-date-' + localId);
   const textEl = document.getElementById('duo-text-' + localId);
-  const streakEl = document.getElementById('duo-streak-' + localId);
   if (!dateEl || !textEl) return;
 
   const entry_date = dateEl.value || todayDateStr();
   const entry_text = textEl.value.trim();
-  const streak = streakEl && streakEl.value ? parseInt(streakEl.value, 10) : null;
 
   if (!entry_text) {
     const ta = document.getElementById('duo-text-' + localId);
@@ -1429,10 +1502,8 @@ function saveDuolingoEntry(localId) {
 
   if (sbClient) {
     const isNew = duolingoEntries[idx]._isNew;
-
     if (isNew) {
-      // New entry — insert (no id yet)
-      sbClient.from('duolingo_log').insert({ entry_date, entry_text, streak }).select().then(({ data, error }) => {
+      sbClient.from('duolingo_log').insert({ entry_date, entry_text, streak: null }).select().then(({ data, error }) => {
         if (error) { console.error('Failed to save Duolingo entry:', error.message); return; }
         if (data && data[0]) {
           duolingoEntries[idx] = data[0];
@@ -1441,8 +1512,7 @@ function saveDuolingoEntry(localId) {
         }
       });
     } else {
-      // Existing entry — update by id, never insert
-      sbClient.from('duolingo_log').update({ entry_date, entry_text, streak }).eq('id', localId).select().then(({ data, error }) => {
+      sbClient.from('duolingo_log').update({ entry_date, entry_text }).eq('id', localId).select().then(({ data, error }) => {
         if (error) { console.error('Failed to update Duolingo entry:', error.message); return; }
         if (data && data[0]) {
           duolingoEntries[idx] = data[0];
@@ -1452,7 +1522,7 @@ function saveDuolingoEntry(localId) {
       });
     }
   } else {
-    duolingoEntries[idx] = { ...duolingoEntries[idx], entry_date, entry_text, streak, _isNew: false };
+    duolingoEntries[idx] = { ...duolingoEntries[idx], entry_date, entry_text, _isNew: false };
     duolingoEditingId = null;
     renderDuolingoLog();
   }
@@ -1496,6 +1566,111 @@ function cancelDeleteDuolingo() {
   renderDuolingoLog();
 }
 
+// ── SEARCH ──
+function duoSetSearch(val) {
+  duolingoSearchQuery = val.toLowerCase().trim();
+  renderDuolingoLog();
+}
+
+function duoClearSearch() {
+  duolingoSearchQuery = '';
+  const inp = document.getElementById('duo-search-input');
+  if (inp) inp.value = '';
+  renderDuolingoLog();
+}
+
+// ── MERGE MODAL ──
+function openDuplicateModal() {
+  const groups = findAllDuplicateGroups();
+  if (!groups.length) { alert('No duplicates found!'); return; }
+  duoDuplicateModal = groups;
+  const overlay = document.getElementById('duo-dup-overlay');
+  const body = document.getElementById('duo-dup-body');
+  if (!overlay || !body) return;
+
+  body.innerHTML = groups.map((g, gi) => {
+    const e1 = g.entries[0], e2 = g.entries[1];
+    if (!e1 || !e2) return '';
+    const d1 = e1.entry_date ? new Date(e1.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+    const d2 = e2.entry_date ? new Date(e2.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+    return `
+    <div class="duo-dup-group" id="duo-dup-group-${gi}">
+      <div class="duo-dup-shared">🔗 Shared words: <strong>${g.sharedWords.slice(0,8).join(', ')}</strong></div>
+      <div class="duo-dup-entries">
+        <div class="duo-dup-entry">
+          <div class="duo-dup-date">${d1}</div>
+          <div class="duo-dup-text">${e1.entry_text}</div>
+        </div>
+        <div class="duo-dup-entry">
+          <div class="duo-dup-date">${d2}</div>
+          <div class="duo-dup-text">${e2.entry_text}</div>
+        </div>
+      </div>
+      <div class="duo-dup-actions">
+        <button class="dash-apply-btn" style="font-size:12px;padding:6px 14px;" onclick="mergeDuoEntries(${gi})">🔀 Merge into one</button>
+        <button class="uni-secondary-btn" style="font-size:12px;padding:6px 14px;" onclick="dismissDupGroup(${gi})">✅ Keep both</button>
+      </div>
+    </div>`;
+  }).join('<hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">');
+
+  overlay.style.display = 'flex';
+}
+
+function closeDuplicateModal() {
+  const overlay = document.getElementById('duo-dup-overlay');
+  if (overlay) overlay.style.display = 'none';
+  duoDuplicateModal = null;
+}
+
+function mergeDuoEntries(groupIdx) {
+  if (!duoDuplicateModal || !duoDuplicateModal[groupIdx]) return;
+  const g = duoDuplicateModal[groupIdx];
+  const e1 = g.entries[0], e2 = g.entries[1];
+  if (!e1 || !e2) return;
+
+  // Use the earlier date, merge texts
+  const mergedDate = e1.entry_date < e2.entry_date ? e1.entry_date : e2.entry_date;
+  const mergedText = e1.entry_text.trim() + '\n\n[Merged from ' +
+    new Date(e2.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) + ':]\n' +
+    e2.entry_text.trim();
+
+  // Delete entry 2, update entry 1
+  const deleteId = e2.id;
+  const keepIdx = duolingoEntries.findIndex(e => e.id === e1.id);
+  if (keepIdx !== -1) {
+    duolingoEntries[keepIdx] = { ...duolingoEntries[keepIdx], entry_date: mergedDate, entry_text: mergedText };
+  }
+  duolingoEntries = duolingoEntries.filter(e => e.id !== deleteId);
+
+  if (sbClient) {
+    const isTemp1 = typeof e1.id === 'string' && e1.id.startsWith('temp-');
+    const isTemp2 = typeof e2.id === 'string' && e2.id.startsWith('temp-');
+    if (!isTemp1) sbClient.from('duolingo_log').update({ entry_date: mergedDate, entry_text: mergedText }).eq('id', e1.id);
+    if (!isTemp2) sbClient.from('duolingo_log').delete().eq('id', deleteId);
+  }
+
+  // Remove this group from modal
+  duoDuplicateModal.splice(groupIdx, 1);
+  const grpEl = document.getElementById('duo-dup-group-' + groupIdx);
+  if (grpEl) {
+    grpEl.innerHTML = '<div style="color:#2ea84f;font-weight:600;padding:10px 0;">✅ Merged successfully!</div>';
+    setTimeout(() => { if (duoDuplicateModal && duoDuplicateModal.length === 0) closeDuplicateModal(); }, 800);
+  }
+  renderDuolingoLog();
+}
+
+function dismissDupGroup(groupIdx) {
+  if (!duoDuplicateModal) return;
+  duoDuplicateModal.splice(groupIdx, 1);
+  const grpEl = document.getElementById('duo-dup-group-' + groupIdx);
+  if (grpEl) {
+    grpEl.innerHTML = '<div style="color:#888;font-size:13px;padding:8px 0;">Kept both — dismissed.</div>';
+  }
+  if (duoDuplicateModal.length === 0) {
+    setTimeout(closeDuplicateModal, 600);
+  }
+}
+
 function updateDuolingoStats() {
   const total = duolingoEntries.filter(e => !e._isNew).length;
   const entriesEl = document.getElementById('duo-stat-entries');
@@ -1509,8 +1684,15 @@ function updateDuolingoStats() {
 
   const streakEl = document.getElementById('duo-stat-streak');
   if (streakEl) {
-    const withStreak = duolingoEntries.filter(e => !e._isNew && e.streak != null).sort((a,b) => b.entry_date.localeCompare(a.entry_date));
-    streakEl.textContent = withStreak.length ? withStreak[0].streak : '0';
+    streakEl.textContent = calcAutoStreak();
+  }
+
+  // Show/hide duplicate button
+  const dupBtn = document.getElementById('duo-dup-btn');
+  if (dupBtn) {
+    const groups = findAllDuplicateGroups();
+    dupBtn.style.display = groups.length > 0 ? 'inline-flex' : 'none';
+    dupBtn.textContent = `🔍 ${groups.length} Duplicate${groups.length !== 1 ? 's' : ''} Found`;
   }
 }
 
@@ -1519,19 +1701,34 @@ function renderDuolingoLog() {
   const empty = document.getElementById('duolingo-empty');
   if (!list) return;
 
-  if (duolingoEntries.length === 0) {
-    if (empty) empty.style.display = 'block';
-    list.innerHTML = '';
+  const realEntries = duolingoEntries.filter(e => !e._isNew);
+  const newEntries = duolingoEntries.filter(e => e._isNew);
+
+  // Apply search filter (only to saved entries, not the new editing card)
+  let filtered = realEntries;
+  if (duolingoSearchQuery) {
+    filtered = realEntries.filter(e =>
+      (e.entry_text || '').toLowerCase().includes(duolingoSearchQuery) ||
+      (e.entry_date || '').includes(duolingoSearchQuery)
+    );
+  }
+
+  const allVisible = [...newEntries, ...filtered];
+
+  if (allVisible.length === 0 && newEntries.length === 0) {
+    if (empty) empty.style.display = duolingoSearchQuery ? 'none' : 'block';
+    list.innerHTML = duolingoSearchQuery
+      ? `<div style="text-align:center;padding:24px;color:#888;font-size:14px;">No entries match "<strong>${duolingoSearchQuery}</strong>"</div>`
+      : '';
     updateDuolingoStats();
     return;
   }
   if (empty) empty.style.display = 'none';
 
-  const sorted = [...duolingoEntries].sort((a,b) => {
-    if (a._isNew) return -1;
-    if (b._isNew) return 1;
-    return b.entry_date.localeCompare(a.entry_date);
-  });
+  const sorted = [
+    ...newEntries,
+    ...filtered.sort((a,b) => b.entry_date.localeCompare(a.entry_date))
+  ];
 
   list.innerHTML = sorted.map(e => {
     const isEditing = e._isNew || duolingoEditingId === e.id;
@@ -1542,9 +1739,11 @@ function renderDuolingoLog() {
       <div class="duo-entry-card editing">
         <div class="duo-entry-edit-row">
           <input type="date" id="duo-date-${e.id}" value="${e.entry_date || todayDateStr()}" class="duo-date-input">
-          <input type="number" id="duo-streak-${e.id}" placeholder="Streak (optional)" value="${e.streak ?? ''}" class="duo-streak-input" min="0">
         </div>
-        <textarea id="duo-text-${e.id}" class="ger-note-textarea" style="min-height:80px;" placeholder="What did you practice today? New words, a lesson you found tricky, anything...">${e.entry_text || ''}</textarea>
+        <textarea id="duo-text-${e.id}" class="ger-note-textarea" style="min-height:80px;" placeholder="What did you practice today? New words, a lesson you found tricky, anything..."
+          oninput="duoCheckDuplicateHint('${e.id}', this.value)"
+        >${e.entry_text || ''}</textarea>
+        <div id="duo-hint-${e.id}" class="duo-dup-hint" style="display:none;"></div>
         <div class="duo-entry-actions">
           <button class="dash-apply-btn" onclick="saveDuolingoEntry('${e.id}')">💾 Save Entry</button>
           <button class="uni-secondary-btn" onclick="cancelDuolingoEdit('${e.id}')">Cancel</button>
@@ -1556,7 +1755,7 @@ function renderDuolingoLog() {
     <div class="duo-entry-card">
       <div class="duo-entry-header">
         <span class="duo-entry-date">${dateLabel}</span>
-        ${e.streak != null ? `<span class="dash-pill amber">🔥 ${e.streak} day streak</span>` : ''}
+        <span class="dash-pill amber">🔥 ${calcAutoStreak()} day streak</span>
         <div class="duo-entry-actions-inline">
           ${duoConfirmDeleteId === e.id
             ? `<span style="font-size:12px;color:#e05555;font-weight:600;margin-right:6px;">Delete?</span>
@@ -1572,6 +1771,29 @@ function renderDuolingoLog() {
   }).join('');
 
   updateDuolingoStats();
+}
+
+// Called live as user types in the new/edit textarea
+function duoCheckDuplicateHint(editingId, typedText) {
+  const hintEl = document.getElementById('duo-hint-' + editingId);
+  if (!hintEl) return;
+  const hints = findDuplicateHints(typedText, editingId);
+  if (!hints.length) {
+    hintEl.style.display = 'none';
+    hintEl.innerHTML = '';
+    return;
+  }
+  hintEl.style.display = 'block';
+  hintEl.innerHTML = `<div class="duo-hint-title">⚠️ Similar words found in existing entries:</div>` +
+    hints.slice(0,3).map(h => {
+      const d = h.entry.entry_date ? new Date(h.entry.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+      const preview = h.entry.entry_text.length > 100 ? h.entry.entry_text.slice(0,100)+'…' : h.entry.entry_text;
+      return `<div class="duo-hint-item">
+        <span class="duo-hint-date">${d}</span>
+        <span class="duo-hint-words">Shared: ${h.sharedWords.slice(0,5).join(', ')}</span>
+        <span class="duo-hint-preview">${preview}</span>
+      </div>`;
+    }).join('');
 }
 
 
