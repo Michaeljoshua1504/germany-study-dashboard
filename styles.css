@@ -500,7 +500,7 @@ html[data-theme="dark"] .note-saved-indicator { color: #2ecc71; }
 .duo-entry-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
 .duo-entry-card.editing { border-color: #378ADD; border-width: 1.5px; }
 
-.duo-entry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.duo-entry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
 .duo-entry-date { font-size: 12px; font-weight: 700; color: #14213c; }
 .duo-entry-actions-inline { margin-left: auto; display: flex; gap: 4px; }
 .duo-icon-btn { background: none; border: none; cursor: pointer; font-size: 13px; padding: 3px 6px; border-radius: 6px; opacity: 0.6; transition: opacity 0.15s, background 0.15s; }
@@ -509,9 +509,25 @@ html[data-theme="dark"] .note-saved-indicator { color: #2ecc71; }
 .duo-entry-text { font-size: 12.5px; line-height: 1.6; color: #444; white-space: pre-wrap; }
 
 .duo-entry-edit-row { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
-.duo-date-input, .duo-streak-input { border: 1px solid #d3d1c7; border-radius: 6px; padding: 6px 8px; font-size: 11.5px; }
-.duo-streak-input { width: 140px; }
+.duo-date-input { border: 1px solid #d3d1c7; border-radius: 6px; padding: 6px 8px; font-size: 11.5px; }
 .duo-entry-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* Duplicate hint (live typing warning) */
+.duo-dup-hint { background: #fff8e1; border: 1px solid #f5c842; border-radius: 8px; padding: 10px 12px; margin: 8px 0 4px 0; font-size: 12.5px; }
+.duo-hint-title { font-weight: 700; color: #b8860b; margin-bottom: 6px; }
+.duo-hint-item { background: #fffdf0; border-radius: 6px; padding: 6px 8px; margin-bottom: 5px; display: flex; flex-direction: column; gap: 2px; }
+.duo-hint-date { font-size: 11px; font-weight: 700; color: #8a7000; }
+.duo-hint-words { font-size: 11px; color: #b8860b; }
+.duo-hint-preview { font-size: 11.5px; color: #666; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Duplicate merge modal */
+.duo-dup-group { padding: 6px 0 10px; }
+.duo-dup-shared { font-size: 12px; color: #555; margin-bottom: 10px; background: #f4f0e8; border-radius: 6px; padding: 6px 10px; }
+.duo-dup-entries { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.duo-dup-entry { background: #f9f8f5; border: 1px solid #e0ded6; border-radius: 8px; padding: 10px 12px; }
+.duo-dup-date { font-size: 11px; font-weight: 700; color: #14213c; margin-bottom: 4px; }
+.duo-dup-text { font-size: 12px; color: #555; line-height: 1.5; max-height: 80px; overflow-y: auto; }
+.duo-dup-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* Dark mode */
 html[data-theme="dark"] .duo-entry-card { background: #20222a; border-color: #32343c; }
@@ -519,7 +535,17 @@ html[data-theme="dark"] .duo-entry-card.editing { border-color: #5a9bdc; }
 html[data-theme="dark"] .duo-entry-date { color: #e6e4dd; }
 html[data-theme="dark"] .duo-icon-btn:hover { background: #2a2c34; }
 html[data-theme="dark"] .duo-entry-text { color: #ccc9c0; }
-html[data-theme="dark"] .duo-date-input, html[data-theme="dark"] .duo-streak-input { background: #1a1c22; border-color: #3a3c44; color: #ccc; }
+html[data-theme="dark"] .duo-date-input { background: #1a1c22; border-color: #3a3c44; color: #ccc; }
+html[data-theme="dark"] .duo-dup-hint { background: #2a2510; border-color: #6b5a00; }
+html[data-theme="dark"] .duo-hint-title { color: #f5c842; }
+html[data-theme="dark"] .duo-hint-item { background: #221e0a; }
+html[data-theme="dark"] .duo-hint-date { color: #d4ae30; }
+html[data-theme="dark"] .duo-hint-words { color: #d4ae30; }
+html[data-theme="dark"] .duo-hint-preview { color: #aaa; }
+html[data-theme="dark"] .duo-dup-shared { background: #2a2c34; color: #bbb; }
+html[data-theme="dark"] .duo-dup-entry { background: #1e2028; border-color: #3a3c44; }
+html[data-theme="dark"] .duo-dup-date { color: #e6e4dd; }
+html[data-theme="dark"] .duo-dup-text { color: #bbb; }
 
 /* ═══════════════ GERMAN TEACHING NOTES (LIVE-TAUGHT CONTENT) ═══════════════ */
 .ger-taught-badge { background: #e6f0fb; color: #1a4b8c; padding: 1px 7px; border-radius: 6px; font-size: 9.5px; font-weight: 700; }
