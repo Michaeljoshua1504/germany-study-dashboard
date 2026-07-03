@@ -9,26 +9,40 @@
 </head>
 <body>
 
-<button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark / light theme">🌙</button>
-<div class="db-status-pill" id="db-status">
-  <div class="status-dot" id="db-dot"></div>
-  <span id="db-text">Connecting to Supabase...</span>
-</div>
-
 <header>
-  <h1>🎓 Germany University Comparison — Michael Joshua Padamuthum</h1>
-  <p>Complete analysis of all 21 universities · Last updated: 19 May 2026 · <span id="today-display" style="color:#8cf;font-weight:600;"></span></p>
-  
-  <div class="profile-bar">
-    <span class="pb">CGPA 7.18 · 68.65% · First Class</span>
-    <span class="pb">176 JNTUA Credits</span>
-    <span class="pb">IELTS 6.5</span>
-    <span class="pb">German A1 (learning)</span>
-    <span class="pb">3+ yrs Work Exp</span>
-    <span class="pb">APS Certificate ✓</span>
-    <span class="pb">Goal: DevOps Engineer in Germany</span>
+  <div class="header-top-row">
+    <div class="header-left">
+      <div class="header-flag">🇩🇪</div>
+      <div>
+        <h1>Michael Joshua Padamuthum</h1>
+        <p class="header-sub">Germany MSc/MEng Application Tracker · <span id="today-display"></span></p>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-status-chip" id="db-status">
+        <span class="status-dot" id="db-dot"></span>
+        <span id="db-text">Connecting...</span>
+      </div>
+      <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode" style="background:rgba(255,255,255,0.12);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background 0.2s;">🌙</button>
+    </div>
   </div>
 
+  <div class="header-goal-bar">
+    <span class="header-goal-badge">🎯 Goal: DevOps Engineer in Germany</span>
+    <span class="header-divider">·</span>
+    <span class="header-meta-pill">📍 Bangalore, India</span>
+    <span class="header-meta-pill">🎓 B.Tech CSE · CGPA 7.18</span>
+    <span class="header-meta-pill">💼 3+ yrs Exp</span>
+  </div>
+
+  <div class="profile-bar">
+    <span class="pb">🏆 First Class · 68.65%</span>
+    <span class="pb">📚 176 JNTUA Credits</span>
+    <span class="pb">🗣️ IELTS 6.5</span>
+    <span class="pb">🇩🇪 German A1 (learning)</span>
+    <span class="pb">✅ APS Certificate</span>
+    <span class="pb">🐳 Docker · CI/CD · GitHub Actions</span>
+  </div>
 </header>
 
 <nav class="main-nav">
