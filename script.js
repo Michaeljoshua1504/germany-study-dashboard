@@ -1579,6 +1579,118 @@ function duoClearSearch() {
   renderDuolingoLog();
 }
 
+// ── UNDO MERGE STATE ──
+let duoUndoState = null; // { keepId, keepOrigText, keepOrigDate, deletedEntry, timer, commitFn }
+let duoUndoInterval = null;
+
+function duoCommitMerge() {
+  if (!duoUndoState) return;
+  clearInterval(duoUndoInterval);
+  const { keepId, mergedText, mergedDate, deletedEntry } = duoUndoState;
+  if (sbClient) {
+    const isTemp1 = typeof keepId === 'string' && keepId.startsWith('temp-');
+    const isTemp2 = typeof deletedEntry.id === 'string' && deletedEntry.id.startsWith('temp-');
+    if (!isTemp1) sbClient.from('duolingo_log').update({ entry_date: mergedDate, entry_text: mergedText }).eq('id', keepId);
+    if (!isTemp2) sbClient.from('duolingo_log').delete().eq('id', deletedEntry.id);
+  }
+  duoUndoState = null;
+  // Hide undo toast
+  const toast = document.getElementById('duo-undo-toast');
+  if (toast) toast.style.display = 'none';
+}
+
+function duoUndoMerge() {
+  if (!duoUndoState) return;
+  clearInterval(duoUndoInterval);
+  const { keepId, keepOrigText, keepOrigDate, deletedEntry } = duoUndoState;
+  // Restore the kept entry to its original text
+  const keepIdx = duolingoEntries.findIndex(e => e.id === keepId);
+  if (keepIdx !== -1) {
+    duolingoEntries[keepIdx] = { ...duolingoEntries[keepIdx], entry_text: keepOrigText, entry_date: keepOrigDate };
+  }
+  // Re-insert the deleted entry
+  duolingoEntries.push(deletedEntry);
+  duoUndoState = null;
+  const toast = document.getElementById('duo-undo-toast');
+  if (toast) toast.style.display = 'none';
+  renderDuolingoLog();
+}
+
+function duoStartUndoCountdown() {
+  let secs = 60;
+  const toast = document.getElementById('duo-undo-toast');
+  const counter = document.getElementById('duo-undo-counter');
+  const bar = document.getElementById('duo-undo-bar');
+  if (!toast) return;
+  toast.style.display = 'flex';
+  if (counter) counter.textContent = secs;
+  if (bar) bar.style.width = '100%';
+  duoUndoInterval = setInterval(() => {
+    secs--;
+    if (counter) counter.textContent = secs;
+    if (bar) bar.style.width = (secs / 60 * 100) + '%';
+    if (secs <= 0) {
+      clearInterval(duoUndoInterval);
+      duoCommitMerge();
+    }
+  }, 1000);
+}
+
+// ── UNMERGE: split an entry that has [Merged from ...] marker back into two ──
+function unmergeEntry(id) {
+  const entry = duolingoEntries.find(e => e.id === id);
+  if (!entry) return;
+  const MARKER = /\[Merged from ([^\]]+):\]/;
+  const match = entry.entry_text.match(MARKER);
+  if (!match) { alert('No merge marker found in this entry.'); return; }
+
+  const splitIdx = entry.entry_text.indexOf(match[0]);
+  const part1 = entry.entry_text.slice(0, splitIdx).trim();
+  // Everything after the marker line
+  const afterMarker = entry.entry_text.slice(splitIdx + match[0].length).trim();
+
+  // Parse the original date from the marker text (e.g. "1 Jul 2026")
+  let part2Date = entry.entry_date; // fallback
+  try {
+    const parsedDate = new Date(match[1]);
+    if (!isNaN(parsedDate)) {
+      part2Date = parsedDate.getFullYear() + '-' +
+        String(parsedDate.getMonth()+1).padStart(2,'0') + '-' +
+        String(parsedDate.getDate()).padStart(2,'0');
+    }
+  } catch(e) {}
+
+  if (!part1 || !afterMarker) { alert('Could not split — one of the parts is empty.'); return; }
+
+  // Update kept entry with part1 only
+  const keepIdx = duolingoEntries.findIndex(e => e.id === id);
+  if (keepIdx !== -1) {
+    duolingoEntries[keepIdx] = { ...duolingoEntries[keepIdx], entry_text: part1 };
+  }
+
+  // Create a new entry for part2
+  const tempId = 'unmerged-' + Date.now();
+  const newEntry = { id: tempId, entry_date: part2Date, entry_text: afterMarker, streak: null, _isNew: true, _unmergedFrom: id };
+  duolingoEntries.push(newEntry);
+
+  // Persist to Supabase
+  if (sbClient) {
+    const isTemp = typeof id === 'string' && id.startsWith('temp-');
+    if (!isTemp) sbClient.from('duolingo_log').update({ entry_text: part1 }).eq('id', id);
+    sbClient.from('duolingo_log').insert({ entry_date: part2Date, entry_text: afterMarker, streak: null }).select().then(({ data, error }) => {
+      if (!error && data && data[0]) {
+        const idx2 = duolingoEntries.findIndex(e => e.id === tempId);
+        if (idx2 !== -1) {
+          duolingoEntries[idx2] = data[0];
+        }
+        renderDuolingoLog();
+      }
+    });
+  }
+
+  renderDuolingoLog();
+}
+
 // ── MERGE MODAL ──
 function openDuplicateModal() {
   const groups = findAllDuplicateGroups();
@@ -1593,21 +1705,34 @@ function openDuplicateModal() {
     if (!e1 || !e2) return '';
     const d1 = e1.entry_date ? new Date(e1.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
     const d2 = e2.entry_date ? new Date(e2.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+
+    // Split each entry text into individual lines for selective merge
+    const lines1 = e1.entry_text.split('\n').map(l => l.trim()).filter(Boolean);
+    const lines2 = e2.entry_text.split('\n').map(l => l.trim()).filter(Boolean);
+
+    const makeLineCheckboxes = (lines, entryId, side) => lines.map((line, li) =>
+      `<label class="duo-merge-line">
+        <input type="checkbox" id="duo-merge-${entryId}-${li}" data-entry="${entryId}" data-side="${side}" data-line="${li}" data-text="${line.replace(/"/g,'&quot;')}" checked>
+        <span>${line}</span>
+      </label>`
+    ).join('');
+
     return `
     <div class="duo-dup-group" id="duo-dup-group-${gi}">
       <div class="duo-dup-shared">🔗 Shared words: <strong>${g.sharedWords.slice(0,8).join(', ')}</strong></div>
+      <div style="font-size:12px;color:#888;margin-bottom:8px;">✅ Tick the lines you want to keep in the merged entry. Untick lines to exclude them.</div>
       <div class="duo-dup-entries">
         <div class="duo-dup-entry">
-          <div class="duo-dup-date">${d1}</div>
-          <div class="duo-dup-text">${e1.entry_text}</div>
+          <div class="duo-dup-date">📅 ${d1}</div>
+          <div class="duo-merge-lines">${makeLineCheckboxes(lines1, e1.id, 'e1')}</div>
         </div>
         <div class="duo-dup-entry">
-          <div class="duo-dup-date">${d2}</div>
-          <div class="duo-dup-text">${e2.entry_text}</div>
+          <div class="duo-dup-date">📅 ${d2}</div>
+          <div class="duo-merge-lines">${makeLineCheckboxes(lines2, e2.id, 'e2')}</div>
         </div>
       </div>
       <div class="duo-dup-actions">
-        <button class="dash-apply-btn" style="font-size:12px;padding:6px 14px;" onclick="mergeDuoEntries(${gi})">🔀 Merge into one</button>
+        <button class="dash-apply-btn" style="font-size:12px;padding:6px 14px;" onclick="mergeDuoEntries(${gi},'${e1.id}','${e2.id}')">🔀 Merge selected lines</button>
         <button class="uni-secondary-btn" style="font-size:12px;padding:6px 14px;" onclick="dismissDupGroup(${gi})">✅ Keep both</button>
       </div>
     </div>`;
@@ -1622,39 +1747,60 @@ function closeDuplicateModal() {
   duoDuplicateModal = null;
 }
 
-function mergeDuoEntries(groupIdx) {
+function mergeDuoEntries(groupIdx, e1id, e2id) {
   if (!duoDuplicateModal || !duoDuplicateModal[groupIdx]) return;
   const g = duoDuplicateModal[groupIdx];
-  const e1 = g.entries[0], e2 = g.entries[1];
+  const e1 = g.entries.find(e => e.id === e1id);
+  const e2 = g.entries.find(e => e.id === e2id);
   if (!e1 || !e2) return;
 
-  // Use the earlier date, merge texts
-  const mergedDate = e1.entry_date < e2.entry_date ? e1.entry_date : e2.entry_date;
-  const mergedText = e1.entry_text.trim() + '\n\n[Merged from ' +
-    new Date(e2.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) + ':]\n' +
-    e2.entry_text.trim();
+  // Collect only the checked lines, preserving order: e1 lines first, then e2 lines
+  const getCheckedLines = (entryId) => {
+    const boxes = document.querySelectorAll(`input[data-entry="${entryId}"]`);
+    const lines = [];
+    boxes.forEach(cb => { if (cb.checked) lines.push(cb.getAttribute('data-text')); });
+    return lines;
+  };
 
-  // Delete entry 2, update entry 1
-  const deleteId = e2.id;
-  const keepIdx = duolingoEntries.findIndex(e => e.id === e1.id);
+  const linesFromE1 = getCheckedLines(e1id);
+  const linesFromE2 = getCheckedLines(e2id);
+
+  if (linesFromE1.length === 0 && linesFromE2.length === 0) {
+    alert('Select at least one line to merge!');
+    return;
+  }
+
+  const mergedDate = e1.entry_date < e2.entry_date ? e1.entry_date : e2.entry_date;
+  const d2label = new Date(e2.entry_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const mergedText = [
+    ...linesFromE1,
+    linesFromE2.length ? `\n[Merged from ${d2label}:]` : '',
+    ...linesFromE2
+  ].filter(Boolean).join('\n');
+
+  // Save originals for undo
+  const keepOrigText = e1.entry_text;
+  const keepOrigDate = e1.entry_date;
+  const deletedEntry = { ...e2 };
+
+  // Apply in memory immediately
+  const keepIdx = duolingoEntries.findIndex(e => e.id === e1id);
   if (keepIdx !== -1) {
     duolingoEntries[keepIdx] = { ...duolingoEntries[keepIdx], entry_date: mergedDate, entry_text: mergedText };
   }
-  duolingoEntries = duolingoEntries.filter(e => e.id !== deleteId);
+  duolingoEntries = duolingoEntries.filter(e => e.id !== e2id);
 
-  if (sbClient) {
-    const isTemp1 = typeof e1.id === 'string' && e1.id.startsWith('temp-');
-    const isTemp2 = typeof e2.id === 'string' && e2.id.startsWith('temp-');
-    if (!isTemp1) sbClient.from('duolingo_log').update({ entry_date: mergedDate, entry_text: mergedText }).eq('id', e1.id);
-    if (!isTemp2) sbClient.from('duolingo_log').delete().eq('id', deleteId);
-  }
+  // Set undo state — Supabase write is DEFERRED by 60s
+  if (duoUndoState) duoCommitMerge(); // commit any previous pending merge first
+  duoUndoState = { keepId: e1id, mergedText, mergedDate, keepOrigText, keepOrigDate, deletedEntry };
+  duoStartUndoCountdown();
 
   // Remove this group from modal
   duoDuplicateModal.splice(groupIdx, 1);
   const grpEl = document.getElementById('duo-dup-group-' + groupIdx);
   if (grpEl) {
-    grpEl.innerHTML = '<div style="color:#2ea84f;font-weight:600;padding:10px 0;">✅ Merged successfully!</div>';
-    setTimeout(() => { if (duoDuplicateModal && duoDuplicateModal.length === 0) closeDuplicateModal(); }, 800);
+    grpEl.innerHTML = '<div style="color:#2ea84f;font-weight:600;padding:10px 0;">✅ Merged! You have 60s to undo.</div>';
+    setTimeout(() => { if (duoDuplicateModal && duoDuplicateModal.length === 0) closeDuplicateModal(); }, 1200);
   }
   renderDuolingoLog();
 }
@@ -1751,11 +1897,13 @@ function renderDuolingoLog() {
       </div>`;
     }
 
+    const hasMergeMarker = e.entry_text && e.entry_text.includes('[Merged from');
     return `
     <div class="duo-entry-card">
       <div class="duo-entry-header">
         <span class="duo-entry-date">${dateLabel}</span>
         <span class="dash-pill amber">🔥 ${calcAutoStreak()} day streak</span>
+        ${hasMergeMarker ? `<span class="dash-pill" style="background:#e8f0fe;color:#1a4b8c;font-size:10px;cursor:pointer;" onclick="unmergeEntry('${e.id}')" title="Split this merged entry back into two">✂️ Unmerge</span>` : ''}
         <div class="duo-entry-actions-inline">
           ${duoConfirmDeleteId === e.id
             ? `<span style="font-size:12px;color:#e05555;font-weight:600;margin-right:6px;">Delete?</span>
