@@ -598,7 +598,7 @@ const MAIN_TAB_DEFAULTS = {
 };
 
 function showMainTab(mainTabId, el) {
-  document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   document.querySelectorAll('.sub-nav').forEach(nav => nav.style.display = 'none');
   const targetNav = document.getElementById('nav-' + mainTabId);
