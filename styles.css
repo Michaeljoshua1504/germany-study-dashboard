@@ -450,6 +450,18 @@ html[data-theme="dark"] .uni-secondary-btn { background: #2a2c34; color: #ccc; b
 
 /* ═══════════════ MY APPLICATIONS TAB ═══════════════ */
 .apps-section-label { font-size: 13px; font-weight: 700; color: #14213c; margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e0ded6; }
+
+/* Rejected section */
+#rejected-cards-grid { display: flex; flex-direction: column; gap: 6px; }
+.rejected-card { background: #fff; border: 1px solid #f0c8c8; border-left: 3px solid #E24B4A; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.rejected-card-left { flex: 1; }
+.rejected-name { font-size: 12.5px; font-weight: 700; color: #2c2c2a; }
+.rejected-sub { font-size: 11px; color: #888; margin-top: 1px; }
+.rejected-card-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.rejected-badge { font-size: 10px; font-weight: 700; background: #FCEBEB; color: #A32D2D; padding: 3px 10px; border-radius: 20px; }
+html[data-theme="dark"] .rejected-card { background: #20222a; border-color: #5a2020; border-left-color: #E24B4A; }
+html[data-theme="dark"] .rejected-name { color: #e6e4dd; }
+html[data-theme="dark"] .apps-section-label { color: #cdd6ff; border-bottom-color: #2a2c34; }
 .apps-section-label:first-child { margin-top: 0; }
 
 .accepted-card { border-left: 3px solid #1a6b3c; }
