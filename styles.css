@@ -5,22 +5,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; f
 header {
   background: linear-gradient(135deg, #0d1b2a 0%, #14213c 60%, #1a2f50 100%);
   color: #fff;
-  padding: 20px 28px 16px;
+  padding: 14px 28px;
   border-bottom: 3px solid #1e3a5f;
 }
-.header-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 12px; }
+.header-top-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .header-left { display: flex; align-items: center; gap: 14px; }
-.header-flag { font-size: 38px; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
-header h1 { font-size: 22px; font-weight: 700; margin: 0 0 3px 0; letter-spacing: -0.3px; color: #fff; }
-.header-sub { font-size: 12px; color: #8aa8cc; margin: 0; }
+.header-flag { font-size: 32px; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
+header h1 { font-size: 20px; font-weight: 700; margin: 0 0 2px 0; letter-spacing: -0.3px; color: #fff; }
+.header-sub { font-size: 11.5px; color: #8aa8cc; margin: 0; }
 .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .header-status-chip { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: #cce; white-space: nowrap; }
-.header-goal-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-.header-goal-badge { background: linear-gradient(90deg, #2563eb, #1d4ed8); color: #fff; border-radius: 6px; padding: 4px 14px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em; box-shadow: 0 2px 8px rgba(37,99,235,0.4); }
-.header-divider { color: #4a6080; font-size: 14px; }
-.header-meta-pill { font-size: 12px; color: #8aa8cc; font-weight: 500; }
-.profile-bar { display: flex; flex-wrap: wrap; gap: 7px; }
-.pb { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 4px 11px; font-size: 11.5px; color: #c8d8ec; font-weight: 500; }
 
 /* ═══════════════ MAIN NAV ═══════════════ */
 .main-nav { background: #14213c; padding: 0 24px; display: flex; justify-content: center; gap: 4px; overflow-x: auto; border-bottom: 2px solid #0d1627; }
