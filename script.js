@@ -789,93 +789,215 @@ function sortOverview(key) {
 // ═══════════════ 8. DASHBOARD RENDERER ═══════════════
 
 function renderDashboard() {
-  const grid = document.getElementById('dash-grid');
-  if (!grid) return;
 
-  const FIT_ACCENT = { hof:'#1D9E75', chemnitz:'#1D9E75', fulda:'#378ADD', rheinmain:'#378ADD', koblenz:'#378ADD', siegen:'#378ADD', frankfurt:'#378ADD', kiel:'#BA7517' };
-  const FIT_BG    = { hof:'#e6f4ec', chemnitz:'#e6f4ec', fulda:'#e6f0fb', rheinmain:'#e6f0fb', koblenz:'#e6f0fb', siegen:'#e6f0fb', frankfurt:'#e6f0fb', kiel:'#fef3e0' };
-
-  grid.innerHTML = UNI_ORDER.map(key => {
-    const m = UNI_META[key];
-    const stage = getStage(key);
-    const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
-    const accent = FIT_ACCENT[key];
-    const fitBg  = FIT_BG[key];
-
-    // Deadline pill
-    let dlPill = '<span class="dash-pill gray">No fixed deadline</span>';
-    if (dl !== null) {
-      if (dl < 0) dlPill = '<span class="dash-pill closed">Deadline passed</span>';
-      else if (dl === 0) dlPill = '<span class="dash-pill urgent">TODAY!</span>';
-      else if (dl <= 14) dlPill = `<span class="dash-pill urgent">🔥 ${dl}d left</span>`;
-      else if (dl <= 30) dlPill = `<span class="dash-pill soon">${dl} days left</span>`;
-      else dlPill = `<span class="dash-pill ok">${dl} days left</span>`;
-    }
-
-    // Stage pill
-    const stageColors = { not_started:'gray', submitted:'blue', interview:'amber', decision:'amber', accepted:'green', rejected:'red', visa:'green', enrolled:'green' };
-    const stagePill = `<span class="dash-pill ${stageColors[stage] || 'gray'}">${STAGE_LABELS[stage] || 'Not Started'}</span>`;
-
-    // Tuition
-    const tuitionStr = m.tuitionNum > 0 ? `<span class="dash-pill amber">€${m.tuitionNum.toLocaleString()}/sem</span>` : '<span class="dash-pill green">Free</span>';
-
-    return `
-    <div class="dash-card" style="border-top:3px solid ${accent};" onclick="openUniDetail('${key}')">
-      <div class="dash-card-top">
-        <div>
-          <div class="dash-uni-name">${m.title}</div>
-          <div class="dash-uni-prog">${m.sub}</div>
-        </div>
-        <div class="dash-fit-badge" style="background:${fitBg};color:${accent};">${m.fit.replace(' ⭐','').replace(' ✅','').replace(' ⚠️','')}</div>
-      </div>
-      <div class="dash-card-mid">
-        <div class="dash-meta-row">
-          <span class="dash-meta-label">Deadline</span>
-          <span>${m.deadlineKey ? new Date(m.deadlineKey+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : 'Rolling'}</span>
-          ${dlPill}
-        </div>
-        <div class="dash-meta-row">
-          <span class="dash-meta-label">Status</span>
-          ${stagePill}
-        </div>
-        <div class="dash-meta-row">
-          <span class="dash-meta-label">Tuition</span>
-          ${tuitionStr}
-          <span class="dash-pill gray">€${m.livingNum}/mo living</span>
-        </div>
-      </div>
-      <div class="dash-card-footer">
-        <a href="${m.link}" target="_blank" class="dash-apply-btn" onclick="event.stopPropagation()">Apply →</a>
-        ${stage === 'not_started' ? `<button class="dash-submit-btn" onclick="event.stopPropagation();markSubmitted('${key}')">✅ Mark Submitted</button>` : `<button class="dash-submit-btn submitted" onclick="event.stopPropagation();undoSubmitted('${key}')">↩ Undo Submit</button>`}
-      </div>
-    </div>`;
-  }).join('');
-
-  // Stat cards
-  const subCount = Object.keys(UNI_META).filter(k => getStage(k) !== 'not_started').length;
+  // ── STAT STRIP ──
+  const subCount = Object.keys(UNI_META).filter(k => getStage(k) !== 'not_started' && getStage(k) !== 'rejected').length;
   const accCount = Object.keys(UNI_META).filter(k => ['accepted','visa','enrolled'].includes(getStage(k))).length;
-  const now = new Date();
-  const monthEnd = new Date(now.getFullYear(), now.getMonth()+1, 0);
-  const dlThisMonth = Object.values(deadlines).filter(d => { const dd = new Date(d+'T00:00:00'); return dd >= now && dd <= monthEnd; }).length;
-  const s = document.getElementById('stat-submitted'); if (s) s.textContent = subCount;
-  const a = document.getElementById('stat-accepted');  if (a) a.textContent = accCount;
-  const dl2 = document.getElementById('stat-deadlines'); if (dl2) dl2.textContent = dlThisMonth;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const upcomingDl = Object.entries(deadlines).filter(([k,d]) => {
+    const dd = new Date(d+'T00:00:00');
+    const stage = getStage(k);
+    return dd >= now && stage !== 'rejected';
+  }).length;
+  const ss = document.getElementById('stat-submitted'); if (ss) ss.textContent = subCount;
+  const sa = document.getElementById('stat-accepted');  if (sa) sa.textContent = accCount;
+  const sd = document.getElementById('stat-deadlines'); if (sd) sd.textContent = upcomingDl;
 
-  // Alert strip
-  const alertEl = document.getElementById('dash-alert');
-  if (alertEl) {
-    const urgent = Object.entries(deadlines)
-      .filter(([k]) => getStage(k) === 'not_started')
-      .map(([k,d]) => ({key:k, days:daysLeft(d)}))
-      .filter(x => x.days >= 0 && x.days <= 14)
-      .sort((a,b) => a.days - b.days);
-    if (urgent.length > 0) {
-      const names = { hof:'Hof UAS', fulda:'Fulda UAS', koblenz:'Koblenz', chemnitz:'Chemnitz TU', rheinmain:'RheinMain UAS', frankfurt:'Frankfurt UAS', kiel:'Kiel UAS', siegen:'Siegen' };
-      alertEl.style.display = 'flex';
-      alertEl.innerHTML = `<span>🔥 <strong>Urgent:</strong> ${urgent.map(x=>`${names[x.key]} (${x.days===0?'today':x.days+'d'})`).join(' · ')}</span>`;
-    } else {
-      alertEl.style.display = 'none';
+  // ── SECTION A: FOCUS STRIP ──
+  const focusEl = document.getElementById('focus-strip');
+  if (focusEl) {
+    const items = [];
+
+    // Accepted offers needing action
+    Object.keys(UNI_META).forEach(k => {
+      const stage = getStage(k);
+      const m = UNI_META[k];
+      if (stage === 'accepted' && m.secureDeadline) {
+        const d = daysLeft(m.secureDeadline);
+        const urgency = d <= 14 ? 'red' : d <= 30 ? 'amber' : 'blue';
+        const chipText = d <= 0 ? 'Overdue!' : d + ' days left';
+        items.push({ urgency, text: `<strong>${m.title.split('—')[0].trim()} enrollment fee pending</strong> — pay via PRIMUSS portal`, chip: chipText, chipClass: urgency });
+      }
+    });
+
+    // Urgent application deadlines (not yet submitted, not rejected)
+    Object.entries(deadlines)
+      .filter(([k, d]) => {
+        const stage = getStage(k);
+        return stage === 'not_started' && daysLeft(d) >= 0 && daysLeft(d) <= 30;
+      })
+      .sort(([,a],[,b]) => daysLeft(a) - daysLeft(b))
+      .forEach(([k, d]) => {
+        const m = UNI_META[k];
+        const dl = daysLeft(d);
+        const hasLOM = !UNI_EXTRA_DOCS[k]?.some(doc => doc.toLowerCase().includes('letter of motivation — still to write'));
+        const urgency = dl <= 11 ? 'red' : 'amber';
+        const action = hasLOM ? `LOM ready — submit via ${m.applyVia}` : `Write LOM first, then submit via ${m.applyVia}`;
+        items.push({ urgency, text: `<strong>${m.title.split('—')[0].replace('University of Applied Sciences','UAS').replace('University of Technology','TU').replace('University','Uni').trim()} deadline in ${dl} day${dl===1?'':'s'}</strong> — ${action}`, chip: dl + 'd left', chipClass: urgency });
+      });
+
+    // German progress nudge
+    const gerCompleted = germanCompletedCount();
+    const gerNext = gerCompleted + 1;
+    if (gerCompleted < 31) {
+      const isIncomplete = gerCompleted === 0 || !(germanProgress[gerNext-1]?.completed);
+      items.push({ urgency: 'blue', text: `<strong>German Day ${gerNext <= 31 ? gerNext : 31} ${gerCompleted === 0 ? 'not started' : 'in progress'}</strong> — continue your A1 curriculum`, chip: 'In progress', chipClass: 'blue' });
     }
+
+    // Decisions pending
+    Object.keys(UNI_META).forEach(k => {
+      if (getStage(k) === 'submitted') {
+        const m = UNI_META[k];
+        items.push({ urgency: 'green', text: `${m.title.split('—')[0].trim()} — awaiting decision`, chip: 'Waiting', chipClass: 'green' });
+      }
+    });
+
+    if (items.length === 0) {
+      focusEl.innerHTML = '<div class="focus-empty">All clear — nothing urgent right now.</div>';
+    } else {
+      const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
+      const chipBg = { red:'#FCEBEB', amber:'#FAEEDA', blue:'#E6F1FB', green:'#EAF3DE' };
+      const chipTx = { red:'#A32D2D', amber:'#854F0B', blue:'#185FA5', green:'#3B6D11' };
+      focusEl.innerHTML = items.map(item => `
+        <div class="focus-item">
+          <div class="focus-dot" style="background:${colorMap[item.urgency]};"></div>
+          <div class="focus-text">${item.text}</div>
+          <div class="focus-chip" style="background:${chipBg[item.chipClass]};color:${chipTx[item.chipClass]};">${item.chip}</div>
+        </div>`).join('');
+    }
+  }
+
+  // ── SECTION B LEFT: submitted universities only ──
+  const subList = document.getElementById('dash-submitted-list');
+  if (subList) {
+    const submitted = Object.keys(UNI_META).filter(k => {
+      const stage = getStage(k);
+      return stage !== 'not_started' && stage !== 'rejected';
+    });
+    if (submitted.length === 0) {
+      subList.innerHTML = '<div class="focus-empty">No applications submitted yet.</div>';
+    } else {
+      const stageColor = { submitted:'#378ADD', interview:'#BA7517', decision:'#BA7517', accepted:'#1D9E75', visa:'#1D9E75', enrolled:'#1D9E75' };
+      const stageBg    = { submitted:'#E6F1FB', interview:'#FAEEDA', decision:'#FAEEDA', accepted:'#EAF3DE', visa:'#EAF3DE', enrolled:'#EAF3DE' };
+      subList.innerHTML = submitted.map(k => {
+        const m = UNI_META[k];
+        const stage = getStage(k);
+        const label = STAGE_LABELS[stage] || stage;
+        const shortName = m.title.split('—')[0].replace('University of Applied Sciences','UAS').replace('University of Technology','TU').replace('University','Uni').trim();
+        return `<div class="dash-sub-row">
+          <span class="dash-sub-name">${shortName}</span>
+          <span class="dash-sub-chip" style="background:${stageBg[stage]||'#eee'};color:${stageColor[stage]||'#666'};">${label}</span>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // ── SECTION B RIGHT: German snapshot ──
+  const completed = germanCompletedCount();
+  const words = germanWordCount();
+  const pct = Math.round((completed / 31) * 100);
+  const nextDay = Math.min(completed + 1, 31);
+  const el_days = document.getElementById('dash-ger-days'); if (el_days) el_days.textContent = completed + '/31';
+  const el_words = document.getElementById('dash-ger-words'); if (el_words) el_words.textContent = words;
+  const el_pct = document.getElementById('dash-ger-pct'); if (el_pct) el_pct.textContent = pct + '%';
+  const el_fill = document.getElementById('dash-ger-fill'); if (el_fill) el_fill.style.width = Math.max(pct, 2) + '%';
+  const el_next = document.getElementById('dash-ger-next'); if (el_next) el_next.textContent = completed >= 31 ? 'Complete! 🎉' : `Day ${nextDay}`;
+  // Duo streak
+  const el_streak = document.getElementById('dash-duo-streak');
+  if (el_streak) {
+    const saved = duolingoEntries.filter(e => !e._isNew && e.entry_date);
+    if (saved.length === 0) { el_streak.textContent = '—'; }
+    else {
+      const dates = [...new Set(saved.map(e => e.entry_date))].sort((a,b) => b.localeCompare(a));
+      const todayStr = new Date().toISOString().slice(0,10);
+      const yesterStr = new Date(Date.now()-86400000).toISOString().slice(0,10);
+      let streak = 0;
+      if (dates[0] === todayStr || dates[0] === yesterStr) {
+        streak = 1;
+        for (let i = 1; i < dates.length; i++) {
+          const prev = new Date(dates[i-1]+'T00:00:00');
+          const curr = new Date(dates[i]+'T00:00:00');
+          if (Math.round((prev-curr)/86400000) === 1) streak++;
+          else break;
+        }
+      }
+      el_streak.textContent = streak > 0 ? `🔥 ${streak} day${streak===1?'':'s'}` : '—';
+    }
+  }
+
+  // ── SECTION C: WHAT'S NEXT TABLE ──
+  const nextTable = document.getElementById('dash-next-table');
+  if (nextTable) {
+    // Define next action per university — only show relevant ones (not rejected, not Koblenz passed)
+    const NEXT_ACTION = {
+      hof: () => {
+        const stage = getStage('hof');
+        if (stage === 'accepted') return { action: 'Pay €3,448.22 enrollment fee via PRIMUSS portal', urgency: 'red' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+      fulda: () => {
+        const stage = getStage('fulda');
+        if (stage === 'submitted') return { action: 'Awaiting decision from uni-assist', urgency: 'green' };
+        if (stage === 'accepted') return { action: 'Accept offer and prepare enrollment', urgency: 'amber' };
+        return null;
+      },
+      chemnitz: () => {
+        const stage = getStage('chemnitz');
+        if (stage === 'not_started') return { action: 'Submit via eduapplication.de — LOM ready', urgency: 'red' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+      rheinmain: () => {
+        const stage = getStage('rheinmain');
+        if (stage === 'not_started') return { action: 'Write LOM first, then submit via uni-assist', urgency: 'red' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+      siegen: () => {
+        const stage = getStage('siegen');
+        if (stage === 'not_started') return { action: 'Apply anytime via master-cs.eti.uni-siegen.de — no fixed deadline', urgency: 'blue' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+      kiel: () => {
+        const stage = getStage('kiel');
+        if (stage === 'not_started') return { action: 'Take GRE first — then apply via uni-assist by Sep 15', urgency: 'amber' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+      frankfurt: () => {
+        const stage = getStage('frankfurt');
+        if (stage === 'not_started') return { action: 'Apply via uni-assist — deadline Oct 15', urgency: 'blue' };
+        if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        return null;
+      },
+    };
+
+    const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
+    const rows = [];
+    ['hof','fulda','chemnitz','rheinmain','siegen','kiel','frankfurt'].forEach(k => {
+      const stage = getStage(k);
+      if (stage === 'rejected') return; // skip rejected
+      const fn = NEXT_ACTION[k];
+      if (!fn) return;
+      const result = fn();
+      if (!result) return;
+      const m = UNI_META[k];
+      const shortName = m.title.split('—')[0].replace('University of Applied Sciences','UAS').replace('University of Technology','TU').replace('University','Uni').trim();
+      const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
+      const dlText = dl === null ? 'Rolling' : dl < 0 ? 'Passed' : dl + 'd left';
+      rows.push(`<div class="next-row">
+        <div class="next-dot" style="background:${colorMap[result.urgency]};"></div>
+        <div class="next-name">${shortName}</div>
+        <div class="next-action">${result.action}</div>
+        <div class="next-dl">${dlText}</div>
+      </div>`);
+    });
+
+    nextTable.innerHTML = rows.length > 0
+      ? `<div class="next-header"><span class="next-name">University</span><span class="next-action">Next action</span><span class="next-dl">Deadline</span></div>` + rows.join('')
+      : '<div class="focus-empty">Nothing to show.</div>';
   }
 }
 
