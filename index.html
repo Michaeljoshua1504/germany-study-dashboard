@@ -43,36 +43,78 @@
 
 <div id="tab-dashboard" class="section active">
 
-  <!-- Stat strip -->
+  <!-- ── STAT STRIP ── -->
   <div class="dash-stats">
     <div class="dash-stat">
       <div class="dash-stat-num" id="stat-submitted">0</div>
       <div class="dash-stat-label">Submitted</div>
     </div>
     <div class="dash-stat">
-      <div class="dash-stat-num" id="stat-deadlines">0</div>
-      <div class="dash-stat-label">Deadlines This Month</div>
-    </div>
-    <div class="dash-stat">
       <div class="dash-stat-num" id="stat-accepted">0</div>
       <div class="dash-stat-label">Offers Received</div>
     </div>
     <div class="dash-stat">
-      <div class="dash-stat-num">8</div>
-      <div class="dash-stat-label">Universities Tracked</div>
+      <div class="dash-stat-num" id="stat-deadlines">0</div>
+      <div class="dash-stat-label">Upcoming Deadlines</div>
     </div>
   </div>
 
-  <!-- Urgent alert strip — hidden when no urgent deadlines -->
-  <div class="dash-alert" id="dash-alert" style="display:none;"></div>
+  <!-- ── SECTION A: TODAY'S FOCUS ── -->
+  <div class="home-section-label">Today's focus</div>
+  <div class="focus-strip" id="focus-strip"></div>
 
-  <!-- University cards grid -->
-  <div class="dash-grid" id="dash-grid"></div>
+  <!-- ── SECTION B: TWO COLUMNS ── -->
+  <div class="home-two-col">
 
-  <!-- Rejected note -->
-  <div class="note-box" style="margin-top:16px;">
-    <strong>🚫 13 universities rejected:</strong> Augsburg (deadline passed + outstanding grades), Stuttgart (deadline passed + tuition), Bingen (210 ECTS required), Bamberg (grade 2.0 + GRE), Göttingen (deadline passed), SRH Heidelberg (€6,950/sem private), Potsdam/HPI (C1 English required), Rostock (IELTS 7.0 + CGPA 85%), Deggendorf (embedded systems, wrong field), Heilbronn (210 ECTS + tuition), Hildesheim (research-focused, no DevOps), Hof MSc (oral exam + 18-week internship cert required), Hof Applied Research (same).
+    <!-- Left: submitted universities only -->
+    <div class="home-card">
+      <div class="home-card-head">
+        <span class="home-card-title">Applications</span>
+        <span class="home-card-link" onclick="showTab('applications', document.querySelector('#nav-admission .tab:nth-child(3)'))">view pipeline →</span>
+      </div>
+      <div id="dash-submitted-list"></div>
+    </div>
+
+    <!-- Right: German A1 snapshot -->
+    <div class="home-card">
+      <div class="home-card-head">
+        <span class="home-card-title">German A1 Progress</span>
+        <span class="home-card-link" onclick="showMainTab('german', document.querySelector('.topbar-tab:nth-child(2)'))">open →</span>
+      </div>
+      <div class="home-ger-stats">
+        <div class="home-ger-stat">
+          <div class="home-ger-num" id="dash-ger-days">0/31</div>
+          <div class="home-ger-label">Days done</div>
+        </div>
+        <div class="home-ger-stat">
+          <div class="home-ger-num" id="dash-ger-words">0</div>
+          <div class="home-ger-label">Words learned</div>
+        </div>
+      </div>
+      <div class="home-ger-bar-wrap">
+        <div class="home-ger-bar-row">
+          <span class="home-ger-bar-label">A1 progress</span>
+          <span class="home-ger-bar-pct" id="dash-ger-pct">0%</span>
+        </div>
+        <div class="home-ger-track"><div class="home-ger-fill" id="dash-ger-fill"></div></div>
+      </div>
+      <div class="home-ger-rows">
+        <div class="home-ger-row">
+          <span class="home-ger-key">Duolingo streak</span>
+          <span class="home-ger-val" id="dash-duo-streak">—</span>
+        </div>
+        <div class="home-ger-row">
+          <span class="home-ger-key">Next session</span>
+          <span class="home-ger-val" id="dash-ger-next">—</span>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- ── SECTION C: WHAT'S NEXT ── -->
+  <div class="home-section-label" style="margin-top:20px;">What's next — per university</div>
+  <div class="home-next-table" id="dash-next-table"></div>
 
 </div>
 
