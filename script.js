@@ -212,7 +212,7 @@ function setOfferField(key, field, value) {
 }
 
 // ─── UI renderers for Pipeline ───
-function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); updateAllDocToggleLabels(); }
+function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderRejected(); renderAccepted(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); updateAllDocToggleLabels(); }
 
 function applySubmittedState() {
   Object.keys(UNI_META).forEach(key => {
@@ -237,10 +237,10 @@ function renderPipeline() {
   const grid = document.getElementById('submitted-cards-grid');
   const section = document.getElementById('inprogress-section');
   if (!grid) return;
-  // In-progress = submitted, interview, decision, rejected (accepted/visa/enrolled live in renderAccepted)
+  // In-progress = submitted, interview, decision only — rejected moves to its own section
   const started = Object.keys(UNI_META).filter(k => {
     const s = getStage(k);
-    return s !== 'not_started' && !['accepted','visa','enrolled'].includes(s);
+    return !['not_started','accepted','visa','enrolled','rejected'].includes(s);
   });
 
   if (started.length === 0) {
@@ -251,6 +251,32 @@ function renderPipeline() {
     grid.innerHTML = started.map(key => buildPipelineCard(key)).join('');
   }
   updateAppsEmptyState();
+}
+
+function renderRejected() {
+  const grid = document.getElementById('rejected-cards-grid');
+  const section = document.getElementById('rejected-section');
+  if (!grid) return;
+  const rejected = Object.keys(UNI_META).filter(k => getStage(k) === 'rejected');
+  if (rejected.length === 0) {
+    if (section) section.style.display = 'none';
+    grid.innerHTML = '';
+    return;
+  }
+  if (section) section.style.display = 'block';
+  grid.innerHTML = rejected.map(key => {
+    const m = UNI_META[key];
+    return `<div class="rejected-card">
+      <div class="rejected-card-left">
+        <div class="rejected-name">${m.title.split('—')[0].trim()}</div>
+        <div class="rejected-sub">${m.sub}</div>
+      </div>
+      <div class="rejected-card-right">
+        <span class="rejected-badge">Rejected</span>
+        <button class="pipeline-btn ghost" style="font-size:10px;padding:4px 10px;" onclick="undoStage('${key}')">↩ Undo</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function buildPipelineCard(key) {
