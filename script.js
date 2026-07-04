@@ -976,9 +976,9 @@ function renderDashboard() {
 
     const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
     const rows = [];
-    ['hof','fulda','chemnitz','rheinmain','siegen','kiel','frankfurt'].forEach(k => {
+    ['hof','fulda','chemnitz','rheinmain'].forEach(k => {
       const stage = getStage(k);
-      if (stage === 'rejected') return; // skip rejected
+      if (stage === 'rejected') return;
       const fn = NEXT_ACTION[k];
       if (!fn) return;
       const result = fn();
