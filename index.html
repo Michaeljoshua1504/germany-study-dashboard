@@ -9,29 +9,23 @@
 </head>
 <body>
 
-<header>
-  <div class="header-top-row">
-    <div class="header-left">
-      <div class="header-flag">🇩🇪</div>
-      <div>
-        <h1>Michael Joshua</h1>
-        <p class="header-sub">Germany Application Tracker · <span id="today-display"></span></p>
-      </div>
-    </div>
-    <div class="header-right">
-      <div class="header-status-chip" id="db-status">
-        <span class="status-dot" id="db-dot"></span>
-        <span id="db-text">Connecting...</span>
-      </div>
-      <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode" style="background:rgba(255,255,255,0.12);border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background 0.2s;">🌙</button>
-    </div>
+<nav class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-flag">🇩🇪</span>
+    <span class="topbar-wordmark">Germany Dashboard</span>
   </div>
-</header>
-
-<nav class="main-nav">
-  <div class="main-tab active" onclick="showMainTab('admission', this)">🎯 Admission Phase</div>
-  <div class="main-tab" onclick="showMainTab('german', this)">🇩🇪 German Language</div>
-  <div class="main-tab locked" title="Unlocks when you land in Germany 🇩🇪">🇩🇪 Life Tracker 🔒</div>
+  <div class="topbar-tabs">
+    <div class="topbar-tab active" onclick="showMainTab('admission', this)">Admission</div>
+    <div class="topbar-tab" onclick="showMainTab('german', this)">German</div>
+    <div class="topbar-tab locked" title="Unlocks when you land in Germany 🇩🇪">Life Tracker 🔒</div>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-status" id="db-status">
+      <span class="status-dot" id="db-dot"></span>
+      <span id="db-text">Connecting...</span>
+    </div>
+    <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode" class="topbar-theme-btn">🌙</button>
+  </div>
 </nav>
 
 <nav class="sub-nav" id="nav-admission">
