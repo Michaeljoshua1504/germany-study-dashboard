@@ -51,7 +51,7 @@ const UNI_META = {
 };
 
 const SHARED_DOCS = [ 'Valid passport (18+ months validity remaining)', 'Passport-size biometric photographs', 'APS Certificate (Akademische Prüfstelle) — ✓ already obtained', 'IELTS certificate (6.5) — confirm it won\'t expire before intake', '10th & 12th marksheets', "Bachelor's degree certificate + provisional certificate", 'Semester-wise transcripts / consolidated marksheet (CGPA 7.18)', 'Updated CV / résumé', 'Statement of Purpose / Letter of Motivation (tailored per university)', '2 Letters of Recommendation (academic or professional)', 'Work experience certificates / relieving letters (3+ yrs)', 'uni-assist VPD / university application form', 'Application fee payment receipt (where applicable)' ];
-const UNI_EXTRA_DOCS = { hof: ['Proof of 3+ years relevant work experience'], fulda: ['Goethe-Zertifikat A1 German certificate — ⚠️ still pending, book in Hyderabad'], koblenz: ['Project / work sample — your blockchain forensic evidence management project (used to resolve uni-assist app #3589260)'], siegen: [], chemnitz: ['Letter of Motivation — still to write'], rheinmain: ['Letter of Motivation — still to write'], frankfurt: [], kiel: ['GRE General score report — register & take the test'] };
+const UNI_EXTRA_DOCS = { hof: ['Proof of 3+ years relevant work experience'], fulda: ['Goethe-Zertifikat A1 German certificate — ⚠️ still pending, book in Hyderabad'], koblenz: ['Project / work sample — your blockchain forensic evidence management project (used to resolve uni-assist app #3589260)'], siegen: [], chemnitz: ['Application forwarded to TU Chemnitz faculty for subject review — awaiting official admission decision (App No. 1774012 via EduApplication, confirmed 4 Jul 2026)'], rheinmain: ['Letter of Motivation — still to write'], frankfurt: [], kiel: ['GRE General score report — register & take the test'] };
 
 
 // ═══════════════ 2. INITIAL BOOTLOADER ═══════════════
@@ -972,6 +972,8 @@ function renderDashboard() {
         const stage = getStage('chemnitz');
         if (stage === 'not_started') return { action: 'Submit via eduapplication.de — LOM ready', urgency: 'red' };
         if (stage === 'submitted') return { action: 'Awaiting decision', urgency: 'green' };
+        if (stage === 'decision') return { action: 'Under faculty review at TU Chemnitz — awaiting official admission letter', urgency: 'green' };
+        if (stage === 'accepted') return { action: 'Accept offer and prepare enrollment', urgency: 'amber' };
         return null;
       },
       rheinmain: () => {
