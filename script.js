@@ -2096,11 +2096,34 @@ function renderDuolingoLog() {
     }
 
     const hasMergeMarker = e.entry_text && e.entry_text.includes('[Merged from');
+    const streak = calcAutoStreak();
+    const streakBadge = (streak > 0)
+      ? `<span class="duo-streak-badge">🔥 ${streak} day streak</span>`
+      : '';
+    // Render entry text as structured line rows if lines contain = or –
+    const rawText = e.entry_text || '';
+    const lines = rawText.split('\n').filter(l => l.trim());
+    const hasStructure = lines.some(l => /=|–|-/.test(l));
+    let entryBody;
+    if (hasStructure) {
+      entryBody = `<div class="duo-entry-lines">${lines.map(line => {
+        const sep = line.includes('=') ? '=' : line.includes('–') ? '–' : '-';
+        const parts = line.split(sep);
+        if (parts.length >= 2) {
+          const de = parts[0].trim();
+          const en = parts.slice(1).join(sep).trim();
+          return `<div class="duo-line-row"><span class="duo-line-de">${de}</span><span class="duo-line-sep">=</span><span class="duo-line-en">${en}</span></div>`;
+        }
+        return `<div class="duo-line-row"><span class="duo-line-en">${line}</span></div>`;
+      }).join('')}</div>`;
+    } else {
+      entryBody = `<div class="duo-entry-text">${rawText}</div>`;
+    }
     return `
     <div class="duo-entry-card">
       <div class="duo-entry-header">
         <span class="duo-entry-date">${dateLabel}</span>
-        <span class="dash-pill amber">🔥 ${calcAutoStreak()} day streak</span>
+        ${streakBadge}
         ${hasMergeMarker ? `<span class="dash-pill" style="background:#e8f0fe;color:#1a4b8c;font-size:10px;cursor:pointer;" onclick="unmergeEntry('${e.id}')" title="Split this merged entry back into two">✂️ Unmerge</span>` : ''}
         <div class="duo-entry-actions-inline">
           ${duoConfirmDeleteId === e.id
@@ -2112,7 +2135,7 @@ function renderDuolingoLog() {
           }
         </div>
       </div>
-      <div class="duo-entry-text">${e.entry_text}</div>
+      ${entryBody}
     </div>`;
   }).join('');
 
