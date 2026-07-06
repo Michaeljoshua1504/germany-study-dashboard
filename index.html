@@ -331,14 +331,11 @@
   <div class="section-title">🦉 Duolingo Practice Log</div>
   <div class="section-sub">Track your daily practice, build your word bank, and log every sentence you learn.</div>
 
-  <!-- Stats bar — row 1: Notes, Words, Sentences -->
-  <div class="duo-stats-top">
+  <!-- Stats bar — 4 columns in one row -->
+  <div class="duo-stats-top" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px;">
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-entries">0</div><div class="dash-stat-label">Daily Notes</div></div>
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-words">0</div><div class="dash-stat-label">📖 Words</div></div>
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-sentences">0</div><div class="dash-stat-label">💬 Sentences</div></div>
-  </div>
-  <!-- Stats bar — row 2: Last Logged only -->
-  <div class="duo-stats-bottom" style="grid-template-columns:1fr;">
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-lastdate">—</div><div class="dash-stat-label">Last Logged</div></div>
   </div>
 
