@@ -2005,11 +2005,6 @@ function updateDuolingoStats() {
     lastEl.textContent = sorted.length ? new Date(sorted[0].entry_date + 'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '—';
   }
 
-  const streakEl = document.getElementById('duo-stat-streak');
-  if (streakEl) {
-    streakEl.textContent = calcAutoStreak();
-  }
-
   // Show/hide duplicate button
   const dupBtn = document.getElementById('duo-dup-btn');
   if (dupBtn) {
