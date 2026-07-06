@@ -2494,4 +2494,3 @@ renderGermanTab();
 fetchAllCloudData().then(() => {
   updateAll();
 });
-
