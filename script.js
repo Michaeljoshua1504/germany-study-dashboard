@@ -976,6 +976,12 @@ function renderDashboard() {
         if (stage === 'accepted') return { action: 'Accept offer and prepare enrollment', urgency: 'amber' };
         return null;
       },
+      koblenz: () => {
+        const stage = getStage('koblenz');
+        if (stage === 'submitted') return { action: 'Awaiting decision from uni-assist', urgency: 'green' };
+        if (stage === 'accepted') return { action: 'Accept offer and prepare enrollment', urgency: 'amber' };
+        return null;
+      },
       rheinmain: () => {
         const stage = getStage('rheinmain');
         if (stage === 'not_started') return { action: 'Write LOM first, then submit via uni-assist', urgency: 'red' };
@@ -1004,7 +1010,7 @@ function renderDashboard() {
 
     const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
     const rows = [];
-    ['hof','fulda','chemnitz','rheinmain'].forEach(k => {
+    ['hof','koblenz','chemnitz','rheinmain'].forEach(k => {
       const stage = getStage(k);
       if (stage === 'rejected') return;
       const fn = NEXT_ACTION[k];
@@ -1013,8 +1019,17 @@ function renderDashboard() {
       if (!result) return;
       const m = UNI_META[k];
       const shortName = m.title.split('—')[0].replace('University of Applied Sciences','UAS').replace('University of Technology','TU').replace('University','Uni').trim();
-      const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
-      const dlText = dl === null ? 'Rolling' : dl < 0 ? 'Passed' : dl + 'd left';
+      // Deadline display: use secureDeadline for accepted, dash for awaiting stages, otherwise application deadline
+      let dlText;
+      if (stage === 'accepted' && m.secureDeadline) {
+        const dl = daysLeft(m.secureDeadline);
+        dlText = dl < 0 ? 'Overdue!' : dl + 'd left';
+      } else if (['submitted','decision','interview'].includes(stage)) {
+        dlText = '—';
+      } else {
+        const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
+        dlText = dl === null ? 'Rolling' : dl < 0 ? 'Passed' : dl + 'd left';
+      }
       rows.push(`<div class="next-row">
         <div class="next-dot" style="background:${colorMap[result.urgency]};"></div>
         <div class="next-name">${shortName}</div>
