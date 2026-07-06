@@ -610,12 +610,38 @@ html[data-theme="dark"] .duo-merge-line { color: #ccc; }
 html[data-theme="dark"] .duo-merge-line:hover { background: #2a2c34; }
 
 /* ── MODE SWITCHER ── */
-.duo-mode-switcher { display: flex; gap: 0; margin-bottom: 20px; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
-.duo-mode-btn { flex: 1; padding: 10px 8px; font-size: 13px; font-weight: 600; border: none; background: var(--card-bg); color: #888; cursor: pointer; transition: background 0.18s, color 0.18s; border-right: 1px solid var(--border); }
+.duo-mode-switcher { display: flex; gap: 0; margin-bottom: 18px; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+.duo-mode-btn { flex: 1; padding: 9px 8px; font-size: 13px; font-weight: 600; border: none; background: var(--card-bg); color: #888; cursor: pointer; transition: background 0.18s, color 0.18s; border-right: 1px solid var(--border); }
 .duo-mode-btn:last-child { border-right: none; }
-.duo-mode-btn.active { background: #14213c; color: #fff; }
+.duo-mode-btn.active { background: #378ADD; color: #fff; }
 html[data-theme="dark"] .duo-mode-btn.active { background: #378ADD; color: #fff; }
 html[data-theme="dark"] .duo-mode-btn { background: #1e2028; color: #888; }
+
+/* ── DUO STATS 2-ROW ── */
+.duo-stats-top { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 10px; }
+.duo-stats-bottom { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 18px; }
+
+/* ── DUO TOOLBAR ── */
+.duo-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.duo-dup-chip { display: inline-flex; align-items: center; gap: 5px; background: #fff8e1; color: #8a5500; border: 1px solid #f5c842; border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.duo-dup-chip:hover { background: #fef0b0; }
+html[data-theme="dark"] .duo-dup-chip { background: #2a2510; color: #f5c842; border-color: #6b5a00; }
+html[data-theme="dark"] .duo-dup-chip:hover { background: #332e14; }
+
+/* ── DUO ENTRY LINE ROWS ── */
+.duo-line-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f0ede8; }
+.duo-line-row:last-child { border-bottom: none; }
+.duo-line-de { font-size: 13px; font-weight: 700; color: #14213c; white-space: nowrap; }
+.duo-line-sep { font-size: 12px; color: #bbb; flex-shrink: 0; }
+.duo-line-en { font-size: 12.5px; color: #555; }
+html[data-theme="dark"] .duo-line-row { border-bottom-color: #2a2c34; }
+html[data-theme="dark"] .duo-line-de { color: #e6e4dd; }
+html[data-theme="dark"] .duo-line-sep { color: #555; }
+html[data-theme="dark"] .duo-line-en { color: #aaa; }
+
+/* ── DUO STREAK BADGE (only shown when streak > 0) ── */
+.duo-streak-badge { display: inline-flex; align-items: center; gap: 3px; background: #fff3e0; color: #8a5500; border-radius: 20px; padding: 2px 8px; font-size: 10.5px; font-weight: 700; }
+html[data-theme="dark"] .duo-streak-badge { background: #2a1f0a; color: #f5c842; }
 
 /* ── WORD / SENTENCE ITEM CARDS ── */
 .duo-item-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
