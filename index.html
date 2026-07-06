@@ -335,11 +335,14 @@
   <div class="section-title">🦉 Duolingo Practice Log</div>
   <div class="section-sub">Track your daily practice, build your word bank, and log every sentence you learn.</div>
 
-  <!-- Stats bar -->
-  <div class="dash-stats" style="grid-template-columns:repeat(5,1fr);margin-bottom:18px;">
+  <!-- Stats bar — row 1: Notes, Words, Sentences -->
+  <div class="duo-stats-top">
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-entries">0</div><div class="dash-stat-label">Daily Notes</div></div>
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-words">0</div><div class="dash-stat-label">📖 Words</div></div>
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-sentences">0</div><div class="dash-stat-label">💬 Sentences</div></div>
+  </div>
+  <!-- Stats bar — row 2: Streak, Last Logged -->
+  <div class="duo-stats-bottom">
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-streak">0</div><div class="dash-stat-label">🔥 Day Streak</div></div>
     <div class="dash-stat"><div class="dash-stat-num" id="duo-stat-lastdate">—</div><div class="dash-stat-label">Last Logged</div></div>
   </div>
@@ -353,14 +356,14 @@
 
   <!-- ── PANE: DAILY NOTES ── -->
   <div id="duo-pane-notes">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+    <div class="duo-toolbar">
       <button class="dash-apply-btn" onclick="addDuolingoEntry()">+ Add Today's Entry</button>
-      <button id="duo-dup-btn" class="uni-secondary-btn" style="display:none;font-size:13px;" onclick="openDuplicateModal()">🔍 Duplicates Found</button>
+      <button id="duo-dup-btn" class="duo-dup-chip" style="display:none;" onclick="openDuplicateModal()">🔍 <span id="duo-dup-count"></span> Duplicates Found</button>
     </div>
-    <div style="position:relative;margin-bottom:16px;">
+    <div style="position:relative;margin-bottom:14px;">
       <input id="duo-search-input" type="text" placeholder="🔎 Search entries by word or date..."
         oninput="duoSetSearch(this.value)"
-        style="width:100%;box-sizing:border-box;padding:9px 36px 9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;background:var(--card-bg);color:var(--text);outline:none;">
+        style="width:100%;box-sizing:border-box;padding:9px 36px 9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13.5px;background:var(--card-bg);color:var(--text);outline:none;">
       <button onclick="duoClearSearch()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;color:#888;padding:0;line-height:1;">✕</button>
     </div>
     <div id="duolingo-empty" class="submitted-empty" style="display:none;">
