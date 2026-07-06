@@ -928,28 +928,7 @@ function renderDashboard() {
   const el_pct = document.getElementById('dash-ger-pct'); if (el_pct) el_pct.textContent = pct + '%';
   const el_fill = document.getElementById('dash-ger-fill'); if (el_fill) el_fill.style.width = Math.max(pct, 2) + '%';
   const el_next = document.getElementById('dash-ger-next'); if (el_next) el_next.textContent = completed >= 31 ? 'Complete! 🎉' : `Day ${nextDay}`;
-  // Duo streak
-  const el_streak = document.getElementById('dash-duo-streak');
-  if (el_streak) {
-    const saved = duolingoEntries.filter(e => !e._isNew && e.entry_date);
-    if (saved.length === 0) { el_streak.textContent = '—'; }
-    else {
-      const dates = [...new Set(saved.map(e => e.entry_date))].sort((a,b) => b.localeCompare(a));
-      const todayStr = new Date().toISOString().slice(0,10);
-      const yesterStr = new Date(Date.now()-86400000).toISOString().slice(0,10);
-      let streak = 0;
-      if (dates[0] === todayStr || dates[0] === yesterStr) {
-        streak = 1;
-        for (let i = 1; i < dates.length; i++) {
-          const prev = new Date(dates[i-1]+'T00:00:00');
-          const curr = new Date(dates[i]+'T00:00:00');
-          if (Math.round((prev-curr)/86400000) === 1) streak++;
-          else break;
-        }
-      }
-      el_streak.textContent = streak > 0 ? `🔥 ${streak} day${streak===1?'':'s'}` : '—';
-    }
-  }
+
 
   // ── SECTION C: WHAT'S NEXT TABLE ──
   const nextTable = document.getElementById('dash-next-table');
