@@ -46,31 +46,31 @@
   <!-- ── STAT STRIP ── -->
   <div class="dash-stats">
     <div class="dash-stat">
-      <div class="dash-stat-num" id="stat-submitted">0</div>
-      <div class="dash-stat-label">Submitted</div>
+      <div class="dash-stat-num" id="stat-submitted" style="font-size:13px;">🎓 Enrolled</div>
+      <div class="dash-stat-label">Hof University</div>
     </div>
     <div class="dash-stat">
-      <div class="dash-stat-num" id="stat-accepted">0</div>
-      <div class="dash-stat-label">Offers Received</div>
+      <div class="dash-stat-num" id="stat-accepted">0%</div>
+      <div class="dash-stat-label">Visa Progress</div>
     </div>
     <div class="dash-stat">
-      <div class="dash-stat-num" id="stat-deadlines">0</div>
-      <div class="dash-stat-label">Upcoming Deadlines</div>
+      <div class="dash-stat-num" id="stat-deadlines">0/31</div>
+      <div class="dash-stat-label">German Days</div>
     </div>
   </div>
 
   <!-- ── SECTION A: TODAY'S FOCUS ── -->
-  <div class="home-section-label">Today's focus</div>
+  <div class="home-section-label">Next steps</div>
   <div class="focus-strip" id="focus-strip"></div>
 
   <!-- ── SECTION B: TWO COLUMNS ── -->
   <div class="home-two-col">
 
-    <!-- Left: submitted universities only -->
+    <!-- Left: Hof enrollment card -->
     <div class="home-card">
       <div class="home-card-head">
-        <span class="home-card-title">Applications</span>
-        <span class="home-card-link" onclick="showTab('applications', document.querySelector('#nav-admission .tab:nth-child(3)'))">view pipeline →</span>
+        <span class="home-card-title">🏭 Hof University</span>
+        <span class="home-card-link" onclick="showTab('applications', document.querySelector('#nav-admission .tab:nth-child(3)'))">applications →</span>
       </div>
       <div id="dash-submitted-list"></div>
     </div>
@@ -109,7 +109,7 @@
   </div>
 
   <!-- ── SECTION C: WHAT'S NEXT ── -->
-  <div class="home-section-label" style="margin-top:20px;">What's next — per university</div>
+  <div class="home-section-label" style="margin-top:20px;">Action plan</div>
   <div class="home-next-table" id="dash-next-table"></div>
 
 </div>
@@ -165,16 +165,10 @@
 
 <div id="tab-applications" class="section">
   <div class="section-title">🚦 My Applications</div>
-  <div class="section-sub">Every application you've submitted, its current stage, and its document checklist — all in one place.</div>
-
-  <div id="apps-empty" class="submitted-empty" style="display:none;">
-    <div class="empty-icon">📭</div>
-    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No applications submitted yet</p>
-    <p>Go to <strong>📋 Universities</strong> and click <strong>✅ Mark Submitted</strong> on any university — it will appear here so you can track it through to enrollment.</p>
-  </div>
+  <div class="section-sub">Hof University is confirmed. All other applications are resolved and archived below.</div>
 
   <div id="accepted-section" style="display:none;">
-    <div class="apps-section-label">🎉 Offers Received</div>
+    <div class="apps-section-label">🎉 Enrolled</div>
     <div class="cards" id="accepted-cards-grid"></div>
   </div>
 
@@ -188,8 +182,17 @@
     <div id="rejected-cards-grid"></div>
   </div>
 
-  <div id="submitted-footer" style="margin-top:16px;" class="note-box">
-    <strong>🚀 How the pipeline works:</strong> Not Submitted → Submitted → Interview (if applicable) → Decision → Accepted 🎉 / Rejected → Visa Process → Enrolled. Click "📄 Documents" on any card to check off paperwork for that university.
+  <div id="apps-empty" class="submitted-empty" style="display:none;">
+    <div class="empty-icon">📭</div>
+    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No active applications</p>
+  </div>
+
+  <!-- Archive button -->
+  <div style="margin-top:20px;">
+    <button id="archive-btn" onclick="toggleArchive()" style="display:inline-flex;align-items:center;gap:8px;background:#f5f3ee;border:1px solid #d3d1c7;border-radius:8px;padding:8px 16px;font-size:12.5px;font-weight:600;color:#555;cursor:pointer;transition:background 0.15s;">
+      📦 Past Applications (7)
+    </button>
+    <div id="archive-panel" style="display:none;"></div>
   </div>
 </div>
 
