@@ -430,6 +430,8 @@ html[data-theme="dark"] .home-ger-val { color: #e6e4dd; }
 .uni-profile-block-title { font-size: 12px; font-weight: 700; color: #14213c; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #f0ede6; }
 
 .uni-enroll-col { min-width: 0; }
+.uni-enroll-col .cards { grid-template-columns: 1fr; }
+.uni-enroll-col .card { width: 100%; }
 
 .uni-secondary-btn { background: #f0eee8; color: #14213c; border: 1px solid #d3d1c7; border-radius: 6px; padding: 6px 14px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
 .uni-secondary-btn:hover { background: #e5e3da; color: #14213c; text-decoration: none; }
