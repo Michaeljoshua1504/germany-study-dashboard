@@ -30,8 +30,7 @@
 
 <nav class="sub-nav" id="nav-admission">
   <div class="tab active" onclick="showTab('dashboard',this)">🏠 Dashboard</div>
-  <div class="tab" onclick="showTab('universities',this)">📋 Universities</div>
-  <div class="tab" onclick="showTab('applications',this)">🚦 My Applications <span id="submitted-count-badge" style="display:none;background:#1a6b3c;color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:700;margin-left:4px;"></span></div>
+  <div class="tab" onclick="showTab('university',this)">🏛️ University</div>
   <div class="tab" onclick="showTab('visa',this)">✈️ Visa & Relocation</div>
 </nav>
 
@@ -70,7 +69,7 @@
     <div class="home-card">
       <div class="home-card-head">
         <span class="home-card-title">🏭 Hof University</span>
-        <span class="home-card-link" onclick="showTab('applications', document.querySelector('#nav-admission .tab:nth-child(3)'))">applications →</span>
+        <span class="home-card-link" onclick="showTab('university', document.querySelector('#nav-admission .tab:nth-child(2)'))">details →</span>
       </div>
       <div id="dash-submitted-list"></div>
     </div>
@@ -114,85 +113,24 @@
 
 </div>
 
-<div id="tab-universities" class="section">
-  <div class="section-title">Universities — Full Profile & Eligibility</div>
-  <div class="section-sub">Click any university to see requirements, costs, and city info in one place.</div>
+<div id="tab-university" class="section">
+  <div class="section-title">🏛️ Hof University — MEng Software Engineering</div>
+  <div class="section-sub">MEng Software Engineering for Industrial Applications · WS 2026/27 · Matrikelnummer 00417126</div>
 
-  <div class="uni-layout">
-    <div class="uni-sidebar" id="uni-sidebar"></div>
-    <div class="uni-detail" id="uni-detail"></div>
-  </div>
+  <div class="uni-merged-layout">
+    <!-- Left: Program profile -->
+    <div class="uni-profile-col" id="uni-profile-col"></div>
 
-  <div class="note-box" style="margin-top:16px;">
-    <strong>🚫 13 universities rejected:</strong> Augsburg (deadline passed + outstanding grades), Stuttgart (deadline passed + tuition), Bingen (210 ECTS required), Bamberg (grade 2.0 + GRE), Göttingen (deadline passed), SRH Heidelberg (€6,950/sem private), Potsdam/HPI (C1 English required), Rostock (IELTS 7.0 + CGPA 85%), Deggendorf (embedded systems, wrong field), Heilbronn (210 ECTS + tuition), Hildesheim (research-focused, no DevOps), Hof MSc (oral exam + 18-week internship cert required), Hof Applied Research (same).
-  </div>
-
-  <div class="calc-panel" style="margin-top:20px;">
-    <div class="section-title" style="font-size:13px;margin-bottom:2px;">🧮 Cost & Budget Calculator</div>
-    <div class="section-sub" style="margin-bottom:12px;">Estimate what each university will actually cost you, start to finish.</div>
-    <div class="calc-grid">
-      <div class="calc-field">
-        <label>University</label>
-        <select id="calc-uni" onchange="runCalculator()"></select>
+    <!-- Right: Enrollment checklist -->
+    <div class="uni-enroll-col">
+      <div id="accepted-section">
+        <div class="cards" id="accepted-cards-grid"></div>
       </div>
-      <div class="calc-field">
-        <label>Program duration (semesters)</label>
-        <input type="number" id="calc-sems" min="1" max="8" oninput="runCalculator()">
-      </div>
-      <div class="calc-field">
-        <label>Monthly living cost override (€)</label>
-        <input type="number" id="calc-living" min="0" oninput="runCalculator()">
-      </div>
-      <div class="calc-field">
-        <label>EUR → INR rate (approx.)</label>
-        <input type="number" id="calc-fx" value="110" min="1" oninput="runCalculator()">
+      <div id="apps-empty" class="submitted-empty" style="display:none;">
+        <div class="empty-icon">📭</div>
+        <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No active applications</p>
       </div>
     </div>
-    <div class="calc-results">
-      <div class="calc-result-box"><div class="crl">Tuition (total)</div><div class="crv" id="calc-tuition">—</div></div>
-      <div class="calc-result-box"><div class="crl">Semester fees (total)</div><div class="crv" id="calc-semfee">—</div></div>
-      <div class="calc-result-box"><div class="crl">Living costs (total)</div><div class="crv" id="calc-living-total">—</div></div>
-      <div class="calc-result-box"><div class="crl">Health insurance (total, ~€120/mo)</div><div class="crv" id="calc-insurance">—</div></div>
-      <div class="calc-result-box"><div class="crl">Blocked account (year 1, fixed)</div><div class="crv">€11,904</div></div>
-      <div class="calc-result-box"><div class="crl">One-off costs (APS, visa, flight, deposit*)</div><div class="crv" id="calc-oneoff">—</div></div>
-    </div>
-    <div class="calc-total">
-      <div><div class="ctl">Estimated total cost — full program</div><div class="ctv" id="calc-grand-total">—</div></div>
-      <div style="text-align:right;"><div class="ctl">≈ in INR (today's selected rate)</div><div class="ctv" id="calc-grand-total-inr">—</div></div>
-    </div>
-  </div>
-</div>
-
-<div id="tab-applications" class="section">
-  <div class="section-title">🚦 My Applications</div>
-  <div class="section-sub">Hof University is confirmed. All other applications are resolved and archived below.</div>
-
-  <div id="accepted-section" style="display:none;">
-    <div class="apps-section-label">🎉 Enrolled</div>
-    <div class="cards" id="accepted-cards-grid"></div>
-  </div>
-
-  <div id="inprogress-section" style="display:none;">
-    <div class="apps-section-label">🚦 In Progress</div>
-    <div class="cards" id="submitted-cards-grid"></div>
-  </div>
-
-  <div id="rejected-section" style="display:none;">
-    <div class="apps-section-label">❌ Rejected</div>
-    <div id="rejected-cards-grid"></div>
-  </div>
-
-  <div id="apps-empty" class="submitted-empty" style="display:none;">
-    <div class="empty-icon">📭</div>
-    <p style="font-size:15px;font-weight:600;color:#555;margin-bottom:6px;">No active applications</p>
-  </div>
-
-  <!-- Archive button -->
-  <div style="margin-top:20px;">
-    <button id="archive-btn" onclick="toggleArchive()" style="display:inline-flex;align-items:center;gap:8px;background:#f5f3ee;border:1px solid #d3d1c7;border-radius:8px;padding:8px 16px;font-size:12.5px;font-weight:600;color:#555;cursor:pointer;transition:background 0.15s;">
-      📦 Past Applications (7)
-    </button>
-    <div id="archive-panel" style="display:none;"></div>
   </div>
 </div>
 

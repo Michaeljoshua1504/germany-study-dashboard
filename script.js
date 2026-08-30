@@ -93,7 +93,7 @@ async function fetchAllCloudData() {
       if (e4) throw new Error(e4.message);
       admission?.forEach(row => admissionData[row.uni_key] = row);
       renderAdmission();
-      renderUniDetail();
+      renderHofProfile();
     } catch (admErr) {
       console.warn('admission_requirements table not ready yet:', admErr.message);
     }
@@ -212,7 +212,7 @@ function setOfferField(key, field, value) {
 }
 
 // ─── UI renderers for Pipeline ───
-function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderRejected(); renderAccepted(); renderArchive(); updateSubmittedBadge(); updateAcceptedBadge(); renderUniSidebar(); renderUniDetail(); updateAllDocToggleLabels(); }
+function refreshPipelineUI() { renderDashboard(); renderPipeline(); renderRejected(); renderAccepted(); renderHofProfile(); updateSubmittedBadge(); updateAllDocToggleLabels(); }
 
 function applySubmittedState() {
   Object.keys(UNI_META).forEach(key => {
@@ -329,13 +329,10 @@ function renderAccepted() {
   if (!grid) return;
 
   if (acceptedKeys.length === 0) {
-    if (section) section.style.display = 'none';
     grid.innerHTML = '';
     updateAppsEmptyState();
     return;
   }
-
-  if (section) section.style.display = 'block';
 
   grid.innerHTML = acceptedKeys.map(key => {
     const m = UNI_META[key];
@@ -748,10 +745,10 @@ const deadlines = {
 function updateAll() {
   for (const [key, date] of Object.entries(deadlines)) applyCountdown(key, date);
   const today = new Date();
-  document.getElementById('today-display').textContent = 'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  const todayEl = document.getElementById('today-display');
+  if (todayEl) todayEl.textContent = 'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
   renderDashboard();
-  renderUniSidebar();
-  renderUniDetail();
+  renderHofProfile();
 }
 
 let currentFitFilter = 'all';
@@ -940,55 +937,18 @@ function renderDashboard() {
 
 // ═══════════════ 8b. UNIVERSITIES TAB RENDERER ═══════════════
 
-let selectedUni = 'hof';
+// ═══════════════ 8b. HOF PROFILE RENDERER ═══════════════
 
-function renderUniSidebar() {
-  const sidebar = document.getElementById('uni-sidebar');
-  if (!sidebar) return;
+function renderHofProfile() {
+  const col = document.getElementById('uni-profile-col');
+  if (!col) return;
 
-  sidebar.innerHTML = UNI_ORDER.map(key => {
-    const m = UNI_META[key];
-    const active = key === selectedUni ? 'active' : '';
-    const stage = getStage(key);
-    const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
-    const urgentDot = (dl !== null && dl >= 0 && dl <= 14 && stage === 'not_started') ? '<span class="uni-side-dot"></span>' : '';
-    return `
-    <div class="uni-side-item ${active}" onclick="selectUni('${key}')">
-      <div class="uni-side-name">${m.cityEmoji} ${m.cityName.split(' ')[0]} ${urgentDot}</div>
-      <div class="uni-side-sub">${m.sub.split('·')[0].trim()}</div>
-    </div>`;
-  }).join('');
-}
+  const m = UNI_META['hof'];
+  const d = admissionData['hof'];
 
-function selectUni(key) {
-  selectedUni = key;
-  renderUniSidebar();
-  renderUniDetail();
-}
-
-function renderUniDetail() {
-  const panel = document.getElementById('uni-detail');
-  if (!panel) return;
-
-  const m = UNI_META[selectedUni];
-  const d = admissionData[selectedUni];
-  const stage = getStage(selectedUni);
-  const dl = m.deadlineKey ? daysLeft(m.deadlineKey) : null;
-
-  let dlBadge = '<span class="dash-pill gray">No fixed deadline</span>';
-  if (dl !== null) {
-    if (dl < 0) dlBadge = '<span class="dash-pill closed">Deadline passed</span>';
-    else if (dl <= 14) dlBadge = `<span class="dash-pill urgent">🔥 ${dl}d left</span>`;
-    else if (dl <= 30) dlBadge = `<span class="dash-pill soon">${dl} days left</span>`;
-    else dlBadge = `<span class="dash-pill ok">${dl} days left</span>`;
-  }
-
-  const stageColors = { not_started:'gray', submitted:'blue', interview:'amber', decision:'amber', accepted:'green', rejected:'red', visa:'green', enrolled:'green' };
-  const stagePill = `<span class="dash-pill ${stageColors[stage] || 'gray'}">${STAGE_LABELS[stage] || 'Not Started'}</span>`;
-
-  let elig = '<div class="adm-loading" style="padding:1.5rem;">⏳ Loading eligibility data…</div>';
+  let eligRows = '<div class="adm-loading" style="padding:1rem 0;">⏳ Loading…</div>';
   if (d) {
-    elig = `
+    eligRows = `
       <div class="adm-row"><div class="adm-label">🎤 IELTS</div><div class="adm-val">${d.ielts_req} ${IELTS_PILL[d.ielts_status]||''}</div></div>
       <div class="adm-row"><div class="adm-label">🇩🇪 German</div><div class="adm-val">${d.german_req}</div></div>
       <div class="adm-row"><div class="adm-label">📝 GRE</div><div class="adm-val">${d.gre_req} ${GRE_PILL[d.gre_status]||''}</div></div>
@@ -999,61 +959,37 @@ function renderUniDetail() {
     `;
   }
 
-  panel.innerHTML = `
-    <div class="uni-detail-header">
-      <div>
-        <div class="uni-detail-title">${m.title}</div>
-        <div class="uni-detail-sub">${m.sub}</div>
-      </div>
-      <div class="dash-fit-badge" style="background:${m.fitClass==='green'?'#e6f4ec':m.fitClass==='amber'?'#fef3e0':'#e6f0fb'};color:${m.fitClass==='green'?'#1a6b3c':m.fitClass==='amber'?'#8a5500':'#1a4b8c'};">${m.fit}</div>
+  col.innerHTML = `
+    <div class="uni-profile-block">
+      <div class="uni-profile-block-title">🎯 Eligibility</div>
+      ${eligRows}
     </div>
 
-    <div class="uni-detail-pills">
-      ${dlBadge} ${stagePill}
-      ${m.tuitionNum > 0 ? `<span class="dash-pill amber">€${m.tuitionNum.toLocaleString()}/sem tuition</span>` : '<span class="dash-pill green">Free tuition</span>'}
+    <div class="uni-profile-block">
+      <div class="uni-profile-block-title">💶 Costs</div>
+      <div class="adm-row"><div class="adm-label">Tuition</div><div class="adm-val">${m.tuition}/sem</div></div>
+      <div class="adm-row"><div class="adm-label">Sem. Fee</div><div class="adm-val">€${m.semFeeNum}/sem</div></div>
+      <div class="adm-row"><div class="adm-label">Living</div><div class="adm-val">€${m.livingNum}/mo</div></div>
+      <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val">${m.housingCost}/mo</div></div>
+      <div class="adm-row"><div class="adm-label">Insurance</div><div class="adm-val">${m.insurance}/mo</div></div>
+      <div class="adm-special"><span class="adm-special-label">📌 Note</span>${m.eligNote}</div>
     </div>
 
-    <div class="uni-detail-actions">
-      <a href="${m.link}" target="_blank" class="dash-apply-btn">Apply via ${m.applyVia} →</a>
-      <a href="${m.programPage}" target="_blank" class="uni-secondary-btn">Programme Page ↗</a>
-      ${stage === 'not_started' ? `<button class="dash-submit-btn" onclick="markSubmitted('${selectedUni}')">✅ Mark Submitted</button>` : `<button class="dash-submit-btn submitted" onclick="undoSubmitted('${selectedUni}')">↩ Undo Submit</button>`}
+    <div class="uni-profile-block">
+      <div class="uni-profile-block-title">${m.cityEmoji} ${m.cityName}</div>
+      <div class="adm-row"><div class="adm-label">Cost Level</div><div class="adm-val"><span class="pill ${m.costLevelClass}">${m.costLevel}</span></div></div>
+      <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val"><span class="pill ${m.housingDifficultyClass}">${m.housingDifficulty}</span></div></div>
+      <div class="adm-row"><div class="adm-label">Job Market</div><div class="adm-val">${m.jobMarket}</div></div>
+      <div class="adm-row"><div class="adm-label">Transport</div><div class="adm-val">${m.transport}</div></div>
+      <div class="adm-row"><div class="adm-label">Rent</div><div class="adm-val">${m.rent}</div></div>
+      <div class="adm-row adm-row-focus"><div class="adm-label">Companies</div><div class="adm-val adm-focus-text">${m.companies}</div></div>
     </div>
 
-    <div class="uni-detail-grid">
-      <div class="uni-detail-card">
-        <div class="uni-detail-card-title">🎯 Eligibility</div>
-        ${elig}
-      </div>
-
-      <div class="uni-detail-card">
-        <div class="uni-detail-card-title">💶 Costs</div>
-        <div class="adm-row"><div class="adm-label">Tuition</div><div class="adm-val">${m.tuition}</div></div>
-        <div class="adm-row"><div class="adm-label">Sem. Fee</div><div class="adm-val">€${m.semFeeNum}/sem</div></div>
-        <div class="adm-row"><div class="adm-label">Living</div><div class="adm-val">€${m.livingNum}/mo</div></div>
-        <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val">${m.housingCost}/mo</div></div>
-        <div class="adm-row"><div class="adm-label">Insurance</div><div class="adm-val">${m.insurance}/mo</div></div>
-        <div class="adm-row"><div class="adm-label">Scholarship</div><div class="adm-val">${m.scholarship ? (m.scholarshipLink ? `<a href="${m.scholarshipLink}" target="_blank">${m.scholarship} ↗</a>` : m.scholarship) : 'None listed'}</div></div>
-        ${m.eligNote && m.eligNote !== '—' ? `<div class="adm-special"><span class="adm-special-label">📌 Note</span>${m.eligNote}</div>` : ''}
-      </div>
-
-      <div class="uni-detail-card">
-        <div class="uni-detail-card-title">${m.cityEmoji} ${m.cityName}</div>
-        <div class="adm-row"><div class="adm-label">Cost Level</div><div class="adm-val"><span class="pill ${m.costLevelClass}">${m.costLevel}</span></div></div>
-        <div class="adm-row"><div class="adm-label">Housing</div><div class="adm-val"><span class="pill ${m.housingDifficultyClass}">${m.housingDifficulty}</span></div></div>
-        <div class="adm-row"><div class="adm-label">Job Market</div><div class="adm-val">${m.jobMarket}</div></div>
-        <div class="adm-row"><div class="adm-label">Transport</div><div class="adm-val">${m.transport}</div></div>
-        <div class="adm-row"><div class="adm-label">Rent</div><div class="adm-val">${m.rent}</div></div>
-        <div class="adm-row adm-row-focus"><div class="adm-label">Companies</div><div class="adm-val adm-focus-text">${m.companies}</div></div>
-      </div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+      <a href="${m.link}" target="_blank" class="dash-apply-btn" style="font-size:12px;padding:7px 14px;">PRIMUSS Portal ↗</a>
+      <a href="${m.programPage}" target="_blank" class="uni-secondary-btn" style="font-size:12px;padding:7px 14px;">Programme Page ↗</a>
     </div>
   `;
-}
-
-function openUniDetail(key) {
-  selectedUni = key;
-  showTab('universities', document.querySelector('.tab[onclick*="universities"]'));
-  renderUniSidebar();
-  renderUniDetail();
 }
 
 
