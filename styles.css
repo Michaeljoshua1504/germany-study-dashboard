@@ -427,7 +427,8 @@ html[data-theme="dark"] .home-ger-val { color: #e6e4dd; }
 
 .uni-enroll-col { width: 100%; }
 .uni-enroll-col .cards { grid-template-columns: 1fr; }
-.uni-enroll-col .card { width: 100%; }
+#accepted-cards-grid { display: block; width: 100%; }
+#accepted-cards-grid .card { width: 100%; box-sizing: border-box; }
 
 .uni-profile-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .uni-profile-block { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 13px 15px; }
