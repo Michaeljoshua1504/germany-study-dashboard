@@ -985,7 +985,7 @@ function renderHofProfile() {
       <div class="adm-row adm-row-focus"><div class="adm-label">Companies</div><div class="adm-val adm-focus-text">${m.companies}</div></div>
     </div>
 
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+    <div style="grid-column: 1 / -1; display:flex;gap:8px;flex-wrap:wrap;">
       <a href="${m.link}" target="_blank" class="dash-apply-btn" style="font-size:12px;padding:7px 14px;">PRIMUSS Portal ↗</a>
       <a href="${m.programPage}" target="_blank" class="uni-secondary-btn" style="font-size:12px;padding:7px 14px;">Programme Page ↗</a>
     </div>
