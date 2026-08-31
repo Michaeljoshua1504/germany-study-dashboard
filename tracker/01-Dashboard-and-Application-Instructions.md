@@ -116,6 +116,21 @@
 - **Live site:** michaeljoshua1504.github.io/germany-study-dashboard
 - **Stack:** HTML5 / CSS3 / Vanilla JS + Docker + Nginx (local) + GitHub Actions CI/CD + GitHub Pages + Supabase
 - **Supabase client variable:** `sbClient` (not `supabase` — renamed to avoid CDN global scope clash)
+
+### Supabase Credentials
+- **URL:** `https://epndekpwxngjozytlcmy.supabase.co`
+- **Publishable key:** `sb_publishable_1RHubw6OVdqUAS_XAcKnpg_po3SzAj5` — use for DB queries only
+- **Legacy anon JWT key:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwbmRla3B3eG5nam96eXRsY215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzgxNTIsImV4cCI6MjA5ODMxNDE1Mn0.WtNsEgvw6ezTJN4ACVYB6Mcv57hABo0FGMC2nRamLiA`
+- ⚠️ **IMPORTANT:** Always use the legacy anon JWT for storage uploads — the `sb_publishable_` key returns 403 on all storage endpoints
+- **Storage bucket:** `housing-images` (public, already created)
+- **Storage upload pattern:** `POST /storage/v1/object/housing-images/{filename}` with headers `Authorization: Bearer {legacy_jwt}`, `Content-Type: image/jpeg`, `x-upsert: true`
+
+### Housing Tab
+- Housing tab added to dashboard (3rd tab in top nav, between German and Life Tracker)
+- Sub-tab: Room Finder (`tab-housing-rooms`)
+- Batch 1: 8 properties, 84 images currently embedded as base64 in index.html (~34MB)
+- **Migration in progress:** moving images to Supabase `housing-images` bucket → rebuild tab with public URLs → index.html will shrink to ~50KB
+- Supabase public image URL pattern: `https://epndekpwxngjozytlcmy.supabase.co/storage/v1/object/public/housing-images/{filename}`
 - **Checklist persistence:** `.persist-check` class + unique `id` per checkbox + `saveCheck(el)` function + `checksData` object
 - **german_progress upserts:** always include all three fields together — `completed`, `note_text`, `teaching_notes`
 - **No browser popups** anywhere — no `confirm()` or `alert()` — all confirmations handled inline
