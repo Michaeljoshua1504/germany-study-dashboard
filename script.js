@@ -605,7 +605,8 @@ function renderNotesGrid() {
 
 const MAIN_TAB_DEFAULTS = {
   admission: 'dashboard',
-  german: 'learn'
+  german: 'learn',
+  housing: 'housing-rooms'
 };
 
 function showMainTab(mainTabId, el) {

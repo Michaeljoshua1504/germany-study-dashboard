@@ -690,3 +690,57 @@ html[data-theme="dark"] .ger-taught-badge { background: rgba(90,123,196,0.18); c
 html[data-theme="dark"] .ger-teaching-notes { background: #1e2028; border-color: #32343c; color: #ccc9c0; }
 html[data-theme="dark"] .ger-notes-heading { color: #e6e4dd; }
 html[data-theme="dark"] .ger-notes-placeholder { color: #777; }
+
+/* ═══════════════ HOUSING TAB STYLES ═══════════════ */
+.h-filter-bar { display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 20px; }
+.h-filter-btn { background:var(--card-bg); border:1.5px solid var(--border); color:var(--text); padding:6px 16px; border-radius:20px; font-size:13px; cursor:pointer; transition:all 0.15s; font-family:inherit; }
+.h-filter-btn:hover,.h-filter-btn.active { background:var(--accent,#4f78d8); border-color:var(--accent,#4f78d8); color:#fff; }
+.h-grid { display:flex; flex-direction:column; gap:24px; }
+.h-card { background:var(--card-bg); border:1.5px solid var(--border); border-radius:14px; overflow:hidden; position:relative; transition:border-color 0.2s; }
+.h-card:hover { border-color:#5b8fff55; }
+.h-badge { position:absolute; top:14px; right:14px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; z-index:10; }
+.h-badge-best { background:#0d2a1a; color:#34d399; border:1px solid #34d399; }
+.h-badge-second { background:#2a2a0a; color:#f5c842; border:1px solid #f5c842; }
+.h-badge-third { background:#2a1f0a; color:#fb923c; border:1px solid #fb923c; }
+.h-badge-warn { background:#2a1f0a; color:#fb923c; border:1px solid #fb923c; }
+.h-badge-skip { background:#2a0a0a; color:#f87171; border:1px solid #f87171; }
+.h-card-header { padding:18px 20px 14px; }
+.h-card-header h3 { font-size:1.05rem; font-weight:700; color:var(--text); margin:0 0 8px; }
+.h-meta-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.h-stars { font-size:15px; color:#f5c842; }
+.h-stars-empty { color:#555; }
+.h-pill { background:var(--bg,#f4f4f4); border:1px solid var(--border); color:var(--text-muted,#888); padding:2px 10px; border-radius:12px; font-size:12px; }
+.h-gallery { padding:0 20px 14px; }
+.h-gal-main { position:relative; width:100%; height:320px; background:#111; border-radius:10px; overflow:hidden; }
+.h-gal-main img { width:100%; height:100%; object-fit:cover; display:block; }
+.h-gal-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.55); border:none; color:#fff; font-size:1.7rem; width:40px; height:40px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; padding:0; line-height:1; }
+.h-gal-btn:hover { background:rgba(79,120,216,0.85); }
+.h-prev { left:10px; }
+.h-next { right:10px; }
+.h-img-ctr { position:absolute; bottom:8px; right:10px; background:rgba(0,0,0,0.6); color:#fff; font-size:11px; padding:2px 8px; border-radius:10px; }
+.h-thumbs { display:flex; gap:6px; margin-top:8px; overflow-x:auto; padding-bottom:4px; }
+.h-thumbs::-webkit-scrollbar { height:3px; }
+.h-thumbs::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.h-thumb { width:56px; height:40px; object-fit:cover; border-radius:6px; cursor:pointer; flex-shrink:0; opacity:0.45; border:2px solid transparent; transition:all 0.15s; }
+.h-thumb:hover { opacity:0.75; }
+.h-thumb-active { opacity:1; border-color:#4f78d8; }
+.h-no-img { margin:0 20px 14px; height:100px; display:flex; align-items:center; justify-content:center; background:var(--bg,#f4f4f4); border-radius:10px; color:var(--text-muted,#888); font-size:13px; }
+.h-card-body { padding:0 20px 20px; }
+.h-desc { font-size:13px; color:var(--text-muted,#777); line-height:1.6; margin-bottom:14px; }
+.h-tags { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:14px; }
+.h-tag { font-size:12px; padding:3px 10px; border-radius:7px; font-weight:500; }
+.h-tag-yes { background:#0d2a1a; color:#34d399; border:1px solid #1a4a2a; }
+.h-tag-no { background:#2a0d0d; color:#f87171; border:1px solid #4a1a1a; }
+.h-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.h-info-box { background:var(--bg,#f4f4f4); border:1px solid var(--border); border-radius:8px; padding:9px 12px; }
+.h-info-box.h-full { grid-column:1/-1; }
+.h-info-lbl { font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted,#888); margin-bottom:3px; }
+.h-info-val { font-size:12px; color:var(--text); line-height:1.4; }
+.h-included { color:#34d399; }
+.h-extra { color:#c4a87a; }
+.h-rooms-box { background:var(--bg,#f4f4f4); border:1px solid var(--border); border-radius:8px; padding:10px 13px; }
+.h-rooms-list { list-style:none; margin-top:7px; display:flex; flex-direction:column; gap:4px; }
+.h-rooms-list li { font-size:12px; color:var(--text); padding-left:12px; position:relative; }
+.h-rooms-list li::before { content:"›"; position:absolute; left:0; color:#4f78d8; }
+.h-rooms-list li:last-child { color:#a78bfa; font-weight:600; }
+@media(max-width:600px) { .h-gal-main{height:210px;} .h-info-grid{grid-template-columns:1fr;} .h-info-box.h-full{grid-column:1;} }
