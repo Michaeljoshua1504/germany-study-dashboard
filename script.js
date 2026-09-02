@@ -986,6 +986,19 @@ function renderHofProfile() {
       <div class="adm-row adm-row-focus"><div class="adm-label">Companies</div><div class="adm-val adm-focus-text">${m.companies}</div></div>
     </div>
 
+    <div class="uni-profile-block" style="grid-column: 1 / -1;">
+      <div class="uni-profile-block-title">📅 WS 2026/27 — Key Dates & Timeline</div>
+      <div class="adm-row"><div class="adm-label">Orientation</div><div class="adm-val">Sep 24 – Oct 4, 2026</div></div>
+      <div class="adm-row"><div class="adm-label">Introduction Days</div><div class="adm-val">Oct 1 + 2, 2026</div></div>
+      <div class="adm-row"><div class="adm-label">Semester 1 Starts</div><div class="adm-val">Oct 1, 2026</div></div>
+      <div class="adm-row"><div class="adm-label">Lectures Start</div><div class="adm-val">Oct 5, 2026</div></div>
+      <div class="adm-row"><div class="adm-label">Semester 2</div><div class="adm-val">Mar 15, 2027</div></div>
+      <div class="adm-row"><div class="adm-label">Semester 3</div><div class="adm-val">Oct 1, 2027</div></div>
+      <div class="adm-row"><div class="adm-label">Semester 4</div><div class="adm-val">Mar 15, 2028</div></div>
+      <div class="adm-special"><span class="adm-special-label">🖥️ Hybrid Mode</span>Hybrid teaching until Oct 31, 2026. From Nov 2 — on-campus only. If visa is delayed, you can start online from India. Attendance is mandatory in some modules — catch up on anything missed.</div>
+      <div class="adm-special"><span class="adm-special-label">💰 Internship Income</span>Semesters 3 & 4 are the industry phase. Internships are usually paid ~€1,000/month — covers fees and part of living costs during year 2.</div>
+    </div>
+
     <div style="grid-column: 1 / -1; display:flex;gap:8px;flex-wrap:wrap;">
       <a href="${m.link}" target="_blank" class="dash-apply-btn" style="font-size:12px;padding:7px 14px;">PRIMUSS Portal ↗</a>
       <a href="${m.programPage}" target="_blank" class="uni-secondary-btn" style="font-size:12px;padding:7px 14px;">Programme Page ↗</a>
