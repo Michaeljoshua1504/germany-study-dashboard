@@ -2345,8 +2345,93 @@ function duoSentClearSearch() { duoSentenceSearch = ''; const el = document.getE
 function duoSentSetFilter(val) { duoSentenceFilter = val; renderDuoSentences(); }
 
 
-// ═══════════════ 9. INIT ═══════════════
+// ═══════════════ 9. AUTH SYSTEM ═══════════════
+const AUTH_CREDENTIALS = { username: 'mikey', password: 'Hof@2026' };
+const AUTH_KEY = 'gsd_auth';
+
+function isLoggedIn() {
+  return sessionStorage.getItem(AUTH_KEY) === 'true';
+}
+
+function applyAuthState() {
+  const loggedIn = isLoggedIn();
+  // Show/hide auth-gated tabs
+  document.querySelectorAll('.topbar-tab.auth-only').forEach(el => {
+    el.style.display = loggedIn ? '' : 'none';
+  });
+  // Show/hide login/logout buttons
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  if (loginBtn) loginBtn.style.display = loggedIn ? 'none' : '';
+  if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
+
+  // If logged in and currently on housing tab, keep it; otherwise keep housing as default for guests
+  const housingTabBtn = document.getElementById('tab-btn-housing');
+  if (!loggedIn) {
+    // Ensure housing is active for guests
+    document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
+    if (housingTabBtn) housingTabBtn.classList.add('active');
+    // Force housing content visible
+    document.querySelectorAll('.sub-nav').forEach(nav => nav.style.display = 'none');
+    const housingNav = document.getElementById('nav-housing');
+    if (housingNav) housingNav.style.display = 'flex';
+    showTab('housing-rooms', housingNav ? housingNav.querySelector('.tab') : null);
+  }
+}
+
+function openLoginModal() {
+  const overlay = document.getElementById('login-overlay');
+  if (overlay) overlay.classList.add('visible');
+  setTimeout(() => {
+    const u = document.getElementById('login-username');
+    if (u) u.focus();
+  }, 80);
+}
+
+function closeLoginModal() {
+  const overlay = document.getElementById('login-overlay');
+  if (overlay) overlay.classList.remove('visible');
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+}
+
+function loginKeydown(e) {
+  if (e.key === 'Enter') attemptLogin();
+}
+
+function attemptLogin() {
+  const user = (document.getElementById('login-username').value || '').trim();
+  const pass = (document.getElementById('login-password').value || '').trim();
+  const errEl = document.getElementById('login-error');
+
+  if (user === AUTH_CREDENTIALS.username && pass === AUTH_CREDENTIALS.password) {
+    sessionStorage.setItem(AUTH_KEY, 'true');
+    closeLoginModal();
+    applyAuthState();
+    // Switch to Admission tab after login
+    const admissionTabEl = document.querySelector('.topbar-tab.auth-only');
+    if (admissionTabEl) showMainTab('admission', admissionTabEl);
+  } else {
+    errEl.textContent = 'Incorrect username or password.';
+    document.getElementById('login-password').value = '';
+    document.getElementById('login-password').focus();
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(AUTH_KEY);
+  applyAuthState();
+}
+
+// Close modal if overlay background is clicked
+document.getElementById('login-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeLoginModal();
+});
+
+// ═══════════════ 10. INIT ═══════════════
 initTheme();
+applyAuthState();
 renderDocChecklist();
 renderNotesGrid();
 initCalculator();

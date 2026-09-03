@@ -44,6 +44,36 @@ html[data-theme="dark"] .dash-apply-btn:hover { background: #2a6bb5 !important; 
 .topbar-theme-btn { background: rgba(255,255,255,0.07); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
 .topbar-theme-btn:hover { background: rgba(255,255,255,0.14); }
 
+/* ═══════════════ LOGIN BUTTON & MODAL ═══════════════ */
+.topbar-login-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; color: #fff; font-size: 12px; font-weight: 600; padding: 5px 14px; cursor: pointer; white-space: nowrap; transition: background 0.15s; letter-spacing: 0.01em; }
+.topbar-login-btn:hover { background: rgba(255,255,255,0.2); }
+.topbar-logout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #6b82a0; font-size: 11px; font-weight: 600; padding: 4px 11px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.topbar-logout-btn:hover { border-color: rgba(255,255,255,0.3); color: #a0b4cc; }
+
+/* Login modal overlay */
+.login-overlay { position: fixed; inset: 0; background: rgba(5,10,20,0.72); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.login-overlay.visible { opacity: 1; pointer-events: all; }
+.login-box { background: #fff; border-radius: 14px; padding: 36px 32px 28px; width: 340px; max-width: calc(100vw - 40px); box-shadow: 0 20px 60px rgba(0,0,0,0.28); position: relative; }
+.login-logo { font-size: 28px; text-align: center; margin-bottom: 4px; }
+.login-title { font-size: 17px; font-weight: 700; color: #0d1b2a; text-align: center; margin-bottom: 4px; }
+.login-sub { font-size: 12px; color: #888; text-align: center; margin-bottom: 24px; }
+.login-field { margin-bottom: 14px; }
+.login-field label { display: block; font-size: 11px; font-weight: 700; color: #555; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em; }
+.login-field input { width: 100%; padding: 9px 12px; border: 1px solid #ddd; border-radius: 7px; font-size: 13.5px; color: #14213c; outline: none; transition: border-color 0.15s; background: #fafaf8; }
+.login-field input:focus { border-color: #14213c; background: #fff; }
+.login-error { font-size: 12px; color: #c0392b; text-align: center; min-height: 18px; margin-bottom: 10px; font-weight: 600; }
+.login-submit { width: 100%; background: #0d1b2a; color: #fff; border: none; border-radius: 8px; padding: 11px; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.login-submit:hover { background: #14213c; }
+.login-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 18px; color: #bbb; cursor: pointer; line-height: 1; padding: 4px; border-radius: 4px; }
+.login-close:hover { color: #666; }
+html[data-theme="dark"] .login-box { background: #1a1e2a; border: 1px solid #2a3040; }
+html[data-theme="dark"] .login-title { color: #e6e4dd; }
+html[data-theme="dark"] .login-field input { background: #12151e; border-color: #2a3040; color: #e0e0e0; }
+html[data-theme="dark"] .login-field input:focus { border-color: #378ADD; background: #0d1117; }
+html[data-theme="dark"] .login-field label { color: #8a9bb4; }
+html[data-theme="dark"] .login-submit { background: #378ADD; }
+html[data-theme="dark"] .login-submit:hover { background: #2a6bb5; }
+
 /* ═══════════════ SUB NAV ═══════════════ */
 nav.sub-nav { background: #fff; border-bottom: 1px solid #e0ded6; padding: 0 24px; display: flex; justify-content: center; gap: 0; overflow-x: auto; }
 .tab { padding: 14px 22px; font-size: 13.5px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #888; white-space: nowrap; transition: color 0.15s, border-color 0.15s; }

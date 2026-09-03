@@ -15,10 +15,10 @@
     <span class="topbar-wordmark">Germany Dashboard</span>
   </div>
   <div class="topbar-tabs">
-    <div class="topbar-tab active" onclick="showMainTab('admission', this)">Admission</div>
-    <div class="topbar-tab" onclick="showMainTab('german', this)">German</div>
-    <div class="topbar-tab" onclick="showMainTab('housing', this)">🏠 Housing</div>
-    <div class="topbar-tab locked" title="Unlocks when you land in Germany 🇩🇪">Life Tracker 🔒</div>
+    <div class="topbar-tab auth-only" onclick="showMainTab('admission', this)" style="display:none;">Admission</div>
+    <div class="topbar-tab auth-only" onclick="showMainTab('german', this)" style="display:none;">German</div>
+    <div class="topbar-tab active" id="tab-btn-housing" onclick="showMainTab('housing', this)">🏠 Housing</div>
+    <div class="topbar-tab locked auth-only" title="Unlocks when you land in Germany 🇩🇪" style="display:none;">Life Tracker 🔒</div>
   </div>
   <div class="topbar-right">
     <div class="topbar-status" id="db-status">
@@ -26,8 +26,30 @@
       <span id="db-text">Connecting...</span>
     </div>
     <button id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode" class="topbar-theme-btn">🌙</button>
+    <button id="login-btn" class="topbar-login-btn" onclick="openLoginModal()">🔑 Login</button>
+    <button id="logout-btn" class="topbar-logout-btn" onclick="doLogout()" style="display:none;">Logout</button>
   </div>
 </nav>
+
+<!-- Login modal -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <button class="login-close" onclick="closeLoginModal()">✕</button>
+    <div class="login-logo">🔐</div>
+    <div class="login-title">Dashboard Login</div>
+    <div class="login-sub">Private access — Mikey only</div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="Enter username" autocomplete="username" onkeydown="loginKeydown(event)">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Enter password" autocomplete="current-password" onkeydown="loginKeydown(event)">
+    </div>
+    <div class="login-error" id="login-error"></div>
+    <button class="login-submit" onclick="attemptLogin()">Unlock Dashboard →</button>
+  </div>
+</div>
 
 <nav class="sub-nav" id="nav-admission">
   <div class="tab active" onclick="showTab('dashboard',this)">🏠 Dashboard</div>
