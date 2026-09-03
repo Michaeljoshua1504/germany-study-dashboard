@@ -711,8 +711,8 @@ html[data-theme="dark"] .ger-notes-placeholder { color: #777; }
 .h-stars-empty { color:#555; }
 .h-pill { background:var(--bg,#f4f4f4); border:1px solid var(--border); color:var(--text-muted,#888); padding:2px 10px; border-radius:12px; font-size:12px; }
 .h-gallery { padding:0 20px 14px; }
-.h-gal-main { position:relative; width:100%; border-radius:10px; overflow:hidden; background:#f5f5f5; text-align:center; }
-.h-gal-main img { display:inline-block; width:auto; height:auto; max-width:100%; max-height:500px; min-height:200px; object-fit:contain; vertical-align:middle; }
+.h-gal-main { position:relative; width:100%; border-radius:10px; overflow:hidden; background:#111; line-height:0; }
+.h-gal-main img { width:100%; height:auto; max-height:520px; object-fit:cover; object-position:center top; display:block; }
 .h-gal-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.55); border:none; color:#fff; font-size:1.7rem; width:40px; height:40px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; padding:0; line-height:1; }
 .h-gal-btn:hover { background:rgba(79,120,216,0.85); }
 .h-prev { left:10px; }
