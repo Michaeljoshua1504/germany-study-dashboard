@@ -2345,12 +2345,12 @@ function duoSentClearSearch() { duoSentenceSearch = ''; const el = document.getE
 function duoSentSetFilter(val) { duoSentenceFilter = val; renderDuoSentences(); }
 
 
-// ═══════════════ 9. AUTH SYSTEM ═══════════════
-const AUTH_CREDENTIALS = { username: 'mikey', password: 'Hof@2026' };
-const AUTH_KEY = 'gsd_auth';
+// ═══════════════ 9. AUTH SYSTEM (Supabase Auth) ═══════════════
+
+let _authUser = null; // holds the current Supabase user object
 
 function isLoggedIn() {
-  return sessionStorage.getItem(AUTH_KEY) === 'true';
+  return !!_authUser;
 }
 
 function applyAuthState() {
@@ -2365,13 +2365,11 @@ function applyAuthState() {
   if (loginBtn) loginBtn.style.display = loggedIn ? 'none' : '';
   if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
 
-  // If logged in and currently on housing tab, keep it; otherwise keep housing as default for guests
+  // If guest — lock view to Housing only
   const housingTabBtn = document.getElementById('tab-btn-housing');
   if (!loggedIn) {
-    // Ensure housing is active for guests
     document.querySelectorAll('.topbar-tab').forEach(t => t.classList.remove('active'));
     if (housingTabBtn) housingTabBtn.classList.add('active');
-    // Force housing content visible
     document.querySelectorAll('.sub-nav').forEach(nav => nav.style.display = 'none');
     const housingNav = document.getElementById('nav-housing');
     if (housingNav) housingNav.style.display = 'flex';
@@ -2391,37 +2389,71 @@ function openLoginModal() {
 function closeLoginModal() {
   const overlay = document.getElementById('login-overlay');
   if (overlay) overlay.classList.remove('visible');
-  document.getElementById('login-error').textContent = '';
-  document.getElementById('login-username').value = '';
-  document.getElementById('login-password').value = '';
+  const errEl = document.getElementById('login-error');
+  const uEl = document.getElementById('login-username');
+  const pEl = document.getElementById('login-password');
+  if (errEl) errEl.textContent = '';
+  if (uEl) uEl.value = '';
+  if (pEl) pEl.value = '';
 }
 
 function loginKeydown(e) {
   if (e.key === 'Enter') attemptLogin();
 }
 
-function attemptLogin() {
-  const user = (document.getElementById('login-username').value || '').trim();
-  const pass = (document.getElementById('login-password').value || '').trim();
+async function attemptLogin() {
+  const email = (document.getElementById('login-username').value || '').trim();
+  const pass  = (document.getElementById('login-password').value || '').trim();
   const errEl = document.getElementById('login-error');
+  const btn   = document.querySelector('.login-submit');
 
-  if (user === AUTH_CREDENTIALS.username && pass === AUTH_CREDENTIALS.password) {
-    sessionStorage.setItem(AUTH_KEY, 'true');
+  if (!email || !pass) {
+    errEl.textContent = 'Please enter your email and password.';
+    return;
+  }
+
+  // Show loading state
+  if (btn) { btn.textContent = 'Signing in…'; btn.disabled = true; }
+  errEl.textContent = '';
+
+  try {
+    const { data, error } = await sbClient.auth.signInWithPassword({ email, password: pass });
+    if (error) throw error;
+    _authUser = data.user;
     closeLoginModal();
     applyAuthState();
     // Switch to Admission tab after login
     const admissionTabEl = document.querySelector('.topbar-tab.auth-only');
     if (admissionTabEl) showMainTab('admission', admissionTabEl);
-  } else {
-    errEl.textContent = 'Incorrect username or password.';
+  } catch (err) {
+    errEl.textContent = 'Incorrect email or password.';
     document.getElementById('login-password').value = '';
     document.getElementById('login-password').focus();
+  } finally {
+    if (btn) { btn.textContent = 'Unlock Dashboard →'; btn.disabled = false; }
   }
 }
 
-function doLogout() {
-  sessionStorage.removeItem(AUTH_KEY);
+async function doLogout() {
+  if (sbClient) await sbClient.auth.signOut();
+  _authUser = null;
   applyAuthState();
+}
+
+// Restore session on page load if Supabase already has one
+async function initAuth() {
+  if (!sbClient) { applyAuthState(); return; }
+  const { data } = await sbClient.auth.getSession();
+  if (data?.session?.user) {
+    _authUser = data.session.user;
+  }
+  applyAuthState();
+
+  // Keep _authUser in sync if session expires or user logs in elsewhere
+  sbClient.auth.onAuthStateChange((_event, session) => {
+    _authUser = session?.user || null;
+    applyAuthState();
+  });
 }
 
 // Close modal if overlay background is clicked
@@ -2431,14 +2463,15 @@ document.getElementById('login-overlay').addEventListener('click', function(e) {
 
 // ═══════════════ 10. INIT ═══════════════
 initTheme();
-applyAuthState();
 renderDocChecklist();
 renderNotesGrid();
 initCalculator();
 renderGermanTab();
 renderArchive();
 
-// Fetch from cloud to boot the app
-fetchAllCloudData().then(() => {
-  updateAll();
+// Init auth first (restores session if already logged in), then fetch cloud data
+initAuth().then(() => {
+  fetchAllCloudData().then(() => {
+    updateAll();
+  });
 });
