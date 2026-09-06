@@ -138,6 +138,14 @@ async function fetchAllCloudData() {
       console.warn('duo_sentences table not ready yet:', dsErr.message);
     }
 
+    // Load next steps (isolated — won't crash main fetch)
+    try {
+      await loadNextSteps();
+      refreshDashboardStrips();
+    } catch (nsErr) {
+      console.warn('next_steps load error:', nsErr.message);
+    }
+
     // SUCCESS! Make the dot green and blink
     if (dot) dot.className = 'status-dot connected';
     if (text) text.textContent = 'Connected to Supabase';
@@ -846,38 +854,8 @@ function renderDashboard() {
   if (labels[1]) labels[1].textContent = 'Visa Progress';
   if (labels[2]) labels[2].textContent = 'German Days';
 
-  // ── SECTION A: FOCUS STRIP — Hof post-enrollment next steps ──
-  const focusEl = document.getElementById('focus-strip');
-  if (focusEl) {
-    const items = [];
-
-    // Visa process
-    if (!['visa','enrolled'].includes(hofStage)) {
-      items.push({ urgency:'red', text:'<strong>Start visa application</strong> — register on digital.diplo.de/visa for digital pre-screening', chip:'Next up', chipClass:'red' });
-    }
-
-    // CSP visa documents
-    items.push({ urgency:'amber', text:'<strong>CSP documents submitted</strong> — visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'In progress', chipClass:'amber' });
-
-    // Housing
-    items.push({ urgency:'blue', text:'<strong>Housing offer from Hof</strong> — payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', chipClass:'blue' });
-
-    // Expatrio scholarship
-    items.push({ urgency:'blue', text:'<strong>Expatrio Scholarship</strong> — submit video by <strong>30 Sep 2026</strong>. Top prize €15,000. Free to apply.', chip:'30 Sep', chipClass:'blue' });
-
-    // German
-    if (gerCompleted < 31) {
-      const next = Math.min(gerCompleted + 1, 31);
-      items.push({ urgency:'blue', text:`<strong>German Day ${next}</strong> — continue your A1 curriculum (${gerCompleted}/31 days done)`, chip:'In progress', chipClass:'blue' });
-    }
-
-    focusEl.innerHTML = items.map(item => `
-      <div class="focus-item">
-        <div class="focus-dot" style="background:${colorMap[item.urgency]};"></div>
-        <div class="focus-text">${item.text}</div>
-        <div class="focus-chip" style="background:${chipBg[item.chipClass]};color:${chipTx[item.chipClass]};">${item.chip}</div>
-      </div>`).join('');
-  }
+  // ── SECTION A: FOCUS STRIP — driven by next_steps Supabase table ──
+  renderNextStepsStrip(gerCompleted, colorMap, chipBg, chipTx);
 
   // ── SECTION B LEFT: Hof enrolled card ──
   const subList = document.getElementById('dash-submitted-list');
@@ -911,26 +889,187 @@ function renderDashboard() {
   const el_fill  = document.getElementById('dash-ger-fill');  if (el_fill)  el_fill.style.width  = Math.max(pct, 2) + '%';
   const el_next  = document.getElementById('dash-ger-next');  if (el_next)  el_next.textContent  = gerCompleted >= 31 ? 'Complete! 🎉' : `Day ${nextDay}`;
 
-  // ── SECTION C: WHAT'S NEXT — Hof only ──
-  const nextTable = document.getElementById('dash-next-table');
-  if (nextTable) {
-    const rows = [
-      { urgency:'red',   action:'Complete visa application — register at digital.diplo.de/visa',        dl:'ASAP' },
-      { urgency:'amber', action:'Transfer €12,131 to Expatrio blocked account via Zenith Forex',        dl:'Before visa appt' },
-      { urgency:'amber', action:'Register with TK health insurance — they notify Hof electronically',   dl:'Before Oct 1' },
-      { urgency:'blue',  action:'Wait for Hof dormitory offer (payment confirmation sent 28 Aug)',       dl:'Pending' },
-      { urgency:'blue',  action:'Submit Expatrio Scholarship video',                                     dl:'30 Sep 2026' },
-      { urgency:'blue',  action:'Apply for Deutschlandstipendium at Hof after semester starts',         dl:'After Oct 1' },
-    ];
-    nextTable.innerHTML =
-      `<div class="next-header"><span class="next-name" style="flex:2;">Next action</span><span class="next-dl">By when</span></div>` +
-      rows.map(r => `
-        <div class="next-row">
-          <div class="next-dot" style="background:${colorMap[r.urgency]};flex-shrink:0;"></div>
-          <div class="next-action" style="flex:2;">${r.action}</div>
-          <div class="next-dl">${r.dl}</div>
-        </div>`).join('');
+  // ── SECTION C: WHAT'S NEXT — driven by next_steps Supabase table ──
+  renderNextStepsTable(colorMap);
+}
+
+// ═══════════════ 8a. NEXT STEPS — DB-DRIVEN ═══════════════
+
+let nextStepsData = []; // loaded from Supabase next_steps table
+
+// Default steps seeded on first load if table is empty
+const DEFAULT_NEXT_STEPS = [
+  { text:'CSP documents submitted', detail:'Visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'In progress', urgency:'amber', section:'both', done:false, sort_order:1 },
+  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:2 },
+  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize €15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:3 },
+  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:4 },
+];
+
+async function loadNextSteps() {
+  if (!sbClient) { nextStepsData = [...DEFAULT_NEXT_STEPS]; return; }
+  try {
+    const { data, error } = await sbClient.from('next_steps').select('*').order('sort_order', { ascending: true });
+    if (error) throw error;
+    if (data && data.length > 0) {
+      nextStepsData = data;
+    } else {
+      // Seed defaults into DB
+      nextStepsData = [...DEFAULT_NEXT_STEPS];
+      await sbClient.from('next_steps').insert(DEFAULT_NEXT_STEPS);
+    }
+  } catch (e) {
+    console.warn('next_steps table not ready:', e.message);
+    nextStepsData = [...DEFAULT_NEXT_STEPS];
   }
+}
+
+function renderNextStepsStrip(gerCompleted, colorMap, chipBg, chipTx) {
+  const focusEl = document.getElementById('focus-strip');
+  if (!focusEl) return;
+  const items = nextStepsData.filter(s => !s.done && (s.section === 'focus' || s.section === 'both'));
+
+  // Always append computed German day item
+  if (gerCompleted < 31) {
+    const next = Math.min(gerCompleted + 1, 31);
+    items.push({ urgency:'blue', text:`German Day ${next}`, detail:`Continue your A1 curriculum (${gerCompleted}/31 days done)`, chip:'In progress', _computed:true });
+  }
+
+  const editBtn = isLoggedIn() ? `<button onclick="openStepsManager()" style="float:right;margin-top:-2px;font-size:11px;padding:3px 10px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;">✏️ Edit</button>` : '';
+
+  focusEl.innerHTML = (editBtn ? `<div style="overflow:hidden;margin-bottom:6px;">${editBtn}</div>` : '') +
+    items.map(item => `
+      <div class="focus-item">
+        <div class="focus-dot" style="background:${colorMap[item.urgency] || '#378ADD'};"></div>
+        <div class="focus-text"><strong>${item.text}</strong>${item.detail ? ' — ' + item.detail : ''}</div>
+        <div class="focus-chip" style="background:${(chipBg||{})[item.urgency]||'#E6F1FB'};color:${(chipTx||{})[item.urgency]||'#185FA5'};">${item.chip || ''}</div>
+      </div>`).join('') || '<div style="padding:12px;color:var(--muted);font-size:13px;">All steps complete! 🎉</div>';
+}
+
+function renderNextStepsTable(colorMap) {
+  const nextTable = document.getElementById('dash-next-table');
+  if (!nextTable) return;
+  const rows = nextStepsData.filter(s => !s.done && (s.section === 'action' || s.section === 'both'));
+  nextTable.innerHTML =
+    `<div class="next-header"><span class="next-name" style="flex:2;">Next action</span><span class="next-dl">By when</span></div>` +
+    (rows.length ? rows.map(r => `
+      <div class="next-row">
+        <div class="next-dot" style="background:${colorMap[r.urgency]||'#378ADD'};flex-shrink:0;"></div>
+        <div class="next-action" style="flex:2;">${r.text}${r.detail ? ' — ' + r.detail : ''}</div>
+        <div class="next-dl">${r.chip || ''}</div>
+      </div>`).join('')
+    : '<div style="padding:12px;color:var(--muted);font-size:13px;">All done! 🎉</div>');
+}
+
+// ── Step Manager (logged-in only) ──
+function openStepsManager() {
+  let overlay = document.getElementById('steps-manager-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'steps-manager-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+      <div style="background:var(--card);border-radius:16px;padding:28px;width:min(96vw,620px);max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.25);position:relative;">
+        <button onclick="closeStepsManager()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text);">✕</button>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:16px;">✏️ Manage Next Steps</div>
+        <div id="steps-list"></div>
+        <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:16px;">
+          <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px;">Add new step</div>
+          <input id="ns-text" placeholder="Step title" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;margin-bottom:6px;">
+          <input id="ns-detail" placeholder="Detail (optional)" style="width:100%;box-sizing:border-box;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;margin-bottom:6px;">
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <input id="ns-chip" placeholder="Chip label (e.g. 30 Sep)" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;">
+            <select id="ns-urgency" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;">
+              <option value="amber">🟡 Amber</option>
+              <option value="blue" selected>🔵 Blue</option>
+              <option value="red">🔴 Red</option>
+              <option value="green">🟢 Green</option>
+            </select>
+            <select id="ns-section" style="flex:1;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:13px;">
+              <option value="both" selected>Both strips</option>
+              <option value="focus">Next Steps only</option>
+              <option value="action">Action Plan only</option>
+            </select>
+          </div>
+          <button onclick="addNextStep()" style="background:#1a73e8;color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;width:100%;">+ Add Step</button>
+        </div>
+        <div id="ns-msg" style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;"></div>
+      </div>`;
+    document.body.appendChild(overlay);
+  }
+  overlay.style.display = 'flex';
+  renderStepsList();
+}
+
+function closeStepsManager() {
+  const overlay = document.getElementById('steps-manager-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function renderStepsList() {
+  const list = document.getElementById('steps-list');
+  if (!list) return;
+  const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
+  list.innerHTML = nextStepsData.map((s, i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);">
+      <div style="width:10px;height:10px;border-radius:50%;background:${colorMap[s.urgency]||'#378ADD'};flex-shrink:0;${s.done?'opacity:0.35':''}"></div>
+      <div style="flex:1;font-size:13px;color:var(--text);${s.done?'text-decoration:line-through;opacity:0.5':''}"><strong>${s.text}</strong>${s.detail?' — '+s.detail:''}</div>
+      <div style="font-size:11px;color:var(--muted);white-space:nowrap;">${s.chip||''}</div>
+      ${!s.done ? `<button onclick="markStepDone(${i})" title="Mark done" style="background:#e6f3ea;border:none;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;color:#1D9E75;">✓ Done</button>` : ''}
+      <button onclick="deleteStep(${i})" title="Delete" style="background:#fbe9e9;border:none;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;color:#c0392b;">🗑</button>
+    </div>`).join('') || '<div style="color:var(--muted);font-size:13px;padding:8px 0;">No steps yet.</div>';
+}
+
+async function addNextStep() {
+  const text    = document.getElementById('ns-text').value.trim();
+  const detail  = document.getElementById('ns-detail').value.trim();
+  const chip    = document.getElementById('ns-chip').value.trim();
+  const urgency = document.getElementById('ns-urgency').value;
+  const section = document.getElementById('ns-section').value;
+  const msg     = document.getElementById('ns-msg');
+  if (!text) { msg.textContent = 'Step title is required.'; return; }
+  const newStep = { text, detail, chip, urgency, section, done: false, sort_order: nextStepsData.length + 1 };
+  if (sbClient) {
+    const { data, error } = await sbClient.from('next_steps').insert([newStep]).select();
+    if (error) { msg.textContent = 'Error: ' + error.message; return; }
+    nextStepsData.push(data[0]);
+  } else {
+    nextStepsData.push(newStep);
+  }
+  ['ns-text','ns-detail','ns-chip'].forEach(id => document.getElementById(id).value = '');
+  msg.textContent = '✅ Step added!';
+  setTimeout(() => { if(msg) msg.textContent=''; }, 2000);
+  renderStepsList();
+  refreshDashboardStrips();
+}
+
+async function markStepDone(index) {
+  const step = nextStepsData[index];
+  if (!step) return;
+  if (sbClient && step.id) {
+    await sbClient.from('next_steps').update({ done: true }).eq('id', step.id);
+  }
+  nextStepsData[index].done = true;
+  renderStepsList();
+  refreshDashboardStrips();
+}
+
+async function deleteStep(index) {
+  const step = nextStepsData[index];
+  if (!step) return;
+  if (sbClient && step.id) {
+    await sbClient.from('next_steps').delete().eq('id', step.id);
+  }
+  nextStepsData.splice(index, 1);
+  renderStepsList();
+  refreshDashboardStrips();
+}
+
+function refreshDashboardStrips() {
+  const colorMap = { red:'#E24B4A', amber:'#BA7517', blue:'#378ADD', green:'#1D9E75' };
+  const chipBg   = { red:'#FCEBEB', amber:'#FAEEDA', blue:'#E6F1FB', green:'#EAF3DE' };
+  const chipTx   = { red:'#A32D2D', amber:'#854F0B', blue:'#185FA5', green:'#3B6D11' };
+  renderNextStepsStrip(germanCompletedCount(), colorMap, chipBg, chipTx);
+  renderNextStepsTable(colorMap);
 }
 
 // ═══════════════ 8b. UNIVERSITIES TAB RENDERER ═══════════════
