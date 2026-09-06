@@ -2355,8 +2355,8 @@ function isLoggedIn() {
 
 function applyAuthState() {
   const loggedIn = isLoggedIn();
-  // Show/hide auth-gated tabs
-  document.querySelectorAll('.topbar-tab.auth-only').forEach(el => {
+  // Show/hide auth-gated tabs (topbar + sub-nav)
+  document.querySelectorAll('.topbar-tab.auth-only, .tab.auth-only').forEach(el => {
     el.style.display = loggedIn ? '' : 'none';
   });
   // Show/hide login/logout buttons
