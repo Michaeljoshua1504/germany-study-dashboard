@@ -900,9 +900,11 @@ let nextStepsData = []; // loaded from Supabase next_steps table
 // Default steps seeded on first load if table is empty
 const DEFAULT_NEXT_STEPS = [
   { text:'CSP documents submitted', detail:'Visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'In progress', urgency:'amber', section:'both', done:false, sort_order:1 },
-  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:2 },
-  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize €15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:3 },
-  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:4 },
+  { text:'Upload CampusCard photo', detail:'Face-only JPG, 300×400px, max 200KB. Upload via Primuss student portal.', chip:'Action needed', urgency:'amber', section:'both', done:false, sort_order:2 },
+  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:3 },
+  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize €15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:4 },
+  { text:'Download enrollment certificate', detail:'Available from Primuss Portal once Zugangsdaten (university login) arrives.', chip:'After login', urgency:'blue', section:'action', done:false, sort_order:5 },
+  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:6 },
 ];
 
 async function loadNextSteps() {
