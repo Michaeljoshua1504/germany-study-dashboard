@@ -904,8 +904,10 @@ const DEFAULT_NEXT_STEPS = [
   { text:'Application received at Germany Consulate', detail:'Ref: DEU/MAA/090926/0035/01. Received 10 Sep 2026. Awaiting consulate decision — auto email will notify when ready for collection.', chip:'Under review', urgency:'amber', section:'both', done:false, sort_order:3 },
   { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:4 },
   { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize \u20ac15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:5 },
-  { text:'Download enrollment certificate', detail:'Available from Primuss Portal once Zugangsdaten (university login) arrives.', chip:'After login', urgency:'blue', section:'action', done:false, sort_order:6 },
-  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:7 },
+  { text:'Fill in Hof arrival form', detail:'Required by Welcome Center. Submit at: hof-university.com/studying-at-hof-university/services-and-support/housing/arrival-form.html', chip:'Do now', urgency:'amber', section:'action', done:false, sort_order:6 },
+  { text:'Register for "How to Study in Germany" workshop', detail:'Free workshop by Hof Welcome Center. Register at: terminplaner6.dfn.de/de/b/63e2973c502a23f88fda898d49b81a5b-1097638', chip:'Do now', urgency:'blue', section:'action', done:false, sort_order:7 },
+  { text:'Download enrollment certificate + collect CampusCard', detail:'Log in to PRIMUSS Student portal once Zugangsdaten arrives — download enrollment certificate. Then collect CampusCard from Room A111, Student Affairs, Hof campus (available from Sep 25). Hours: Mon & Thu 12–3 pm, Tue/Wed/Fri 9 am–12 pm.', chip:'From Sep 25', urgency:'blue', section:'action', done:false, sort_order:8 },
+  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:9 },
 ];
 
 async function loadNextSteps() {
