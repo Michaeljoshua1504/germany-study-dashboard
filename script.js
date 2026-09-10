@@ -899,12 +899,13 @@ let nextStepsData = []; // loaded from Supabase next_steps table
 
 // Default steps seeded on first load if table is empty
 const DEFAULT_NEXT_STEPS = [
-  { text:'CSP documents submitted', detail:'Visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'In progress', urgency:'amber', section:'both', done:false, sort_order:1 },
-  { text:'VFS appointment — prep documents', detail:'Bring: printed checklist, 2 biometric photos (35×45mm white bg), passport original, school-leaving certificate original, TK insurance proof. Location: Ramee Mall, 2nd Floor, Anna Salai, Chennai.', chip:'9 Sep', urgency:'amber', section:'both', done:false, sort_order:2 },
-  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:3 },
-  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize €15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:4 },
-  { text:'Download enrollment certificate', detail:'Available from Primuss Portal once Zugangsdaten (university login) arrives.', chip:'After login', urgency:'blue', section:'action', done:false, sort_order:5 },
-  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:6 },
+  { text:'CSP documents submitted', detail:'Visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'Done', urgency:'amber', section:'both', done:true, sort_order:1 },
+  { text:'VFS appointment — 9 Sep Chennai', detail:'Appointment completed at Ramee Mall, Anna Salai, Chennai. Documents submitted successfully.', chip:'Done', urgency:'amber', section:'both', done:true, sort_order:2 },
+  { text:'Application received at Germany Consulate', detail:'Ref: DEU/MAA/090926/0035/01. Received 10 Sep 2026. Awaiting consulate decision — auto email will notify when ready for collection.', chip:'Under review', urgency:'amber', section:'both', done:false, sort_order:3 },
+  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:4 },
+  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize \u20ac15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:5 },
+  { text:'Download enrollment certificate', detail:'Available from Primuss Portal once Zugangsdaten (university login) arrives.', chip:'After login', urgency:'blue', section:'action', done:false, sort_order:6 },
+  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:7 },
 ];
 
 async function loadNextSteps() {
