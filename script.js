@@ -1,7 +1,7 @@
 // ═══════════════ 1. SUPABASE SETUP & LOCAL CACHE ═══════════════
 
 const SUPABASE_URL = 'https://epndekpwxngjozytlcmy.supabase.co'; // <-- PASTE YOUR URL HERE
-const SUPABASE_ANON_KEY = 'sb_publishable_1RHubw6OVdqUAS_XAcKnpg_po3SzAj5'; // <-- PASTE YOUR ANON KEY HERE
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwbmRla3B3eG5nam96eXRsY215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzgxNTIsImV4cCI6MjA5ODMxNDE1Mn0.WtNsEgvw6ezTJN4ACVYB6Mcv57hABo0FGMC2nRamLiA'; // <-- PASTE YOUR ANON KEY HERE
 
 let sbClient = null;
 try {
