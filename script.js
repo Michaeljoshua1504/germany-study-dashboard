@@ -806,6 +806,29 @@ const deadlines = {
   chemnitz: '2026-07-15', rheinmain: '2026-07-15', frankfurt: '2026-10-15', kiel: '2026-09-15',
 };
 
+
+// ── Dynamic phase header completion indicator ──
+function updatePhaseHeaders() {
+  [2, 3, 4].forEach(function(n) {
+    var section = document.getElementById('phase-' + n);
+    var tickEl  = document.getElementById('phase-' + n + '-tick');
+    if (!section || !tickEl) return;
+    var boxes   = section.querySelectorAll('input.cl-check');
+    var total   = boxes.length;
+    var checked = Array.from(boxes).filter(function(b) { return b.checked; }).length;
+    if (total === 0) return;
+    if (checked === total) {
+      tickEl.textContent = '✅ ';
+      section.classList.add('phase-done');
+      section.classList.remove('phase-important');
+    } else {
+      tickEl.textContent = '';
+      section.classList.remove('phase-done');
+      section.classList.add('phase-important');
+    }
+  });
+}
+
 function updateAll() {
   for (const [key, date] of Object.entries(deadlines)) applyCountdown(key, date);
   const today = new Date();
@@ -813,6 +836,7 @@ function updateAll() {
   if (todayEl) todayEl.textContent = 'Today: ' + today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
   renderDashboard();
   renderHofProfile();
+  updatePhaseHeaders();
 }
 
 let currentFitFilter = 'all';
