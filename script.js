@@ -8,7 +8,14 @@ try {
   if (!window.supabase) throw new Error("Supabase library is missing. Did you add the script tag to index.html?");
   // Only create the client if the URL looks like a real URL to prevent crashing
   if (SUPABASE_URL.startsWith('http')) {
-    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        storage: window.localStorage,
+        persistSession: true,
+        detectSessionInUrl: false,
+        storageKey: 'gsd-auth-token'
+      }
+    });
   } else {
     console.warn("Waiting for valid Supabase URL to be entered.");
   }
