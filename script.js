@@ -810,7 +810,7 @@ const deadlines = {
 
 // ── Dynamic phase header completion indicator ──
 function updatePhaseHeaders() {
-  [2, 3, 4].forEach(function(n) {
+  [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(n) {
     var section = document.getElementById('phase-' + n);
     var tickEl  = document.getElementById('phase-' + n + '-tick');
     if (!section || !tickEl) return;
@@ -825,7 +825,8 @@ function updatePhaseHeaders() {
     } else {
       tickEl.textContent = '';
       section.classList.remove('phase-done');
-      section.classList.add('phase-important');
+      // Only show amber highlight if it's a phase we're actively working through
+      if (n <= 5) section.classList.add('phase-important');
     }
   });
 }
