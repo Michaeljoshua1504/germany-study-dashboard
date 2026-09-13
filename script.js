@@ -561,6 +561,7 @@ function restoreChecks() {
     }
   });
   updateDocProgress(); updateVisaProgress();
+  updatePhaseHeaders();
 }
 
 function updateDocProgress() {
