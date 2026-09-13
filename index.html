@@ -163,110 +163,355 @@
 </div>
 
 <div id="tab-visa" class="section">
-  <div class="section-title">✈️ Visa & Relocation Journey — Admission to Arrival</div>
-  <div class="section-sub">Every step from the moment you accept an offer to settling into life in Germany, broken into phases. Tick items off as you go — your progress is saved in this browser.</div>
+  <div class="section-title">✈️ Visa &amp; Relocation Journey — Admission to Arrival</div>
+  <div class="section-sub">Every step from accepting your offer to settling into Germany. Priority-coded — red = critical, amber = important, blue = good to have. Tick items off as you go — progress saved in this browser.</div>
 
   <div class="progress-row">
     <div class="progress-track"><div class="progress-fill" id="visa-progress-fill" style="width:0%;"></div></div>
     <div class="progress-pct" id="visa-progress-pct">0%</div>
   </div>
 
-  <details class="phase" open>
-    <summary>Phase 0 — Before You Apply (mostly done) <span class="phase-arrow">▶</span></summary>
+  <!-- PRE-VISA CHECKS -->
+  <details class="phase phase-critical" open>
+    <summary>🔍 Pre-Visa Checks — Fix Before Visa Arrives <span class="phase-arrow">▶</span></summary>
+    <div class="phase-body">
+      <div class="phase-intro">Things discovered during the Canada → Germany switch that need correcting <strong>before your visa arrives</strong>. All linked to Avanse loan account BANEE01102881. WhatsApp Aswini on Monday with the saved message in Todoist.</div>
+
+      <div class="cl-item cl-critical persist-check" id="pv-1">
+        <input type="checkbox" class="cl-check persist-check" id="pv-1-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-1-cb"><strong>Fix ISIC card — name &amp; institution</strong> — Currently shows "Michael Michael" + "Douglas". Must be corrected to "Michael Joshua" + "Hof University of Applied Sciences, Germany" before departure. Ask Aswini first; if unresolved contact isic.org with passport + Hof enrollment confirmation.</label></div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="pv-2-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-2-cb"><strong>Check Avanse loan sanction letter</strong> — Verify it shows Hof University of Applied Sciences + Germany as destination. If it still mentions Canada or Douglas College, inform Aswini immediately — the visa consulate checks this document.</label></div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="pv-3-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-3-cb"><strong>Life insurance linked to loan</strong> — Mandatory with Avanse loan (~1.25–1.5% of loan amount). Check if it mentions Canada or Douglas College. Ask Aswini: "Does my life insurance policy need updating for Germany?"</label></div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="pv-4-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-4-cb"><strong>Overseas health insurance coverage</strong> — If Avanse bundled one, check which country it covers. Must be valid for Germany/Europe, not Canada. Ask Aswini for confirmation.</label></div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="pv-5-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-5-cb"><strong>Avanse portal — verify destination &amp; university</strong> — Log in at avanse.com and confirm: destination = Germany, university = Hof University of Applied Sciences, course = MEng Software Engineering for Industrial Applications.</label></div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="pv-6-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-6-cb"><strong>HDFC branch visit — 3 things</strong> — (1) Credit limit increase on Swiggy Ornge → ask for ₹1 lakh. (2) Upgrade to Millennia or Regalia First for lounge access. (3) Apply for Multicurrency Platinum ForexPlus Card — load Euros for Germany.</label></div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="pv-7-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-7-cb"><strong>HSBC loan account purpose</strong> — Ask HSBC relationship manager if the loan account purpose references Canada or Douglas College. If yes, request update to Hof University of Applied Sciences, Germany.</label></div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="pv-8-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-8-cb"><strong>Download Niyo Global app &amp; order card</strong> — Zero forex markup for daily Euro spending in Germany. Open account 100% online, no income proof needed. Use alongside HDFC card for complete coverage.</label></div>
+        <span class="cl-chip chip-optional">Good to have</span>
+      </div>
+
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="pv-9-cb" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="pv-9-cb"><strong>Texas Review — confirm nothing else Canada-linked</strong> — Ask your consultant: "Is there anything else in my file that still references Canada or Douglas College?" They have your complete file and will know immediately.</label></div>
+        <span class="cl-chip chip-optional">Good to have</span>
+      </div>
+    </div>
+  </details>
+
+  <!-- PHASE 0 -->
+  <details class="phase phase-done" open>
+    <summary>Phase 0 — Before You Apply (mostly done ✅) <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
       <div class="phase-intro">Foundational documents every Indian applicant needs before a German university or the embassy will even look at your file.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-0-1" onchange="saveCheck(this)" checked><label for="visa-0-1">APS Certificate (Akademische Prüfstelle) obtained — mandatory for Indian students, verifies your academic documents. ✓ You already have this.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-0-2" onchange="saveCheck(this)"><label for="visa-0-2">IELTS certificate valid and not expiring before your intake (yours: 6.5)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-0-3" onchange="saveCheck(this)"><label for="visa-0-3">Any university-specific language certificate obtained (e.g. Goethe A1 German for Fulda)</label></div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-0-1" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-0-1">APS Certificate (Akademische Prüfstelle) obtained — mandatory for Indian students, verifies your academic documents. ✓ You already have this.</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-0-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-0-2">IELTS certificate valid and not expiring before your intake (yours: 6.5)</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="visa-0-3" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-0-3">Any university-specific language certificate obtained (e.g. Goethe A1 German for Fulda)</label></div>
+        <span class="cl-chip chip-optional">Good to have</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
-    <summary>Phase 1 — After Receiving an Admission Letter (Zulassungsbescheid) <span class="phase-arrow">▶</span></summary>
+  <!-- PHASE 1 -->
+  <details class="phase phase-done">
+    <summary>Phase 1 — After Receiving Admission Letter (Zulassungsbescheid) ✅ <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
       <div class="phase-intro">The clock starts here. This letter is the foundation document everything else depends on.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-1-1" onchange="saveCheck(this)"><label for="visa-1-1">Read the offer carefully — note whether it's conditional or unconditional, and the accept-by deadline</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-1-2" onchange="saveCheck(this)"><label for="visa-1-2">If conditional — fulfil every listed condition (missing documents, certificates) well before the deadline</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-1-3" onchange="saveCheck(this)"><label for="visa-1-3">Formally accept the offer / confirm your intent to enroll, in writing if required</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-1-4" onchange="saveCheck(this)"><label for="visa-1-4">Pay any enrollment deposit or first tuition instalment if applicable (e.g. Hof MEng tuition)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-1-5" onchange="saveCheck(this)"><label for="visa-1-5">Request the official enrollment/admission confirmation letter — this exact document is required for the blocked account and the visa application</label></div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-1-1" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-1-1">Read the offer carefully — note whether it's conditional or unconditional, and the accept-by deadline</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-1-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-1-2">If conditional — fulfil every listed condition (missing documents, certificates) well before the deadline</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-1-3" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-1-3">Formally accept the offer / confirm your intent to enroll, in writing if required</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-1-4" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-1-4">Pay any enrollment deposit or first tuition instalment if applicable (e.g. Hof MEng tuition)</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-1-5" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-1-5">Request the official enrollment/admission confirmation letter — required for the blocked account and the visa application</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
-    <summary>Phase 2 — Financial Proof: Blocked Account (Sperrkonto) <span class="phase-arrow">▶</span></summary>
+  <!-- PHASE 2 -->
+  <details class="phase phase-done">
+    <summary>Phase 2 — Financial Proof: Blocked Account (Sperrkonto) ✅ <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
-      <div class="phase-intro">2026 requirement: <strong>€11,904</strong> (€992 × 12 months) deposited up front, released at <strong>€992/month</strong> after you arrive. The money is "blocked" — you cannot touch it until you land in Germany. Open this 6–8 weeks before your visa appointment. <strong>✅ Chosen provider: Expatrio Value Package</strong> (expatrio.com) — €119 setup fee + €9/month. Accepted by all German authorities.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-1" onchange="saveCheck(this)"><label for="visa-2-1">Sign up for the <strong>Expatrio Value Package</strong> at expatrio.com — €119 setup + €9/month. Includes blocked account, TK health insurance, free German bank account, travel insurance, and Expatrio Scholarship eligibility.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-2" onchange="saveCheck(this)"><label for="visa-2-2">Register online — submit your passport ID + Hof admission/offer letter as proof of admission</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-3" onchange="saveCheck(this)"><label for="visa-2-3">Transfer €11,904 — only from your own account or an immediate family member's (third-party transfers are usually rejected). Coordinate with Avanse loan (Aswini) and Zenith Forex (Vaishnavi) for this transfer.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-4" onchange="saveCheck(this)"><label for="visa-2-4">Once funds clear, Expatrio provides instant blocked amount confirmation. Download the blocking confirmation (Sperrbestätigung) PDF — needed for the visa file.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-5" onchange="saveCheck(this)"><label for="visa-2-5">Your free Expatrio German Bank Account is automatically connected — once you arrive in Germany, your €992/month payout lands here instantly every month.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-2-6" onchange="saveCheck(this)"><label for="visa-2-6">Apply for the <strong>Expatrio Scholarship</strong> — submit a short video by <strong>September 30, 2026</strong>. Top prize: €15,000. Free to apply, nothing to lose. Only available to Value Package customers.</label></div>
+      <div class="phase-intro">2026 requirement: <strong>€11,904</strong> (€992 × 12 months) deposited up front, released at <strong>€992/month</strong> after you arrive. <strong>✅ Chosen provider: Expatrio Value Package</strong> — €119 setup fee + €9/month. Accepted by all German authorities.</div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-1" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-2-1">Sign up for the <strong>Expatrio Value Package</strong> at expatrio.com — includes blocked account, TK health insurance, free German bank account, travel insurance, and Expatrio Scholarship eligibility.</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-2-2">Register online — submit passport ID + Hof admission/offer letter as proof of admission</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-3" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-2-3">Transfer €11,904 — coordinated with Avanse loan (Aswini) and Zenith Forex (Vaishnavi)</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-4" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-2-4">Blocking confirmation (Sperrbestätigung) PDF downloaded — submitted to visa file</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-5" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-2-5">Free Expatrio German Bank Account connected — €992/month releases automatically once you arrive in Germany</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-2-6" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-2-6"><strong>Expatrio Scholarship</strong> — submit a short video by <strong>September 30, 2026</strong>. Top prize: €15,000. Free to apply, nothing to lose. Only available to Value Package customers.</label></div>
+        <span class="cl-chip chip-important">30 Sep deadline</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
-    <summary>Phase 3 — Health Insurance <span class="phase-arrow">▶</span></summary>
+  <!-- PHASE 3 -->
+  <details class="phase phase-done">
+    <summary>Phase 3 — Health Insurance ✅ <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
-      <div class="phase-intro">Health insurance is mandatory for your visa and university enrollment. The Expatrio Value Package bundles two layers of coverage automatically. <strong>✅ Chosen provider: TK (Techniker Krankenkasse)</strong> — Germany's largest public insurer, English-language support, fully digital, accepted by all universities.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-3-1" onchange="saveCheck(this)"><label for="visa-3-1"><strong>Travel/Incoming Insurance (free with Expatrio Value Package)</strong> — covers you from the moment you leave India until your TK health insurance activates in Germany. Worth up to €95. Mandatory for the visa application.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-3-2" onchange="saveCheck(this)"><label for="visa-3-2"><strong>TK Public Health Insurance</strong> — ongoing student cover (~€120/month, under 30). Bundled in the Expatrio Value Package. English-speaking support, bonus cashback program (TK-Flex, up to €90/year). Best choice for international students in Germany.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-3-3" onchange="saveCheck(this)"><label for="visa-3-3"><strong>TK notifies Hof electronically — do NOT submit anything yourself.</strong> Hof requires this notification before they issue your student credentials and campus card. Make sure TK confirms they've notified Hof before you arrive.</label></div>
+      <div class="phase-intro">Health insurance is mandatory for your visa and university enrollment. <strong>✅ Chosen provider: TK (Techniker Krankenkasse)</strong> — Germany's largest public insurer, English-language support, fully digital.</div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-3-1" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-3-1"><strong>Travel/Incoming Insurance</strong> — free with Expatrio Value Package. Covers you from the moment you leave India until TK activates in Germany. Mandatory for the visa application. ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-3-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-3-2"><strong>TK Public Health Insurance</strong> — ~€120/month (under 30). Bundled in Expatrio Value Package. English-speaking support, TK-Flex cashback up to €90/year. Best choice for international students in Germany. ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-3-3" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-3-3"><strong>TK notifies Hof electronically — do NOT submit anything yourself.</strong> Hof requires this notification before issuing your student credentials and CampusCard. Confirm TK has notified Hof before you arrive.</label></div>
+        <span class="cl-chip chip-important">Confirm</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
-    <summary>Phase 4 — Student Visa Application (VFS Bangalore → Consulate Bengaluru) <span class="phase-arrow">▶</span></summary>
+  <!-- PHASE 4 -->
+  <details class="phase phase-done">
+    <summary>Phase 4 — Student Visa Application ✅ <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
-      <div class="phase-intro">One-shot process — note that the remonstration (appeal) procedure for visa rejections was abolished from July 2025, so the file needs to be complete and correct the first time.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-1" onchange="saveCheck(this)"><label for="visa-4-1">Register on the Consular Services Portal (digital.diplo.de/visa), complete the questionnaire, and upload documents for digital pre-screening</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-1b" onchange="saveCheck(this)"><label for="visa-4-1b">Once pre-approved on the CSP, use the generated link to book your VFS Bangalore appointment</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-2" onchange="saveCheck(this)"><label for="visa-4-2">Gather the document set: passport + copies, 2 completed visa application forms, biometric photos, admission letter, APS certificate, academic transcripts & degree certificates, CV, SOP, blocked account confirmation, health insurance proof</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-3" onchange="saveCheck(this)"><label for="visa-4-3">Pay the visa fee (~€75) plus the VFS service charge (~₹2,080) — keep the receipt</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-4" onchange="saveCheck(this)"><label for="visa-4-4">Attend your VFS appointment for biometrics and document submission</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-5" onchange="saveCheck(this)"><label for="visa-4-5">Track your application status online using your VFS reference number while you wait (typically 6–8 weeks)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-4-6" onchange="saveCheck(this)"><label for="visa-4-6">Collect your passport with the national (D) visa stamped in</label></div>
+      <div class="phase-intro">One-shot process — remonstration (appeal) procedure abolished from July 2025, so the file needed to be complete and correct the first time. ✅ Application submitted and received by Germany Consulate Chennai on 10 Sep 2026. Ref: DEU/MAA/090926/0035/01.</div>
+
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-1" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-4-1">Registered on CSP (digital.diplo.de/visa), completed questionnaire and uploaded documents for digital pre-screening ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-1b" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-4-1b">VFS Chennai appointment booked and attended — 9 Sep 2026, Ramee Mall, Anna Salai, Chennai ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-4-2">Document set submitted: passport, biometric photos, admission letter, APS certificate, academic transcripts, CV, SOP, blocked account confirmation, health insurance proof ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-3" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-4-3">Visa fee (~€75) + VFS service charge paid ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-4" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-4-4">Biometrics and document submission completed at VFS Chennai ✅</label></div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-5" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-4-5"><strong>Application under review at Germany Consulate Chennai</strong> — Ref: DEU/MAA/090926/0035/01. Received 10 Sep 2026. Auto email will notify when passport is ready for collection. Check email daily.</label></div>
+        <span class="cl-chip chip-critical">Under review</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-4-6" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-4-6">Collect your passport with the national (D) visa stamped in — once consulate notifies you</label></div>
+        <span class="cl-chip chip-critical">Awaiting</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
+  <!-- PHASE 5 -->
+  <details class="phase phase-important">
     <summary>Phase 5 — Pre-Departure Preparation <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
-      <div class="phase-intro">Once the visa is in hand, the focus shifts to logistics.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-1" onchange="saveCheck(this)"><label for="visa-5-1">Book your flight (one-way is fine — return tickets aren't required for a student visa)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-2" onchange="saveCheck(this)"><label for="visa-5-2"><strong>Hof dormitory application — ✅ Complete.</strong> Moodle housing quiz submitted (5 Aug), signed declaration form emailed to housing@hof-university.de, and payment confirmation (Quittung €3,448.22) sent 28 Aug 2026. Preference: Am Saalepark (single) → Am Eichelberg (single) → single apartment. Awaiting offer.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-2b" onchange="saveCheck(this)"><label for="visa-5-2b">Once housing offer arrives — review, accept, and confirm your room booking with the housing team (housing@hof-university.de)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-3" onchange="saveCheck(this)"><label for="visa-5-3">Arrange temporary accommodation (hostel/Airbnb) for your first 1–3 weeks if permanent housing isn't confirmed yet</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-4" onchange="saveCheck(this)"><label for="visa-5-4">Pack: EU plug adapters, weather-appropriate clothing, a small amount of euro cash, and physical + cloud copies of every document above</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-5-5" onchange="saveCheck(this)"><label for="visa-5-5">Confirm your blocked account is ready to start releasing funds once you land</label></div>
+      <div class="phase-intro">Once the visa is in hand, focus shifts to logistics. Some items can be prepared now in parallel.</div>
+
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-1" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-5-1"><strong>Book your flight</strong> — one-way is fine, return tickets not required for a student visa. Book as soon as visa arrives to get better fares.</label></div>
+        <span class="cl-chip chip-critical">Book on visa arrival</span>
+      </div>
+      <div class="cl-item cl-done">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-2" onchange="saveCheck(this)" checked>
+        <div class="cl-body"><label class="cl-label" for="visa-5-2"><strong>Hof dormitory application ✅</strong> — Moodle housing quiz submitted (5 Aug), signed declaration form emailed to housing@hof-university.de, payment confirmation (Quittung €3,448.22) sent 28 Aug 2026. Preference: Am Saalepark (single) → Am Eichelberg (single). Awaiting offer.</label></div>
+        <span class="cl-chip chip-done">Submitted</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-2b" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-5-2b">Once housing offer arrives — review, accept, and confirm your room booking with housing@hof-university.de</label></div>
+        <span class="cl-chip chip-important">Waiting on Hof</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-3" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-5-3">Arrange temporary accommodation (hostel/Airbnb) for first 1–3 weeks if permanent housing isn't confirmed before you fly</label></div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-4" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-5-4">Pack: EU plug adapters, weather-appropriate clothing (Hof winters are cold — 0°C), small amount of euro cash, and physical + cloud copies of every document</label></div>
+        <span class="cl-chip chip-important">Before flight</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-5-5" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-5-5">Confirm blocked account is ready to start releasing €992/month once you land and activate it</label></div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
+  <!-- PHASE 6 -->
+  <details class="phase phase-important">
     <summary>Phase 6 — First 2 Weeks in Germany (legally time-critical) <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
       <div class="phase-intro">Germany has hard legal deadlines here — don't let these slip. Enrollment is already done online — focus shifts to legal registration and getting your student access set up.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-1" onchange="saveCheck(this)"><label for="visa-6-1"><strong>Anmeldung</strong> — register your address at the local Bürgeramt/Einwohnermeldeamt within 14 days of moving in. Almost everything else needs this confirmation.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-2" onchange="saveCheck(this)"><label for="visa-6-2">Activate your blocked account's monthly release with your bank/provider</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-3" onchange="saveCheck(this)"><label for="visa-6-3">Open/activate a German bank account if you don't already have one through your blocked-account provider</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-4" onchange="saveCheck(this)"><label for="visa-6-4">Get a German SIM card (Aldi Talk, congstar, otelo etc.)</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-5" onchange="saveCheck(this)"><label for="visa-6-5"><strong>Download Zugangsdaten (student login credentials)</strong> from the <strong>PRIMUSS APPLICATION portal</strong> once Hof sends them (expected shortly before semester start Oct 1). Then log into PRIMUSS STUDENT portal to download your enrollment certificate.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-6" onchange="saveCheck(this)"><label for="visa-6-6"><strong>Collect your CampusCard</strong> in person at the <strong>Student Affairs Office, Room A111</strong>, Hof campus. Available from <strong>September 25</strong> — Mon &amp; Thu: 12–3 pm · Tue, Wed &amp; Fri: 9 am–12 pm. Not available before Sep 25.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-7" onchange="saveCheck(this)"><label for="visa-6-7"><strong>Submit arrival form at least 7 days before travelling to Hof</strong> — Housing Office needs your arrival date and time to organize your keys. Jennifer (arrival@hof-university.de) will contact you 3 days before arrival with key collection instructions. Key safe code sent in advance for some properties.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-8" onchange="saveCheck(this)"><label for="visa-6-8"><strong>Attend the after-arrival housing presentation</strong> (Sep 25 or Oct 6) — required to get your Kitchen Bazaar ticket (free plates, pans, cutlery — returned when leaving). Invitation sent by email. Housing Office: Room A016, Building A. housing@hof-university.de</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-6-7" onchange="saveCheck(this)"><label for="visa-6-7">Read the <strong>Hof Moodle post-arrival guide</strong> for international students — covers address update in Primuss, course registration, and all first-week admin steps. Link available after you receive your Zugangsdaten.</label></div>
+
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-1" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-1"><strong>Anmeldung</strong> — register your address at the local Bürgeramt/Einwohnermeldeamt within <strong>14 days</strong> of moving in. Almost everything else in Germany depends on this confirmation.</label></div>
+        <span class="cl-chip chip-critical">Within 14 days</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-2" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-2"><strong>Activate blocked account monthly release</strong> — contact Expatrio once you have your Anmeldung confirmation to start the €992/month release</label></div>
+        <span class="cl-chip chip-critical">Day 1</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-3" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-3">Open/activate German bank account — Expatrio German Bank Account is already set up, activate it on arrival</label></div>
+        <span class="cl-chip chip-important">Week 1</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-4" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-4">Get a German SIM card — Aldi Talk, congstar, or otelo are popular, affordable options for students</label></div>
+        <span class="cl-chip chip-important">Week 1</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-5" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-5"><strong>Download Zugangsdaten (student login credentials)</strong> from PRIMUSS APPLICATION portal once Hof sends them. Then log into PRIMUSS STUDENT portal to download your enrollment certificate.</label></div>
+        <span class="cl-chip chip-critical">From Sep 25</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-6" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-6"><strong>Collect CampusCard</strong> in person at Student Affairs Office, Room A111, Hof campus. Available from <strong>Sep 25</strong> — Mon &amp; Thu: 12–3 pm · Tue, Wed &amp; Fri: 9 am–12 pm.</label></div>
+        <span class="cl-chip chip-critical">From Sep 25</span>
+      </div>
+      <div class="cl-item cl-critical">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-7" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-7"><strong>Fill Hof arrival form</strong> — submit at least 7 days before travelling to Hof. Housing Office needs your arrival date and time to organize your keys. Jennifer (arrival@hof-university.de) will contact you 3 days before arrival.</label></div>
+        <span class="cl-chip chip-critical">7 days before</span>
+      </div>
+      <div class="cl-item cl-important">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-8" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-8"><strong>Attend housing after-arrival presentation</strong> — Sep 25 or Oct 6. Required to get your Kitchen Bazaar ticket (free plates, pans, cutlery — returned when leaving). Invitation sent by email. Housing Office: Room A016, Building A.</label></div>
+        <span class="cl-chip chip-important">Sep 25 / Oct 6</span>
+      </div>
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="visa-6-9" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-6-9">Read the Hof Moodle post-arrival guide — covers address update in Primuss, course registration, and all first-week admin steps. Available after Zugangsdaten arrives.</label></div>
+        <span class="cl-chip chip-optional">Good to have</span>
+      </div>
     </div>
   </details>
 
-  <details class="phase">
-    <summary>Phase 7 — Work Rights & Post-Study Stay (good to know) <span class="phase-arrow">▶</span></summary>
+  <!-- PHASE 7 -->
+  <details class="phase phase-optional">
+    <summary>Phase 7 — Work Rights &amp; Post-Study Stay (good to know) <span class="phase-arrow">▶</span></summary>
     <div class="phase-body">
-      <div class="phase-intro">You are allowed to work while studying and stay in Germany after graduation to find a job. These are not urgent actions but important to know ahead of time.</div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-1" onchange="saveCheck(this)"><label for="visa-7-1"><strong>Part-time work during studies:</strong> International students can work up to 140 full days (or 280 half days) per year without a work permit. Hof recommends being financially stable for at least the first semester before taking a job.</label></div>
-      <div class="checklist-item"><input type="checkbox" class="persist-check" id="visa-7-2" onchange="saveCheck(this)"><label for="visa-7-2"><strong>Post-graduation job search:</strong> After completing your degree, you can extend your residence permit for up to 18 months to find a job in Germany. Once you have an offer, apply for a work visa. No need to return to India first.</label></div>
+      <div class="phase-intro">Not urgent actions — but important to know ahead of time so you can plan your finances and career from day one.</div>
+
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="visa-7-1" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-7-1"><strong>Part-time work during studies:</strong> International students can work up to 140 full days (or 280 half days) per year without a work permit. Hof recommends being financially stable for at least the first semester before taking a job.</label></div>
+        <span class="cl-chip chip-optional">Good to know</span>
+      </div>
+      <div class="cl-item cl-optional">
+        <input type="checkbox" class="cl-check persist-check" id="visa-7-2" onchange="saveCheck(this)">
+        <div class="cl-body"><label class="cl-label" for="visa-7-2"><strong>Post-graduation job search:</strong> After completing your degree, you can extend your residence permit for up to 18 months to find a job in Germany. Once you have an offer, apply for a work visa. No need to return to India first.</label></div>
+        <span class="cl-chip chip-optional">Good to know</span>
+      </div>
     </div>
   </details>
+
 </div>
 
 <div id="tab-notes" class="section">

@@ -483,7 +483,7 @@ function buildDocsPanelHtml(key) {
 // ═══════════════ 4. CHECKLIST CLOUD SYNC ═══════════════
 function saveCheck(el) {
   checksData[el.id] = el.checked; // Local update
-  
+
   if (sbClient) {
     sbClient.from('admission_checklists')
       .upsert({ check_id: el.id, is_checked: el.checked })
@@ -491,9 +491,36 @@ function saveCheck(el) {
          if (error) console.error("Failed to save checkbox to DB:", error.message);
       });
   }
-  
-  const item = el.closest('.checklist-item');
-  if (item) item.classList.toggle('checked', el.checked);
+
+  // Support both old .checklist-item and new .cl-item styles
+  const oldItem = el.closest('.checklist-item');
+  if (oldItem) oldItem.classList.toggle('checked', el.checked);
+
+  const newItem = el.closest('.cl-item');
+  if (newItem) {
+    if (el.checked) {
+      // Save original priority class so we can restore if unchecked
+      if (!newItem.dataset.origClass) {
+        const pc = ['cl-critical','cl-important','cl-optional'].find(c => newItem.classList.contains(c));
+        if (pc) newItem.dataset.origClass = pc;
+      }
+      newItem.classList.remove('cl-critical','cl-important','cl-optional');
+      newItem.classList.add('cl-done');
+      const chip = newItem.querySelector('.cl-chip');
+      if (chip) { chip.className = 'cl-chip chip-done'; chip.textContent = 'Done'; }
+    } else {
+      newItem.classList.remove('cl-done');
+      const orig = newItem.dataset.origClass;
+      if (orig) newItem.classList.add(orig);
+      // Restore chip text/class from data attribute if set
+      const chip = newItem.querySelector('.cl-chip');
+      if (chip && newItem.dataset.origChipClass && newItem.dataset.origChipText) {
+        chip.className = 'cl-chip ' + newItem.dataset.origChipClass;
+        chip.textContent = newItem.dataset.origChipText;
+      }
+    }
+  }
+
   updateDocProgress(); updateVisaProgress();
 }
 
@@ -502,8 +529,29 @@ function restoreChecks() {
     if (Object.prototype.hasOwnProperty.call(checksData, el.id)) {
       el.checked = !!checksData[el.id];
     }
-    const item = el.closest('.checklist-item');
-    if (item) item.classList.toggle('checked', el.checked);
+
+    // Old style
+    const oldItem = el.closest('.checklist-item');
+    if (oldItem) oldItem.classList.toggle('checked', el.checked);
+
+    // New style — save original chip info before restoring
+    const newItem = el.closest('.cl-item');
+    if (newItem) {
+      const chip = newItem.querySelector('.cl-chip');
+      if (chip && !newItem.dataset.origChipClass) {
+        newItem.dataset.origChipClass = [...chip.classList].find(c => c.startsWith('chip-') && c !== 'chip-done') || '';
+        newItem.dataset.origChipText = chip.textContent.trim();
+      }
+      if (el.checked) {
+        if (!newItem.dataset.origClass) {
+          const pc = ['cl-critical','cl-important','cl-optional'].find(c => newItem.classList.contains(c));
+          if (pc) newItem.dataset.origClass = pc;
+        }
+        newItem.classList.remove('cl-critical','cl-important','cl-optional');
+        newItem.classList.add('cl-done');
+        if (chip) { chip.className = 'cl-chip chip-done'; chip.textContent = 'Done'; }
+      }
+    }
   });
   updateDocProgress(); updateVisaProgress();
 }
