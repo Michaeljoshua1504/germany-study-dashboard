@@ -977,42 +977,17 @@ function renderDashboard() {
 
 let nextStepsData = []; // loaded from Supabase next_steps table
 
-// Default steps seeded on first load if table is empty
-const DEFAULT_NEXT_STEPS = [
-  { text:'CSP documents submitted', detail:'Visa application documents uploaded on digital.diplo.de. Under review by the consulate.', chip:'Done', urgency:'amber', section:'both', done:true, sort_order:1 },
-  { text:'VFS appointment — 9 Sep Chennai', detail:'Appointment completed at Ramee Mall, Anna Salai, Chennai. Documents submitted successfully.', chip:'Done', urgency:'amber', section:'both', done:true, sort_order:2 },
-  { text:'Application received at Germany Consulate', detail:'Ref: DEU/MAA/090926/0035/01. Received 10 Sep 2026. Awaiting consulate decision — auto email will notify when ready for collection.', chip:'Under review', urgency:'amber', section:'both', done:false, sort_order:3 },
-  { text:'Housing offer from Hof', detail:'Payment confirmation sent 28 Aug. Awaiting offer for Am Saalepark / Am Eichelberg dormitory.', chip:'Waiting', urgency:'blue', section:'both', done:false, sort_order:4 },
-  { text:'Expatrio Scholarship', detail:'Submit video by 30 Sep 2026. Top prize \u20ac15,000. Free to apply.', chip:'30 Sep', urgency:'blue', section:'both', done:false, sort_order:5 },
-  { text:'Fill in Hof arrival form', detail:'Required by Welcome Center. Submit at: hof-university.com/studying-at-hof-university/services-and-support/housing/arrival-form.html', chip:'Do now', urgency:'amber', section:'action', done:false, sort_order:6 },
-  { text:'Register for "How to Study in Germany" workshop', detail:'Free workshop by Hof Welcome Center. Register at: terminplaner6.dfn.de/de/b/63e2973c502a23f88fda898d49b81a5b-1097638', chip:'Do now', urgency:'blue', section:'action', done:false, sort_order:7 },
-  { text:'Attend Housing after-arrival presentation', detail:'Mandatory to receive Kitchen Bazaar ticket (free kitchenware — plates, pans, cutlery — returned when leaving). Two sessions: Sep 25 or Oct 6. Invitation sent by email. Housing Office: Room A016, Building A. Office hours: Tue & Thu 1–2 pm.', chip:'Sep 25 / Oct 6', urgency:'blue', section:'action', done:false, sort_order:8 },
-  { text:'Download enrollment certificate + collect CampusCard', detail:'Log in to PRIMUSS Student portal once Zugangsdaten arrives — download enrollment certificate. Then collect CampusCard from Room A111, Student Affairs, Hof campus (available from Sep 25). Hours: Mon & Thu 12–3 pm, Tue/Wed/Fri 9 am–12 pm.', chip:'From Sep 25', urgency:'blue', section:'action', done:false, sort_order:9 },
-  { text:'Deutschlandstipendium', detail:'Apply at Hof after semester starts.', chip:'After Oct 1', urgency:'blue', section:'action', done:false, sort_order:10 },
-  { text:'Fix ISIC card \u2014 name & institution', detail:'Name shows \u2018Michael Michael\u2019 \u2192 should be \u2018Michael Joshua\u2019. Institution shows \u2018Douglas\u2019 \u2192 should be \u2018Hof University of Applied Sciences\u2019. WhatsApp Aswini first. If unresolved, contact ISIC at isic.org with passport + Hof enrollment confirmation.', chip:'Do now', urgency:'amber', section:'both', done:false, sort_order:11 },
-  { text:'Visit HDFC branch \u2014 3 things', detail:'1. Credit limit increase on Swiggy Ornge \u2192 ask for \u20b91 lakh. 2. Upgrade to Millennia or Regalia First (lounge access). 3. Apply for Multicurrency Platinum ForexPlus Card \u2014 load Euros for Germany.', chip:'Do now', urgency:'amber', section:'action', done:false, sort_order:12 },
-  { text:'Download Niyo Global app & order card', detail:'Zero forex markup for daily Euro spending in Germany. Open account online via app \u2014 no income proof needed. Use alongside HDFC card for full coverage.', chip:'Do now', urgency:'blue', section:'action', done:false, sort_order:13 },
-  { text:'WhatsApp Aswini \u2014 check all Canada-linked items', detail:'Loan account BANEE01102881. Check: (1) ISIC card name & institution fix, (2) life insurance \u2014 does it mention Canada/Douglas?, (3) overseas health insurance \u2014 valid for Germany or Canada?, (4) loan sanction letter \u2014 does it show Hof University Germany correctly?', chip:'Do now', urgency:'amber', section:'both', done:false, sort_order:14 },
-  { text:'Check Avanse loan sanction letter', detail:'Open your sanction letter and verify: university = Hof University of Applied Sciences, country = Germany, course = MEng Software Engineering for Industrial Applications. If it mentions Canada or Douglas College \u2014 tell Aswini immediately. Visa consulate checks this.', chip:'Do now', urgency:'amber', section:'action', done:false, sort_order:15 },
-  { text:'Login to Avanse portal \u2014 verify destination & university', detail:'Log in at avanse.com and check destination country (Germany), university (Hof University of Applied Sciences), and course name. If anything says Canada or Douglas College \u2014 inform Aswini immediately.', chip:'Do now', urgency:'amber', section:'action', done:false, sort_order:16 },
-  { text:'Check HSBC loan account purpose \u2014 Canada or Germany?', detail:'Ask your HSBC relationship manager whether the loan account purpose mentions Canada or Douglas College. If yes, request update to Hof University of Applied Sciences, Germany. Do this on the same HDFC branch visit.', chip:'This week', urgency:'blue', section:'action', done:false, sort_order:17 },
-];
+
 
 async function loadNextSteps() {
-  if (!sbClient) { nextStepsData = [...DEFAULT_NEXT_STEPS]; return; }
+  if (!sbClient) { nextStepsData = []; return; }
   try {
     const { data, error } = await sbClient.from('next_steps').select('*').order('sort_order', { ascending: true });
     if (error) throw error;
-    if (data && data.length > 0) {
-      nextStepsData = data;
-    } else {
-      // Seed defaults into DB
-      nextStepsData = [...DEFAULT_NEXT_STEPS];
-      await sbClient.from('next_steps').insert(DEFAULT_NEXT_STEPS);
-    }
+    nextStepsData = data || [];
   } catch (e) {
     console.warn('next_steps table not ready:', e.message);
-    nextStepsData = [...DEFAULT_NEXT_STEPS];
+    nextStepsData = [];
   }
 }
 
