@@ -35,6 +35,11 @@ function showTab(name, el) {
   // Apply active state to the specific section and clicked tab
   targetSection.classList.add('active');
   if (el) el.classList.add('active');
+
+  // Lazy-load housing rooms on first visit
+  if (name === 'housing-rooms' && typeof loadHousingRooms === 'function') {
+    loadHousingRooms();
+  }
 }
 
 
