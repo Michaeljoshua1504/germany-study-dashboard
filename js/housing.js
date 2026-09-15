@@ -15,3 +15,25 @@
     skip:id=>hSkipIds.includes(id),
   };
   function hFilter(type,btn){document.querySelectorAll('.h-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.h-card').forEach(card=>{const id=card.id.replace('hcard-','');card.style.display=hFilterMap[type](id)?'':'none';});}
+
+// ═══════════════ HOUSING ROOMS LAZY LOADER ═══════════════
+let housingRoomsLoaded = false;
+
+async function loadHousingRooms() {
+  if (housingRoomsLoaded) return;
+  try {
+    const res = await fetch('tabs/housing-rooms.html');
+    const html = await res.text();
+    const container = document.getElementById('tab-housing-rooms');
+    if (container) {
+      container.innerHTML = html
+        .replace('<div id="tab-housing-rooms" class="section">', '')
+        .replace(/^<div id="tab-housing-rooms"[^>]*>/, '')
+        .trimStart();
+      // Remove the last closing </div> that belonged to the outer tab wrapper
+      housingRoomsLoaded = true;
+    }
+  } catch(e) {
+    console.error('Failed to load housing rooms:', e);
+  }
+}
