@@ -1,0 +1,143 @@
+.duo-entry-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.duo-entry-card.editing { border-color: #378ADD; border-width: 1.5px; }
+
+.duo-entry-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.duo-entry-date { font-size: 12px; font-weight: 700; color: #14213c; }
+.duo-entry-actions-inline { margin-left: auto; display: flex; gap: 4px; }
+.duo-icon-btn { background: none; border: none; cursor: pointer; font-size: 13px; padding: 3px 6px; border-radius: 6px; opacity: 0.6; transition: opacity 0.15s, background 0.15s; }
+.duo-icon-btn:hover { opacity: 1; background: #f0eee8; }
+
+.duo-entry-text { font-size: 12.5px; line-height: 1.6; color: #444; white-space: pre-wrap; }
+
+.duo-entry-edit-row { display: flex; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.duo-date-input { border: 1px solid #d3d1c7; border-radius: 6px; padding: 6px 8px; font-size: 11.5px; }
+.duo-entry-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* Duplicate hint (live typing warning) */
+.duo-dup-hint { background: #fff8e1; border: 1px solid #f5c842; border-radius: 8px; padding: 10px 12px; margin: 8px 0 4px 0; font-size: 12.5px; }
+.duo-hint-title { font-weight: 700; color: #b8860b; margin-bottom: 6px; }
+.duo-hint-item { background: #fffdf0; border-radius: 6px; padding: 6px 8px; margin-bottom: 5px; display: flex; flex-direction: column; gap: 2px; }
+.duo-hint-date { font-size: 11px; font-weight: 700; color: #8a7000; }
+.duo-hint-words { font-size: 11px; color: #b8860b; }
+.duo-hint-preview { font-size: 11.5px; color: #666; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Duplicate merge modal */
+.duo-dup-group { padding: 6px 0 10px; }
+.duo-dup-shared { font-size: 12px; color: #555; margin-bottom: 10px; background: #f4f0e8; border-radius: 6px; padding: 6px 10px; }
+.duo-dup-entries { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.duo-dup-entry { background: #f9f8f5; border: 1px solid #e0ded6; border-radius: 8px; padding: 10px 12px; }
+.duo-dup-date { font-size: 11px; font-weight: 700; color: #14213c; margin-bottom: 8px; }
+.duo-dup-text { font-size: 12px; color: #555; line-height: 1.5; max-height: 80px; overflow-y: auto; }
+.duo-dup-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+/* Per-line merge checkboxes */
+.duo-merge-lines { display: flex; flex-direction: column; gap: 4px; max-height: 220px; overflow-y: auto; }
+.duo-merge-line { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: #444; line-height: 1.5; cursor: pointer; padding: 3px 4px; border-radius: 5px; transition: background 0.12s; }
+.duo-merge-line:hover { background: #f0ede5; }
+.duo-merge-line input[type="checkbox"] { margin-top: 3px; flex-shrink: 0; accent-color: #378ADD; width: 13px; height: 13px; cursor: pointer; }
+.duo-merge-line span { word-break: break-word; }
+
+/* Dark mode */
+html[data-theme="dark"] .duo-entry-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .duo-entry-card.editing { border-color: #5a9bdc; }
+html[data-theme="dark"] .duo-entry-date { color: #e6e4dd; }
+html[data-theme="dark"] .duo-icon-btn:hover { background: #2a2c34; }
+html[data-theme="dark"] .duo-entry-text { color: #ccc9c0; }
+html[data-theme="dark"] .duo-date-input { background: #1a1c22; border-color: #3a3c44; color: #ccc; }
+html[data-theme="dark"] .duo-dup-hint { background: #2a2510; border-color: #6b5a00; }
+html[data-theme="dark"] .duo-hint-title { color: #f5c842; }
+html[data-theme="dark"] .duo-hint-item { background: #221e0a; }
+html[data-theme="dark"] .duo-hint-date { color: #d4ae30; }
+html[data-theme="dark"] .duo-hint-words { color: #d4ae30; }
+html[data-theme="dark"] .duo-hint-preview { color: #aaa; }
+html[data-theme="dark"] .duo-dup-shared { background: #2a2c34; color: #bbb; }
+html[data-theme="dark"] .duo-dup-entry { background: #1e2028; border-color: #3a3c44; }
+html[data-theme="dark"] .duo-dup-date { color: #e6e4dd; }
+html[data-theme="dark"] .duo-dup-text { color: #bbb; }
+html[data-theme="dark"] .duo-merge-line { color: #ccc; }
+html[data-theme="dark"] .duo-merge-line:hover { background: #2a2c34; }
+
+/* ── MODE SWITCHER ── */
+.duo-mode-switcher { display: flex; gap: 0; margin-bottom: 18px; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+.duo-mode-btn { flex: 1; padding: 9px 8px; font-size: 13px; font-weight: 600; border: none; background: var(--card-bg); color: #888; cursor: pointer; transition: background 0.18s, color 0.18s; border-right: 1px solid var(--border); }
+.duo-mode-btn:last-child { border-right: none; }
+.duo-mode-btn.active { background: #378ADD; color: #fff; }
+html[data-theme="dark"] .duo-mode-btn.active { background: #378ADD; color: #fff; }
+html[data-theme="dark"] .duo-mode-btn { background: #1e2028; color: #888; }
+
+/* ── DUO STATS 2-ROW ── */
+.duo-stats-top { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 10px; }
+.duo-stats-bottom { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 18px; }
+
+/* ── DUO TOOLBAR ── */
+.duo-toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.duo-dup-chip { display: inline-flex; align-items: center; gap: 5px; background: #fff8e1; color: #8a5500; border: 1px solid #f5c842; border-radius: 20px; padding: 5px 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+.duo-dup-chip:hover { background: #fef0b0; }
+html[data-theme="dark"] .duo-dup-chip { background: #2a2510; color: #f5c842; border-color: #6b5a00; }
+html[data-theme="dark"] .duo-dup-chip:hover { background: #332e14; }
+
+/* ── DUO ENTRY LINE ROWS ── */
+.duo-line-row { display: flex; align-items: baseline; gap: 8px; padding: 4px 0; border-bottom: 1px solid #f0ede8; }
+.duo-line-row:last-child { border-bottom: none; }
+.duo-line-de { font-size: 13px; font-weight: 700; color: #14213c; white-space: nowrap; }
+.duo-line-sep { font-size: 12px; color: #bbb; flex-shrink: 0; }
+.duo-line-en { font-size: 12.5px; color: #555; }
+html[data-theme="dark"] .duo-line-row { border-bottom-color: #2a2c34; }
+html[data-theme="dark"] .duo-line-de { color: #e6e4dd; }
+html[data-theme="dark"] .duo-line-sep { color: #555; }
+html[data-theme="dark"] .duo-line-en { color: #aaa; }
+
+/* ── DUO STREAK BADGE (only shown when streak > 0) ── */
+.duo-streak-badge { display: inline-flex; align-items: center; gap: 3px; background: #fff3e0; color: #8a5500; border-radius: 20px; padding: 2px 8px; font-size: 10.5px; font-weight: 700; }
+html[data-theme="dark"] .duo-streak-badge { background: #2a1f0a; color: #f5c842; }
+
+/* ── WORD / SENTENCE ITEM CARDS ── */
+.duo-item-card { background: #fff; border: 1px solid #e0ded6; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.duo-item-card.editing { border-color: #378ADD; border-width: 1.5px; background: #f8fbff; }
+.duo-item-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.duo-item-de { font-size: 15px; font-weight: 700; color: #14213c; }
+.duo-item-cat { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 20px; }
+.duo-item-meaning { font-size: 13px; color: #555; margin-bottom: 4px; }
+.duo-item-pronunciation { font-size: 12px; color: #378ADD; margin-bottom: 4px; font-style: italic; }
+.duo-item-meta { font-size: 11px; color: #aaa; margin-top: 4px; }
+.duo-item-actions { display: flex; gap: 8px; margin-top: 10px; }
+.duo-del-confirm { font-size: 12px; color: #e05555; font-weight: 600; margin-right: 4px; }
+
+/* ── EDIT FORM FIELDS ── */
+.duo-item-edit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.duo-field-group { display: flex; flex-direction: column; gap: 4px; }
+.duo-field-label { font-size: 11px; font-weight: 700; color: #666; text-transform: uppercase; letter-spacing: 0.04em; }
+.duo-field-input { padding: 8px 10px; border: 1.5px solid #d3d1c7; border-radius: 7px; font-size: 13px; background: #fff; color: #14213c; outline: none; transition: border-color 0.15s; }
+.duo-field-input:focus { border-color: #378ADD; }
+.duo-field-select { padding: 8px 10px; border: 1.5px solid #d3d1c7; border-radius: 7px; font-size: 13px; background: #fff; color: #14213c; cursor: pointer; }
+.duo-dup-inline { font-size: 12px; color: #b8860b; background: #fff8e1; border: 1px solid #f5c842; border-radius: 6px; padding: 4px 8px; margin-top: 2px; }
+.duo-empty-mode { text-align: center; padding: 36px 20px; color: #888; font-size: 14px; }
+
+/* ── DARK MODE for new elements ── */
+html[data-theme="dark"] .duo-item-card { background: #20222a; border-color: #32343c; }
+html[data-theme="dark"] .duo-item-card.editing { background: #1a1e2a; border-color: #5a9bdc; }
+html[data-theme="dark"] .duo-item-de { color: #e6e4dd; }
+html[data-theme="dark"] .duo-item-meaning { color: #bbb; }
+html[data-theme="dark"] .duo-item-meta { color: #666; }
+html[data-theme="dark"] .duo-field-input { background: #1a1c22; border-color: #3a3c44; color: #e0e0e0; }
+html[data-theme="dark"] .duo-field-input:focus { border-color: #5a9bdc; }
+html[data-theme="dark"] .duo-field-select { background: #1a1c22; border-color: #3a3c44; color: #e0e0e0; }
+html[data-theme="dark"] .duo-field-label { color: #aaa; }
+html[data-theme="dark"] .duo-dup-inline { background: #2a2510; border-color: #6b5a00; color: #f5c842; }
+
+/* ═══════════════ GERMAN TEACHING NOTES (LIVE-TAUGHT CONTENT) ═══════════════ */
+.ger-taught-badge { background: #e6f0fb; color: #1a4b8c; padding: 1px 7px; border-radius: 6px; font-size: 9.5px; font-weight: 700; }
+
+.ger-teaching-notes { font-size: 12.5px; line-height: 1.65; color: #2c2c2a; background: #f5f6fa; border: 1px solid #dde2ef; border-radius: 8px; padding: 12px 14px; }
+.ger-teaching-notes p { margin: 0 0 8px; }
+.ger-teaching-notes p:last-child { margin-bottom: 0; }
+.ger-notes-heading { font-size: 11.5px; font-weight: 700; color: #14213c; text-transform: uppercase; letter-spacing: 0.3px; margin: 12px 0 6px; }
+.ger-notes-heading:first-child { margin-top: 0; }
+.ger-notes-placeholder { color: #999; font-style: italic; }
+
+/* Dark mode */
+html[data-theme="dark"] .ger-taught-badge { background: rgba(90,123,196,0.18); color: #8fb4e8; }
+html[data-theme="dark"] .ger-teaching-notes { background: #1e2028; border-color: #32343c; color: #ccc9c0; }
+html[data-theme="dark"] .ger-notes-heading { color: #e6e4dd; }
+html[data-theme="dark"] .ger-notes-placeholder { color: #777; }
+
+/* ═══════════════ HOUSING TAB STYLES ═══════════════ */
