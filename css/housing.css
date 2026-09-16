@@ -147,3 +147,55 @@ html[data-theme="dark"] .cl-item.cl-optional { background: #161e2a; border-left-
 html[data-theme="dark"] .cl-item.cl-done { background: #121e18; border-left-color: #1D9E75; }
 html[data-theme="dark"] .cl-label { color: #ccc9c0; }
 html[data-theme="dark"] .cl-item.cl-done .cl-label { color: #666; }
+
+/* ── Housing Search Box ── */
+.h-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 0 14px;
+  margin: 0 0 14px;
+  transition: border-color 0.15s;
+}
+.h-search-wrap:focus-within {
+  border-color: var(--accent, #4f78d8);
+}
+.h-search-icon {
+  font-size: 15px;
+  opacity: 0.5;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+.h-search-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  padding: 10px 0;
+  min-width: 0;
+}
+.h-search-input::placeholder {
+  color: var(--text);
+  opacity: 0.4;
+}
+.h-search-clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  opacity: 0.45;
+  font-size: 14px;
+  padding: 0 0 0 8px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.h-search-clear:hover { opacity: 0.9; }
