@@ -37,3 +37,56 @@ async function loadHousingRooms() {
     console.error('Failed to load housing rooms:', e);
   }
 }
+
+// ═══════════════ HOUSING SEARCH ═══════════════
+function hSearch(query) {
+  const q = query.trim().toLowerCase();
+  const clearBtn = document.getElementById('h-search-clear');
+  if (clearBtn) clearBtn.style.display = q ? 'flex' : 'none';
+
+  // Reset filter buttons to "All" when user starts typing
+  if (q) {
+    document.querySelectorAll('.h-filter-btn').forEach(b => b.classList.remove('active'));
+    const allBtn = document.querySelector('.h-filter-btn');
+    if (allBtn) allBtn.classList.add('active');
+  }
+
+  document.querySelectorAll('.h-card').forEach(card => {
+    if (!q) {
+      card.style.display = '';
+      return;
+    }
+    // Search across: heading, description, room list, pills, tags
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+
+  // Show a "no results" message if everything is hidden
+  const grid = document.getElementById('h-grid');
+  if (!grid) return;
+  let noResults = document.getElementById('h-no-results');
+  const anyVisible = [...grid.querySelectorAll('.h-card')].some(c => c.style.display !== 'none');
+  if (!anyVisible && q) {
+    if (!noResults) {
+      noResults = document.createElement('div');
+      noResults.id = 'h-no-results';
+      noResults.style.cssText = 'padding:2rem;text-align:center;opacity:.5;font-size:15px;width:100%';
+      noResults.textContent = 'No properties match "' + query + '"';
+      grid.appendChild(noResults);
+    } else {
+      noResults.textContent = 'No properties match "' + query + '"';
+      noResults.style.display = '';
+    }
+  } else if (noResults) {
+    noResults.style.display = 'none';
+  }
+}
+
+function hSearchClear() {
+  const input = document.getElementById('h-search');
+  if (input) { input.value = ''; input.focus(); }
+  hSearch('');
+  // Restore "All" filter active state
+  const allBtn = document.querySelector('.h-filter-btn');
+  if (allBtn) { allBtn.classList.add('active'); }
+}
