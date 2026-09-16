@@ -1,6 +1,11 @@
 <div id="tab-housing-rooms" class="section">
   <div class="section-title">🏠 Hof Housing — Room Comparison</div>
   <div class="section-sub">36 properties · Real prices from Moodle · Sep 03 2026 · Budget: €350–400/mo</div>
+  <div class="h-search-wrap">
+    <span class="h-search-icon">🔍</span>
+    <input class="h-search-input" id="h-search" type="text" placeholder="Search by street, price, or keyword… e.g. Vorstadt, 380, balcony, vacant" oninput="hSearch(this.value)" autocomplete="off" spellcheck="false"/>
+    <button class="h-search-clear" id="h-search-clear" onclick="hSearchClear()" title="Clear search">✕</button>
+  </div>
   <div class="h-filter-bar">
     <button class="h-filter-btn active" onclick="hFilter('all',this)">All (36)</button>
     <button class="h-filter-btn" onclick="hFilter('best',this)">⭐ Top picks</button>
