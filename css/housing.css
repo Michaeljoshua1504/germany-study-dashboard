@@ -2,7 +2,7 @@
 .h-filter-btn { background:var(--card-bg); border:1.5px solid var(--border); color:var(--text); padding:6px 16px; border-radius:20px; font-size:13px; cursor:pointer; transition:all 0.15s; font-family:inherit; }
 .h-filter-btn:hover,.h-filter-btn.active { background:var(--accent,#4f78d8); border-color:var(--accent,#4f78d8); color:#fff; }
 .h-grid { display:flex; flex-direction:column; gap:24px; }
-.h-card { background:var(--card-bg); border:1.5px solid var(--border); border-radius:14px; overflow:hidden; position:relative; transition:border-color 0.2s; }
+.h-card { background:var(--card-bg); border:1.5px solid var(--border); border-radius:14px; overflow:visible; position:relative; transition:border-color 0.2s; }
 .h-card:hover { border-color:#5b8fff55; }
 .h-badge { position:absolute; top:14px; right:14px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; z-index:10; }
 .h-badge-best { background:#0d2a1a; color:#34d399; border:1px solid #34d399; }
@@ -10,7 +10,7 @@
 .h-badge-third { background:#2a1f0a; color:#fb923c; border:1px solid #fb923c; }
 .h-badge-warn { background:#2a1f0a; color:#fb923c; border:1px solid #fb923c; }
 .h-badge-skip { background:#2a0a0a; color:#f87171; border:1px solid #f87171; }
-.h-card-header { padding:18px 20px 14px; }
+.h-card-header { padding:18px 20px 14px; border-radius:14px 14px 0 0; }
 .h-card-header h3 { font-size:1.05rem; font-weight:700; color:var(--text); margin:0 0 8px; }
 .h-meta-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .h-stars { font-size:15px; color:#f5c842; }
@@ -205,15 +205,15 @@ html[data-theme="dark"] .cl-item.cl-done .cl-label { color: #666; }
   position: absolute;
   top: 12px;
   right: 14px;
-  z-index: 20;
-  background: rgba(0,0,0,0.35);
-  border: 1.5px solid rgba(255,255,255,0.15);
+  z-index: 100;
+  background: rgba(30,30,50,0.75);
+  border: 1.5px solid rgba(255,255,255,0.2);
   border-radius: 50%;
   width: 34px;
   height: 34px;
   font-size: 16px;
   cursor: pointer;
-  color: #aaa;
+  color: #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,6 +221,7 @@ html[data-theme="dark"] .cl-item.cl-done .cl-label { color: #666; }
   line-height: 1;
   font-family: inherit;
   padding: 0;
+  pointer-events: all;
 }
 .h-fav-btn:hover {
   background: rgba(245,200,66,0.2);
