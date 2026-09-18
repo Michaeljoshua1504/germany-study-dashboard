@@ -359,7 +359,7 @@ function saveCheck(el) {
     }
   }
 
-  updateDocProgress(); updateVisaProgress();
+  updateDocProgress(); updateVisaProgress(); if(typeof updatePhaseRings==="function") updatePhaseRings();
 }
 
 function restoreChecks() {
@@ -448,3 +448,37 @@ function renderDocChecklist() {
 }
 
 
+
+/* ── Gallery phase-ring progress ── */
+function updatePhaseRings() {
+  document.querySelectorAll('.visa-gallery .phase').forEach(phase => {
+    const boxes = phase.querySelectorAll('input[type="checkbox"]');
+    if (!boxes.length) return;
+    const total = boxes.length;
+    const checked = phase.querySelectorAll('input[type="checkbox"]:checked').length;
+    const pct = checked / total;
+    const circle = phase.querySelector('.phase-ring-fill');
+    const counter = phase.querySelector('.phase-counter');
+    if (circle) {
+      const circumference = 94.25;
+      circle.style.strokeDashoffset = circumference - (pct * circumference);
+      // Color the ring by completion
+      if (pct === 1) { circle.style.stroke = '#1D9E75'; }
+      else if (pct > 0.5) { circle.style.stroke = '#E09B20'; }
+      else { circle.style.stroke = phase.classList.contains('phase-critical') ? '#E24B4A' :
+             phase.classList.contains('phase-done') ? '#1D9E75' : '#E09B20'; }
+    }
+    if (counter) {
+      counter.textContent = checked + '/' + total;
+      counter.classList.toggle('all-done', checked === total);
+    }
+  });
+}
+
+// Patch saveCheck to also update rings
+const _origSaveCheck = typeof saveCheck !== 'undefined' ? saveCheck : null;
+document.addEventListener('DOMContentLoaded', () => {
+  updatePhaseRings();
+  // Re-run after localStorage checks are applied
+  setTimeout(updatePhaseRings, 300);
+});
