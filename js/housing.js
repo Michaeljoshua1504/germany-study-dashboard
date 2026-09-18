@@ -14,7 +14,112 @@
     budget:id=>hBudgetIds.includes(id),
     skip:id=>hSkipIds.includes(id),
   };
-  function hFilter(type,btn){document.querySelectorAll('.h-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.h-card').forEach(card=>{const id=card.id.replace('hcard-','');card.style.display=hFilterMap[type](id)?'':'none';});}
+  function hFilter(type,btn){
+    document.querySelectorAll('.h-filter-btn').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    if(type==='favs'){
+      hApplyFavsFilter();
+      return;
+    }
+    document.querySelectorAll('.h-card').forEach(card=>{
+      const id=card.id.replace('hcard-','');
+      card.style.display=hFilterMap[type](id)?'':'none';
+    });
+  }
+
+  // ═══════════════ FAVOURITES SYSTEM ═══════════════
+  const FAV_KEY='hof_housing_favs';
+  function hLoadFavs(){try{return JSON.parse(localStorage.getItem(FAV_KEY))||[];}catch(e){return [];}}
+  function hSaveFavs(f){localStorage.setItem(FAV_KEY,JSON.stringify(f));}
+
+  function hUpdateFavBtns(){
+    const favs=hLoadFavs();
+    document.querySelectorAll('.h-fav-btn').forEach(btn=>{
+      const id=btn.id.replace('favbtn-','');
+      const idx=favs.indexOf(id);
+      if(idx!==-1){
+        btn.textContent='#'+(idx+1);
+        btn.classList.add('h-fav-active');
+        btn.title='Remove from favourites';
+      } else {
+        btn.textContent='☆';
+        btn.classList.remove('h-fav-active');
+        btn.title='Add to favourites';
+      }
+    });
+    const countEl=document.getElementById('fav-filter-count');
+    if(countEl){
+      const favs2=hLoadFavs();
+      countEl.textContent=favs2.length;
+      countEl.style.display=favs2.length>0?'inline':'none';
+    }
+  }
+
+  window.hToggleFav=function(id,btn){
+    const favs=hLoadFavs();
+    const idx=favs.indexOf(id);
+    if(idx!==-1){
+      hShowUnstarConfirm(id,idx+1,function(){
+        const f=hLoadFavs();
+        f.splice(f.indexOf(id),1);
+        hSaveFavs(f);
+        hUpdateFavBtns();
+        // if in favs view, refresh
+        const favBtn=document.getElementById('fav-filter-btn');
+        if(favBtn&&favBtn.classList.contains('active')) hApplyFavsFilter();
+      });
+    } else {
+      favs.push(id);
+      hSaveFavs(favs);
+      hUpdateFavBtns();
+    }
+  };
+
+  function hShowUnstarConfirm(id,num,onConfirm){
+    const ex=document.getElementById('fav-confirm-modal');
+    if(ex) ex.remove();
+    const modal=document.createElement('div');
+    modal.id='fav-confirm-modal';
+    modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;';
+    modal.innerHTML=`<div style="background:var(--card-bg,#1a1a2e);border:1.5px solid var(--border,#333);border-radius:16px;padding:28px 24px;max-width:320px;width:100%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,0.5);"><div style="font-size:28px;margin-bottom:10px;">⭐</div><div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;">Remove Favourite #${num}?</div><div style="font-size:13px;color:var(--text-muted,#888);margin-bottom:22px;line-height:1.5;">This will remove it from your list and renumber the ones below it.</div><div style="display:flex;gap:10px;justify-content:center;"><button onclick="document.getElementById('fav-confirm-modal').remove()" style="flex:1;padding:10px 0;border-radius:10px;border:1.5px solid var(--border,#333);background:none;color:var(--text);font-size:14px;cursor:pointer;font-family:inherit;">Cancel</button><button id="fav-confirm-yes" style="flex:1;padding:10px 0;border-radius:10px;border:none;background:#e53e3e;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">Remove</button></div></div>`;
+    document.body.appendChild(modal);
+    document.getElementById('fav-confirm-yes').onclick=function(){modal.remove();onConfirm();};
+    modal.addEventListener('click',function(e){if(e.target===modal)modal.remove();});
+  }
+
+  function hApplyFavsFilter(){
+    const favs=hLoadFavs();
+    const grid=document.getElementById('h-grid');
+    if(!grid) return;
+    document.querySelectorAll('.h-card').forEach(card=>{
+      const id=card.id.replace('hcard-','');
+      card.style.display=favs.includes(id)?'':'none';
+    });
+    // reorder cards in starred order
+    favs.forEach(id=>{
+      const card=document.getElementById('hcard-'+id);
+      if(card) grid.appendChild(card);
+    });
+    if(favs.length===0){
+      // Show a message if no favourites yet
+      let msg=document.getElementById('h-fav-empty');
+      if(!msg){
+        msg=document.createElement('div');
+        msg.id='h-fav-empty';
+        msg.style.cssText='text-align:center;padding:60px 20px;color:var(--text-muted,#888);font-size:15px;';
+        msg.innerHTML='<div style="font-size:36px;margin-bottom:12px;">☆</div><div>No favourites yet — click ☆ on any property card to add it here.</div>';
+        grid.appendChild(msg);
+      }
+    } else {
+      const msg=document.getElementById('h-fav-empty');
+      if(msg) msg.remove();
+    }
+  }
+
+  // Init favourites after housing tab loads
+  function hInitFavs(){
+    hUpdateFavBtns();
+  }
 
 // ═══════════════ HOUSING ROOMS LAZY LOADER ═══════════════
 let housingRoomsLoaded = false;
@@ -32,6 +137,8 @@ async function loadHousingRooms() {
         .trimStart();
       // Remove the last closing </div> that belonged to the outer tab wrapper
       housingRoomsLoaded = true;
+      // Init favourites after DOM is ready
+      setTimeout(hInitFavs, 50);
     }
   } catch(e) {
     console.error('Failed to load housing rooms:', e);
