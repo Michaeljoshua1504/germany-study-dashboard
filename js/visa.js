@@ -477,7 +477,25 @@ function updatePhaseRings() {
 
 // Patch saveCheck to also update rings
 const _origSaveCheck = typeof saveCheck !== 'undefined' ? saveCheck : null;
+
+/* ── Gallery accordion: only one phase open at a time ── */
+function initVisaGalleryAccordion() {
+  const gallery = document.querySelector('.visa-gallery');
+  if (!gallery) return;
+  gallery.addEventListener('click', function(e) {
+    const summary = e.target.closest('summary');
+    if (!summary) return;
+    const clickedPhase = summary.closest('.phase');
+    if (!clickedPhase) return;
+    // Close all others
+    gallery.querySelectorAll('.phase[open]').forEach(p => {
+      if (p !== clickedPhase) p.removeAttribute('open');
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initVisaGalleryAccordion();
   updatePhaseRings();
   // Re-run after localStorage checks are applied
   setTimeout(updatePhaseRings, 300);
