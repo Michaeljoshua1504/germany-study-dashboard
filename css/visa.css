@@ -241,3 +241,29 @@ html[data-theme="dark"] .chip-critical { background: rgba(226,75,74,0.2); color:
 html[data-theme="dark"] .chip-important { background: rgba(224,155,32,0.2); color: #f0b95a; }
 html[data-theme="dark"] .chip-optional  { background: rgba(74,159,224,0.2); color: #8ab4f8; }
 html[data-theme="dark"] .chip-done      { background: rgba(29,158,117,0.2); color: #5ecfa8; }
+
+/* ── Open card spans full gallery width ── */
+.visa-gallery .phase[open] {
+  grid-column: 1 / -1;
+  transform: none;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+}
+.visa-gallery .phase[open] .phase-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0 24px;
+}
+/* Phase intro text and sub-headings still span full width */
+.visa-gallery .phase[open] .phase-intro {
+  grid-column: 1 / -1;
+}
+/* Checklist items stay single-column inside their column */
+.visa-gallery .phase[open] .cl-item {
+  break-inside: avoid;
+}
+/* Don't hover-lift an open card */
+.visa-gallery .phase[open]:hover { transform: none; box-shadow: 0 2px 16px rgba(0,0,0,0.10); }
+
+/* Dark mode open card */
+html[data-theme="dark"] .visa-gallery .phase[open] { box-shadow: 0 2px 20px rgba(0,0,0,0.40); }
+html[data-theme="dark"] .visa-gallery .phase[open]:hover { transform: none; box-shadow: 0 2px 20px rgba(0,0,0,0.40); }
