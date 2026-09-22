@@ -8,15 +8,32 @@ function isLoggedIn() {
 
 function applyAuthState() {
   const loggedIn = isLoggedIn();
+
   // Show/hide auth-gated tabs (topbar + sub-nav)
   document.querySelectorAll('.topbar-tab.auth-only, .tab.auth-only').forEach(el => {
     el.style.display = loggedIn ? '' : 'none';
   });
+
   // Show/hide login/logout buttons
   const loginBtn = document.getElementById('login-btn');
   const logoutBtn = document.getElementById('logout-btn');
   if (loginBtn) loginBtn.style.display = loggedIn ? 'none' : '';
   if (logoutBtn) logoutBtn.style.display = loggedIn ? '' : 'none';
+
+  // ── SECURITY: Hide sensitive content from guests ──
+  // Auth-required tabs: hide real content, show lock placeholder when logged out
+  const authTabs = ['tab-dashboard', 'tab-university', 'tab-visa', 'tab-my-room'];
+  authTabs.forEach(tabId => {
+    const tab = document.getElementById(tabId);
+    if (!tab) return;
+    const placeholder = document.getElementById(tabId + '-placeholder');
+    // All direct children except the placeholder
+    Array.from(tab.children).forEach(child => {
+      if (child.id === tabId + '-placeholder') return;
+      child.style.display = loggedIn ? '' : 'none';
+    });
+    if (placeholder) placeholder.style.display = loggedIn ? 'none' : 'block';
+  });
 
   // If guest — lock view to Housing only
   const housingTabBtn = document.getElementById('tab-btn-housing');
