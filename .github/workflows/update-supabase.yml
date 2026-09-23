@@ -14,22 +14,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Execute SQL via Supabase Management API
-        run: |
-          RESPONSE=$(curl -s -X POST \
-            "https://api.supabase.com/v1/projects/epndekpwxngjozytlcmy/database/query" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ACCESS_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{\"query\": $(python3 -c "import json; print(json.dumps(open('supabase/update.sql').read()))")}")
-          echo "Response: $RESPONSE"
-          echo "$RESPONSE" | python3 -c "
-import sys, json
-try:
-    d = json.load(sys.stdin)
-    if isinstance(d, dict) and 'message' in d:
-        print('ERROR:', d)
-        sys.exit(1)
-    else:
-        print('Success!')
-except:
-    print('Done')
-"
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: python3 -c "import json,urllib.request; sql=open('supabase/update.sql').read(); req=urllib.request.Request('https://api.supabase.com/v1/projects/epndekpwxngjozytlcmy/database/query',data=json.dumps({'query':sql}).encode(),headers={'Authorization':'Bearer $SUPABASE_ACCESS_TOKEN','Content-Type':'application/json'},method='POST'); print(urllib.request.urlopen(req).read().decode())"
