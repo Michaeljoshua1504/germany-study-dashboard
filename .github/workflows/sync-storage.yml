@@ -1,0 +1,33 @@
+name: Sync content to Supabase Storage
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - supabase/visa.html
+      - supabase/my-room.html
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload visa.html
+        run: |
+          curl -s -X POST \
+            "${{ secrets.SUPABASE_URL }}/storage/v1/object/page-content/visa.html" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: text/html" \
+            -H "x-upsert: true" \
+            --data-binary @supabase/visa.html
+
+      - name: Upload my-room.html
+        run: |
+          curl -s -X POST \
+            "${{ secrets.SUPABASE_URL }}/storage/v1/object/page-content/my-room.html" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
+            -H "Content-Type: text/html" \
+            -H "x-upsert: true" \
+            --data-binary @supabase/my-room.html
