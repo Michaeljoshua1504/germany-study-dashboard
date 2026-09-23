@@ -1,52 +1,35 @@
-// ═══════════════ CONTENT LOADER (Level 3 — Storage Edition) ═══════════════
-// Fetches protected HTML sections from Supabase Storage after login.
-// Uses Storage REST API — no PostgREST / table dependency.
+// ═══════════════ CONTENT LOADER (Level 3) ═══════════════
+// Fetches protected HTML sections from Supabase table after login.
+// Uses page_sections table — no Storage dependency.
 
 let _contentLoaded = false;
-
-const STORAGE_SECTIONS = [
-  { key: "visa",    file: "visa.html"    },
-  { key: "my-room", file: "my-room.html" },
-];
 
 async function loadProtectedContent() {
   if (_contentLoaded) return;
   if (!sbClient) return;
 
-  let anyLoaded = false;
+  const { data: sections, error } = await sbClient
+    .from("page_sections")
+    .select("section_key, html_content");
 
-  for (const { key, file } of STORAGE_SECTIONS) {
-    try {
-      const { data, error } = await sbClient.storage
-        .from("page-content")
-        .download(file);
-
-      if (error) {
-        console.error(`Storage fetch failed for ${file}:`, error.message);
-        continue;
-      }
-
-      const html = await data.text();
-
-      const tab = document.getElementById("tab-" + key);
-      if (!tab) continue;
-
-      const placeholder = tab.querySelector(".content-placeholder");
-      if (placeholder) placeholder.remove();
-
-      const container = document.createElement("div");
-      container.className = "protected-content";
-      container.innerHTML = html;
-      tab.appendChild(container);
-
-      anyLoaded = true;
-
-    } catch (err) {
-      console.error(`Unexpected error loading ${file}:`, err);
-    }
+  if (error || !sections || sections.length === 0) {
+    console.error("Failed to load protected content:", error?.message);
+    return;
   }
 
-  if (!anyLoaded) return;
+  sections.forEach(({ section_key, html_content }) => {
+    const tab = document.getElementById("tab-" + section_key);
+    if (!tab) return;
+
+    const placeholder = tab.querySelector(".content-placeholder");
+    if (placeholder) placeholder.remove();
+
+    const container = document.createElement("div");
+    container.className = "protected-content";
+    container.innerHTML = html_content;
+    tab.appendChild(container);
+  });
+
   _contentLoaded = true;
 
   if (typeof initVisaGalleryAccordion === "function") initVisaGalleryAccordion();
