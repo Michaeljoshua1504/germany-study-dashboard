@@ -91,6 +91,7 @@ async function attemptLogin() {
     if (error) throw error;
     _authUser = data.user;
     closeLoginModal();
+    await loadProtectedContent();
     applyAuthState();
     // Switch to Admission tab after login
     const admissionTabEl = document.querySelector('.topbar-tab.auth-only');
@@ -116,6 +117,7 @@ async function initAuth() {
   const { data } = await sbClient.auth.getSession();
   if (data?.session?.user) {
     _authUser = data.session.user;
+    await loadProtectedContent();
   }
   applyAuthState();
 
