@@ -125,6 +125,31 @@
 - **Storage bucket:** `housing-images` (public, already created)
 - **Storage upload pattern:** `POST /storage/v1/object/housing-images/{filename}` with headers `Authorization: Bearer {legacy_jwt}`, `Content-Type: image/jpeg`, `x-upsert: true`
 
+### page_sections Table (Protected Content)
+- **Table:** `page_sections` — stores visa and my-room tab HTML content
+- **Columns:** `id`, `section_key` (unique), `html_content`, `updated_at`
+- **RLS:** Enabled — only authenticated users can SELECT
+- **section_keys:** `visa`, `my-room`
+- **How content loads:** After login → `content-loader.js` fetches from table → injects into tab
+- **File:** `js/content-loader.js` — reads from `page_sections` table via PostgREST
+
+### Automated Content Update Pipeline
+- **How it works:** I push SQL to `supabase/update.sql` → GitHub Action triggers → executes SQL against Supabase → table updated automatically
+- **Workflow file:** `.github/workflows/update-supabase.yml`
+- **Trigger:** any push to `main` that changes `supabase/update.sql`
+- **GitHub Secrets required:**
+  - `SUPABASE_ACCESS_TOKEN` — Supabase Personal Access Token (Full access, scoped to Germany-Dashboard project, expires 2030-01-01)
+  - `SUPABASE_SERVICE_ROLE_KEY` — Supabase service role key (sb_secret_...)
+  - `SUPABASE_URL` — `https://epndekpwxngjozytlcmy.supabase.co`
+- **Mikey does zero manual work** — just tell Claude what to update, Claude pushes the SQL, Action runs it
+- **Content files NOT in repo** — visa.html and my-room.html were removed from public repo for security; content lives only in Supabase table
+- **URL:** `https://epndekpwxngjozytlcmy.supabase.co`
+- **Publishable key:** `sb_publishable_1RHubw6OVdqUAS_XAcKnpg_po3SzAj5` — use for DB queries only
+- **Legacy anon JWT key:** `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwbmRla3B3eG5nam96eXRsY215Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3MzgxNTIsImV4cCI6MjA5ODMxNDE1Mn0.WtNsEgvw6ezTJN4ACVYB6Mcv57hABo0FGMC2nRamLiA`
+- ⚠️ **IMPORTANT:** Always use the legacy anon JWT for storage uploads — the `sb_publishable_` key returns 403 on all storage endpoints
+- **Storage bucket:** `housing-images` (public, already created)
+- **Storage upload pattern:** `POST /storage/v1/object/housing-images/{filename}` with headers `Authorization: Bearer {legacy_jwt}`, `Content-Type: image/jpeg`, `x-upsert: true`
+
 ### Housing Tab
 - Housing tab added to dashboard (3rd tab in top nav, between German and Life Tracker)
 - Sub-tab: Room Finder (`tab-housing-rooms`)
