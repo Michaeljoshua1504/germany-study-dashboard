@@ -18,6 +18,11 @@ function showMainTab(mainTabId, el) {
   if (defaultSubTab && targetNav) {
     const firstTabEl = targetNav.querySelector('.tab');
     showTab(defaultSubTab, firstTabEl);
+  } else if (!targetNav) {
+    // Flat tab with no sub-nav (e.g. Travel Prep) — activate its own section directly
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const flatSection = document.getElementById('tab-' + mainTabId);
+    if (flatSection) flatSection.classList.add('active');
   }
 }
 
