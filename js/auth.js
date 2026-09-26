@@ -22,7 +22,7 @@ function applyAuthState() {
 
   // ── SECURITY: Hide sensitive content from guests ──
   // Auth-required tabs: hide real content, show lock placeholder when logged out
-  const authTabs = ['tab-dashboard', 'tab-university', 'tab-visa', 'tab-my-room'];
+  const authTabs = ['tab-dashboard', 'tab-university', 'tab-visa', 'tab-my-room', 'tab-travel'];
   authTabs.forEach(tabId => {
     const tab = document.getElementById(tabId);
     if (!tab) return;
@@ -93,9 +93,9 @@ async function attemptLogin() {
     closeLoginModal();
     await loadProtectedContent();
     applyAuthState();
-    // Switch to Admission tab after login
-    const admissionTabEl = document.querySelector('.topbar-tab.auth-only');
-    if (admissionTabEl) showMainTab('admission', admissionTabEl);
+    // Switch to Dashboard tab after login
+    const dashboardTabEl = document.getElementById('tab-btn-dashboard');
+    if (dashboardTabEl) showMainTab('dashboard', dashboardTabEl);
   } catch (err) {
     errEl.textContent = 'Incorrect email or password.';
     document.getElementById('login-password').value = '';
