@@ -150,6 +150,17 @@
 - **Storage bucket:** `housing-images` (public, already created)
 - **Storage upload pattern:** `POST /storage/v1/object/housing-images/{filename}` with headers `Authorization: Bearer {legacy_jwt}`, `Content-Type: image/jpeg`, `x-upsert: true`
 
+### Travel Prep Tab
+- New top-level tab added: "🧳 Travel Prep" — flat tab, no sub-nav, always visible (not auth-gated, same as Housing)
+- **Section id:** `tab-travel` — activated via `showMainTab('travel', this)`
+- **ui.js patched:** `showMainTab()` now handles flat tabs with no `nav-<id>` sub-nav by directly activating `tab-<id>` — needed because Travel Prep has no sub-tabs
+- **Structure:** categories as `.home-card` blocks, each containing `.cl-item` checklist rows (reused from the existing priority-checklist CSS in `housing.css` — `cl-critical`/`cl-important`/`cl-optional`/`cl-done` + `.cl-chip`)
+- **Checkbox IDs:** pattern `travel-<category>-<item>` (e.g. `travel-bags-transitz`) — persisted via the existing generic `saveCheck()` / `checksData` / `admission_checklists` Supabase table (same mechanism as visa checklists, just new ID namespace)
+- **Progress pills:** each category header shows a live `checked/total` count via `updateTravelProgress()`, a small inline `<script>` block at the end of the `tab-travel` div in index.html
+- **Categories currently in place:** Bags & Backpacks, Packing Materials, Electronics & Adapters, Money & Financial, Documents & Photos, Medicines & Pharmacy, Groceries & Kitchen, Eyewear, Winter Clothing, Shoes
+- **To add a new item to a category:** find the matching `.home-card` block in `index.html` under `id="tab-travel"`, copy an existing `.cl-item` block, give it a unique id, done
+- **Flight context baked into content:** Qatar Airways, 7kg cabin limit (bag + personal item combined), Oct 4 2026 departure, Student Club extra checked baggage (not cabin)
+
 ### Housing Tab
 - Housing tab added to dashboard (3rd tab in top nav, between German and Life Tracker)
 - Sub-tab: Room Finder (`tab-housing-rooms`)
