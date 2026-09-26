@@ -28,6 +28,15 @@ async function loadProtectedContent() {
     container.className = "protected-content";
     container.innerHTML = html_content;
     tab.appendChild(container);
+
+    // <script> tags inserted via innerHTML do NOT execute automatically (browser security behavior) —
+    // manually re-create and run each one so injected JS (e.g. Travel Prep filters/progress) actually works
+    container.querySelectorAll("script").forEach(oldScript => {
+      const newScript = document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      newScript.textContent = oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
   });
 
   _contentLoaded = true;
