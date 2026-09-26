@@ -245,3 +245,17 @@ html[data-theme="dark"] .cl-item.cl-done .cl-label { color: #666; }
 .h-card .h-badge {
   right: 58px;
 }
+
+/* ── Where-to-buy source tag (Travel Prep items) ── */
+.cl-source {
+  font-size: 10.5px;
+  color: #7a8699;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.cl-source a { color: #378ADD; text-decoration: none; }
+.cl-source a:hover { text-decoration: underline; }
+.cl-item.cl-done .cl-source { color: #999; opacity: 0.75; }
+html[data-theme="dark"] .cl-source { color: #7d8a9e; }
+html[data-theme="dark"] .cl-source a { color: #5b9bd8; }
+html[data-theme="dark"] .cl-item.cl-done .cl-source { color: #5a5f6a; }
