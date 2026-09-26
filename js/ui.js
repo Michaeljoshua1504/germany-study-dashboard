@@ -1,7 +1,7 @@
 // ═══════════════ 6. TABS & UI NAVIGATION (BULLETPROOFED) ═══════════════
 
 const MAIN_TAB_DEFAULTS = {
-  admission: 'dashboard',
+  admission: 'university',
   german: 'learn',
   housing: 'housing-rooms'
 };
