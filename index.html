@@ -20,9 +20,10 @@
     <span class="topbar-wordmark">Germany Dashboard</span>
   </div>
   <div class="topbar-tabs">
+    <div class="topbar-tab auth-only active" id="tab-btn-dashboard" onclick="showMainTab('dashboard', this)" style="display:none;">📊 Dashboard</div>
     <div class="topbar-tab auth-only" onclick="showMainTab('admission', this)" style="display:none;">Admission</div>
     <div class="topbar-tab auth-only" onclick="showMainTab('german', this)" style="display:none;">German</div>
-    <div class="topbar-tab active" id="tab-btn-housing" onclick="showMainTab('housing', this)">🏠 Housing</div>
+    <div class="topbar-tab" id="tab-btn-housing" onclick="showMainTab('housing', this)">🏠 Housing</div>
     <div class="topbar-tab auth-only" id="tab-btn-travel" onclick="showMainTab('travel', this)" style="display:none;">🧳 Travel Prep</div>
     <div class="topbar-tab locked auth-only" title="Unlocks when you land in Germany 🇩🇪" style="display:none;">Life Tracker 🔒</div>
   </div>
@@ -57,9 +58,8 @@
   </div>
 </div>
 
-<nav class="sub-nav" id="nav-admission">
-  <div class="tab active" onclick="showTab('dashboard',this)">🏠 Dashboard</div>
-  <div class="tab" onclick="showTab('university',this)">🏛️ University</div>
+<nav class="sub-nav" id="nav-admission" style="display:none;">
+  <div class="tab active" onclick="showTab('university',this)">🏛️ University</div>
   <div class="tab" onclick="showTab('visa',this)">✈️ Visa & Relocation</div>
 </nav>
 
@@ -103,7 +103,7 @@
     <div class="home-card">
       <div class="home-card-head">
         <span class="home-card-title">🏭 Hof University</span>
-        <span class="home-card-link" onclick="showTab('university', document.querySelector('#nav-admission .tab:nth-child(2)'))">details →</span>
+        <span class="home-card-link" onclick="showTab('university', document.querySelector('#nav-admission .tab:nth-child(1)'))">details →</span>
       </div>
       <div id="dash-submitted-list"></div>
     </div>
@@ -112,7 +112,7 @@
     <div class="home-card">
       <div class="home-card-head">
         <span class="home-card-title">German A1 Progress</span>
-        <span class="home-card-link" onclick="showMainTab('german', document.querySelector('.topbar-tab:nth-child(2)'))">open →</span>
+        <span class="home-card-link" onclick="showMainTab('german', document.querySelector('.topbar-tab:nth-child(3)'))">open →</span>
       </div>
       <div class="home-ger-stats">
         <div class="home-ger-stat">
