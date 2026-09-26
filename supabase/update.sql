@@ -109,3 +109,152 @@ VALUES ('admission-reference', $ADMREF$<style>
 </details>
 $ADMREF$, now())
 ON CONFLICT (section_key) DO UPDATE SET html_content = EXCLUDED.html_content, updated_at = EXCLUDED.updated_at;
+
+-- My Room tab content
+INSERT INTO page_sections (section_key, html_content, updated_at)
+VALUES ('my-room', $ROOM$<style>
+.my-room-content .rm-topic { background:var(--card-bg); border:1.5px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; }
+.my-room-content .rm-topic summary { list-style:none; cursor:pointer; padding:13px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:var(--text); }
+.my-room-content .rm-topic summary::-webkit-details-marker { display:none; }
+.my-room-content .rm-icon { font-size:16px; }
+.my-room-content .rm-title { flex:1; }
+.my-room-content .rm-arrow { font-size:11px; color:var(--text-muted,#888); transition:transform 0.2s; }
+.my-room-content .rm-topic[open] .rm-arrow { transform:rotate(180deg); }
+.my-room-content .rm-body { padding:2px 16px 16px; border-top:1px solid var(--border); }
+.my-room-content .rm-row { display:flex; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12.5px; }
+.my-room-content .rm-row:last-child { border-bottom:none; }
+.my-room-content .rm-label { width:190px; flex-shrink:0; color:var(--text-muted,#888); }
+.my-room-content .rm-value { color:var(--text); }
+.my-room-content .rm-alert { background:rgba(214,69,69,0.08); border:1.5px solid rgba(214,69,69,0.35); border-radius:10px; padding:12px 14px; font-size:12.5px; margin-bottom:14px; color:var(--text); }
+.my-room-content .rm-todo { margin:0; padding-left:0; list-style:none; }
+.my-room-content .rm-todo li { display:flex; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12.5px; color:var(--text); }
+.my-room-content .rm-todo li:last-child { border-bottom:none; }
+.my-room-content .rm-body ul { margin:4px 0 4px 18px; padding:0; }
+.my-room-content .rm-body li { font-size:12.5px; padding:3px 0; color:var(--text); }
+</style>
+
+<div class="my-room-content">
+
+<div class="section-title">🏠 My Room</div>
+<div class="section-sub">Wohnanlage An der Schützenstraße, Hof — Studierendenwerk Oberfranken. Everything from your Mietvertrag, Hausordnung and Brandschutzordnung, in one place.</div>
+
+<div class="rm-alert">📮 <strong>Two documents still need your signature and to be sent back</strong> — the Mietvertrag (sign twice, fill in place/date) and the SEPA-Mandat (fill in your bank details once you have a German account, then sign). The Allgemeine Mietbedingungen, Hausordnung and Brandschutzordnung are for your records only — no signature needed.</div>
+
+<details class="rm-topic" open>
+  <summary><span class="rm-icon">📋</span><span class="rm-title">Quick Facts</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <div class="rm-row"><div class="rm-label">Address</div><div class="rm-value">Schützenstr. 10, 95028 Hof</div></div>
+    <div class="rm-row"><div class="rm-label">Room</div><div class="rm-value">Einzelapartment (möbliert) · VO-Nr. 905-00-01-08-0</div></div>
+    <div class="rm-row"><div class="rm-label">Personennummer</div><div class="rm-value">119126</div></div>
+    <div class="rm-row"><div class="rm-label">Contract period</div><div class="rm-value">01.10.2026 – 29.02.2028</div></div>
+    <div class="rm-row"><div class="rm-label">Grundmiete</div><div class="rm-value">€276.00</div></div>
+    <div class="rm-row"><div class="rm-label">Betriebskosten (Vorauszahlung)</div><div class="rm-value">€96.00</div></div>
+    <div class="rm-row"><div class="rm-label">Internet</div><div class="rm-value">€16.00</div></div>
+    <div class="rm-row"><div class="rm-label">Gesamtmiete</div><div class="rm-value"><strong>€388.00/month</strong> — due by the 5th working day, via SEPA direct debit</div></div>
+    <div class="rm-row"><div class="rm-label">Kaution (deposit)</div><div class="rm-value">€570.00 — payable in 3 equal monthly instalments, 1st due at start of tenancy</div></div>
+    <div class="rm-row"><div class="rm-label">Deposit/rent account</div><div class="rm-value">Sparkasse Bayreuth · IBAN DE60 7735 0110 0009 0344 48 · BIC BYLADEM1SBT</div></div>
+    <div class="rm-row"><div class="rm-label">Notice period</div><div class="rm-value">Only to 28.02 or 31.08, 2 months' written notice</div></div>
+  </div>
+</details>
+
+<details class="rm-topic" open>
+  <summary><span class="rm-icon">📞</span><span class="rm-title">Contacts</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <div class="rm-row"><div class="rm-label">Hausmeister (caretaker)</div><div class="rm-value">Herr Schmidt · 0173/2752769 — call about move-in (office hours 8:00–9:00)</div></div>
+    <div class="rm-row"><div class="rm-label">Wohnheimverwaltung</div><div class="rm-value">Monika Zenkel · 0921 5559-01 · wohnheim@swo.bayern</div></div>
+    <div class="rm-row"><div class="rm-label">Office hours</div><div class="rm-value">Mon, Tue, Thu, Fri 9–12 · Wed 13–16</div></div>
+  </div>
+</details>
+
+<details class="rm-topic" open>
+  <summary><span class="rm-icon">✅</span><span class="rm-title">To Do Before / At Move-In</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <ul class="rm-todo">
+      <li>☐ Sign the Mietvertrag (2 signatures + place/date) and send it back to Studierendenwerk Oberfranken</li>
+      <li>☐ Fill in and sign the SEPA-Mandat once you have a German bank account, then send it back</li>
+      <li>☐ Hand the Bewerbungsbogen to the Hausmeister at move-in</li>
+      <li>☐ Register at the Einwohnermeldeamt Hof within 2 weeks of moving in (Wohnungsgeberbescheinigung is already on file there)</li>
+      <li>☐ Submit a valid Studienbescheinigung every 30.04 and 31.10</li>
+    </ul>
+  </div>
+</details>
+
+<details class="rm-topic">
+  <summary><span class="rm-icon">🏢</span><span class="rm-title">House Rules — General (all Studierendenwerk buildings)</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <ul>
+      <li>Quiet hours 22:00–7:00 — keep noise at room volume</li>
+      <li>Building doors (main + side) always kept closed</li>
+      <li>Waste separation is required — non-compliance gets billed to you</li>
+      <li>No nails, screws or tape on walls/doors; thin steel pins/pushpins are fine — use picture rails</li>
+      <li>No personal cooking plates, fridges/freezers, heaters or other high-power appliances</li>
+      <li>Laundry rooms are for residents only</li>
+      <li>Bikes/vehicles only in designated spots; fire lanes always clear</li>
+      <li>Rundfunkbeitrag (German broadcasting fee) registration is required</li>
+      <li>Away more than 7 days → tell the Hausmeister in advance</li>
+      <li>Private parties need the Hausmeister's approval in advance; quiet hours still apply</li>
+      <li>Beds must not be used without bedsheets</li>
+      <li>No grilling or open flame on balconies, terraces, courtyards or green areas</li>
+      <li>Absolute no-smoking in halls, stairwells, shared common rooms, and the waste/heat-pump area</li>
+      <li>Don't remove official notices or post your own on the noticeboard</li>
+      <li>No personal routers allowed in the dorms</li>
+      <li>No shopping carts left on the grounds</li>
+    </ul>
+  </div>
+</details>
+
+<details class="rm-topic">
+  <summary><span class="rm-icon">🚪</span><span class="rm-title">House Rules — Specific to An der Schützenstraße</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <ul>
+      <li>Never stick anything to the window panes; close the window whenever you leave the room</li>
+      <li>Don't sit on the fall-protection railings</li>
+      <li>Ground-floor window sills are not an exit</li>
+      <li>Never alter the room's ventilation slots or tape over them</li>
+      <li>The flat roof is off-limits</li>
+      <li>No smoking in the rooms</li>
+      <li>Follow the posted floor-cleaning instructions (also on the Studierendenwerk website)</li>
+      <li>No grilling near the façade outside</li>
+      <li>No bikes in hallways or rooms — only in the designated bike area</li>
+      <li>Never park or even unload in the fire lane</li>
+      <li>No smoking near the waste enclosure/heat pump; never bin hot cigarette butts</li>
+      <li>Max occupancy in shared common rooms: 38 people (ground floor) / 37 (upper floors)</li>
+    </ul>
+  </div>
+</details>
+
+<details class="rm-topic">
+  <summary><span class="rm-icon">🔥</span><span class="rm-title">Fire Safety (Brandschutzordnung)</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <p style="font-size:12.5px;"><strong>⚠️ There is no building-wide fire alarm — you have to warn others yourself.</strong></p>
+    <p style="font-size:12.5px;margin-top:6px;"><strong>Emergency number: 112</strong></p>
+    <ul>
+      <li>Stay calm → call 112 → warn others and help anyone who needs it → close doors behind you (don't lock them)</li>
+      <li>Use the marked escape routes — never the lift — and go to the assembly point, then follow instructions</li>
+      <li>Fire extinguishers are in the corridors and technical rooms; smoke detectors are in every apartment and networked in the hallways</li>
+      <li>Keep escape routes, fire-brigade access lanes and hydrants clear at all times</li>
+      <li>Only try to put out a fire yourself if it's small and you're not in danger — leave immediately if smoke builds up</li>
+    </ul>
+  </div>
+</details>
+
+<details class="rm-topic">
+  <summary><span class="rm-icon">📄</span><span class="rm-title">Rental Conditions — Key Points (Allgemeine Mietbedingungen)</span><span class="rm-arrow">▾</span></summary>
+  <div class="rm-body">
+    <ul>
+      <li>This is a rotation-principle student room, tied to being enrolled — it ends automatically if you leave or finish your studies, no notice needed</li>
+      <li>Send a current Studienbescheinigung (enrollment certificate) by 30.04 and 31.10 every year, without being asked</li>
+      <li>Extensions are possible near your thesis/final exams or for serious illness — apply in writing by 30.04 (for a 31.08 end date) or 31.10 (for a 28.02 end date)</li>
+      <li>The landlord can raise the rent unilaterally in writing if costs increase</li>
+      <li>Subletting only with prior permission, max 3 months, and only to another eligible student</li>
+      <li>Register at the Einwohnermeldeamt within 2 weeks of moving in</li>
+      <li>You're liable for damage caused by you, your visitors, or (in a shared flat) a flatmate's negligence</li>
+      <li>The landlord can enter with 48h notice for repairs/inspections; immediate entry only if there's danger to life/health or serious property damage</li>
+      <li>Pets: only small caged/tank animals without permission — anything else needs the landlord's sign-off</li>
+    </ul>
+  </div>
+</details>
+
+</div>
+$ROOM$, now())
+ON CONFLICT (section_key) DO UPDATE SET html_content = EXCLUDED.html_content, updated_at = EXCLUDED.updated_at;
