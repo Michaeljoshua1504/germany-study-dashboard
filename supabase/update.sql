@@ -1,2 +1,1 @@
--- trigger test
-UPDATE page_sections SET updated_at = NOW() WHERE section_key = 'visa';
+SELECT section_key, html_content FROM page_sections WHERE section_key IN ('visa','my-room');
