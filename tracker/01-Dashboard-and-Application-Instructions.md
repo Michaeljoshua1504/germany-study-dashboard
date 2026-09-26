@@ -179,3 +179,13 @@
 ---
 
 *Created: 2 Jul 2026. Reference data for dashboard sessions and application assistance.*
+
+### Admission > Checklist & Contacts Tab
+- New sub-tab under Admission (alongside University, Visa & Relocation): "📋 Checklist & Contacts"
+- **Section id:** `tab-admission-checklist` — activated via `showTab('admission-checklist', this)`, nav button added to `#nav-admission` in index.html
+- **Content location (SECURITY):** lives only in Supabase `page_sections` table, `section_key = 'admission-checklist'`, same protected pattern as `visa`/`my-room`/`travel`. index.html only has the empty auth-gated placeholder.
+- **Contents:** two `.cl-item` checklists (Before You Fly / After You Land, from the WS26 Kick-Off + IT Systems + Administrative Steps orientation PDFs) plus a contact gallery grouped by department (Welcome Center, Exchange Coordinators, Graduate School, Erasmus Manager, Admission Office, Housing Office, Language Center, Study Affairs, Career Service, Immigration Office, IT Service).
+- **Checkbox IDs:** pattern `admission-checklist-prefly-<item>` and `admission-checklist-arrival-<item>` — persisted via the generic `saveCheck()`/`checksData`/`admission_checklists` table, same mechanism as everywhere else.
+- **Progress pills:** `#admchk-prefly-count` / `#admchk-arrival-count`, computed by `updateAdmissionChecklistProgress()` — an inline `<script>` at the end of the injected HTML block (content-loader.js re-executes injected `<script>` tags), called via `setTimeout(..., 300)` so it runs after `restoreChecks()` has hydrated checkbox state.
+- **Staff photos:** small JPEG thumbnails (~5-7KB each, ~127KB total base64) embedded inline as data URIs — extracted from `WS26_Kick-Off.pdf` pages 11-13 using PyMuPDF (`page.get_images()` + `get_image_rects()`), sorted by on-page (x,y) position (NOT raw PDF object/stream order, which does not match visual layout) to correctly match each photo to its name. Verified via a labeled contact-sheet montage before embedding.
+- **To update/add an item or contact:** rebuild the HTML block (checklist items use the `cl_item()` helper pattern; contacts use `contact_card()` / `person()` helpers) and push a fresh `INSERT ... ON CONFLICT (section_key) DO UPDATE` to `supabase/update.sql` with `section_key = 'admission-checklist'`, dollar-quoted (`$ADMCHK$...$ADMCHK$`) to avoid escaping issues with the embedded quotes/JS. Same automated pipeline — GitHub Action executes it, no manual Supabase work needed.
