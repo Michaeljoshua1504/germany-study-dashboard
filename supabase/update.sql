@@ -144,15 +144,19 @@ VALUES ('my-room', $ROOM$<style>
   <summary><span class="rm-icon">📋</span><span class="rm-title">Quick Facts</span><span class="rm-arrow">▾</span></summary>
   <div class="rm-body">
     <div class="rm-row"><div class="rm-label">Address</div><div class="rm-value">Schützenstr. 10, 95028 Hof</div></div>
-    <div class="rm-row"><div class="rm-label">Room</div><div class="rm-value">Einzelapartment (möbliert) · VO-Nr. 905-00-01-08-0</div></div>
+    <div class="rm-row"><div class="rm-label">Apartment</div><div class="rm-value">No. 905-00-01-08-0 · 1st floor · Einzelapartment (möbliert) with own bathroom/WC and own small kitchen</div></div>
     <div class="rm-row"><div class="rm-label">Personennummer</div><div class="rm-value">119126</div></div>
     <div class="rm-row"><div class="rm-label">Contract period</div><div class="rm-value">01.10.2026 – 29.02.2028</div></div>
     <div class="rm-row"><div class="rm-label">Grundmiete</div><div class="rm-value">€276.00</div></div>
     <div class="rm-row"><div class="rm-label">Betriebskosten (Vorauszahlung)</div><div class="rm-value">€96.00</div></div>
     <div class="rm-row"><div class="rm-label">Internet</div><div class="rm-value">€16.00</div></div>
+    <div class="rm-row"><div class="rm-label">Included in rent</div><div class="rm-value">Electricity, gas, water, heating and internet</div></div>
     <div class="rm-row"><div class="rm-label">Gesamtmiete</div><div class="rm-value"><strong>€388.00/month</strong> — due by the 5th working day, via SEPA direct debit</div></div>
-    <div class="rm-row"><div class="rm-label">Kaution (deposit)</div><div class="rm-value">€570.00 — payable in 3 equal monthly instalments, 1st due at start of tenancy</div></div>
-    <div class="rm-row"><div class="rm-label">Deposit/rent account</div><div class="rm-value">Sparkasse Bayreuth · IBAN DE60 7735 0110 0009 0344 48 · BIC BYLADEM1SBT</div></div>
+    <div class="rm-row"><div class="rm-label">Kaution (deposit)</div><div class="rm-value">€570.00 — the offer letter asks for the full deposit with the first payment (by 30.09.2026); the Mietvertrag says 3 equal monthly instalments. Confirm with the Wohnheimverwaltung which applies.</div></div>
+    <div class="rm-row"><div class="rm-label">First payment (due by 30.09.2026)</div><div class="rm-value"><strong>€958.00</strong> = deposit €570.00 + October 2026 rent €388.00 · <strong>€1,043.00</strong> if you take the optional starter package</div></div>
+    <div class="rm-row"><div class="rm-label">Starter package (optional)</div><div class="rm-value">€85.00, incl. good-night package. Otherwise bring your own duvet, pillow, bed linen, pan, plate and cutlery. <a href="https://swo.bayern/studierendenservice/" target="_blank" rel="noopener">swo.bayern/studierendenservice</a></div></div>
+    <div class="rm-row"><div class="rm-label">Deposit/rent account</div><div class="rm-value">Studierendenwerk Oberfranken, Universitätsstr. 30, 95447 Bayreuth · Sparkasse Bayreuth, Luitpoldplatz 11, 95444 Bayreuth · IBAN DE60 7735 0110 0009 0344 48 · Account no. 9034448 · BIC BYLADEM1SBT</div></div>
+    <div class="rm-row"><div class="rm-label">Monthly rent payment</div><div class="rm-value">Needs a German bank account (opened after arrival) or a SEPA-compatible European account</div></div>
     <div class="rm-row"><div class="rm-label">Notice period</div><div class="rm-value">Only to 28.02 or 31.08, 2 months' written notice</div></div>
   </div>
 </details>
@@ -170,8 +174,10 @@ VALUES ('my-room', $ROOM$<style>
   <summary><span class="rm-icon">✅</span><span class="rm-title">To Do Before / At Move-In</span><span class="rm-arrow">▾</span></summary>
   <div class="rm-body">
     <ul class="rm-todo">
+      <li>☐ Transfer the first payment (€958.00, or €1,043.00 with starter package) to Studierendenwerk Oberfranken by 30.09.2026</li>
       <li>☐ Sign the Mietvertrag (2 signatures + place/date) and send it back to Studierendenwerk Oberfranken</li>
       <li>☐ Fill in and sign the SEPA-Mandat once you have a German bank account, then send it back</li>
+      <li>☐ Pack your own bedding and kitchen basics (or buy the €85 starter package)</li>
       <li>☐ Hand the Bewerbungsbogen to the Hausmeister at move-in</li>
       <li>☐ Register at the Einwohnermeldeamt Hof within 2 weeks of moving in (Wohnungsgeberbescheinigung is already on file there)</li>
       <li>☐ Submit a valid Studienbescheinigung every 30.04 and 31.10</li>
