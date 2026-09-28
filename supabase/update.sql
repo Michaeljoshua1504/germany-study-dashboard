@@ -1,266 +1,846 @@
--- Admission Reference Notes tab content
-INSERT INTO page_sections (section_key, html_content, updated_at)
-VALUES ('admission-reference', $ADMREF$<style>
-.ref-topic { background:var(--card-bg); border:1.5px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; }
-.ref-topic summary { list-style:none; cursor:pointer; padding:13px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:var(--text); }
-.ref-topic summary::-webkit-details-marker { display:none; }
-.ref-icon { font-size:16px; }
-.ref-title { flex:1; }
-.ref-arrow { font-size:11px; color:var(--text-muted,#888); transition:transform 0.2s; }
-.ref-topic[open] .ref-arrow { transform:rotate(180deg); }
-.ref-body { padding:2px 16px 16px; border-top:1px solid var(--border); }
-.ref-row { display:flex; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12.5px; }
-.ref-row:last-child { border-bottom:none; }
-.ref-label { width:190px; flex-shrink:0; color:var(--text-muted,#888); }
-.ref-value { color:var(--text); }
-.ref-portal { padding:10px 0; border-bottom:1px solid var(--border); }
-.ref-portal:last-child { border-bottom:none; }
-.ref-portal-name { font-size:12.5px; font-weight:700; color:var(--text); }
-.ref-portal-link a { font-size:11.5px; color:#378ADD; text-decoration:none; word-break:break-all; }
-.ref-portal-link a:hover { text-decoration:underline; }
-.ref-portal-desc { font-size:11.5px; color:var(--text-muted,#888); margin-top:2px; }
-</style>
-
-<div class="section-title">📖 Reference Notes</div>
-<div class="section-sub">Background info from your Access Data letter and the three orientation packs — not tasks, just things worth remembering.</div>
-
-<details class="ref-topic" open>
-  <summary><span class="ref-icon">🔑</span><span class="ref-title">Login Portals</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><div class="ref-portal"><div class="ref-portal-name">Password Self-Service</div><div class="ref-portal-link"><a href="https://selfservice.hof-university.de" target="_blank">https://selfservice.hof-university.de</a></div><div class="ref-portal-desc">Change/reset your password, manage security questions</div></div><div class="ref-portal"><div class="ref-portal-name">Microsoft 365 / Outlook</div><div class="ref-portal-link"><a href="https://portal.microsoftonline.com/" target="_blank">https://portal.microsoftonline.com/ · https://outlook.office.com</a></div><div class="ref-portal-desc">Email (checked daily — official comms), Office apps. MFA via Microsoft Authenticator</div></div><div class="ref-portal"><div class="ref-portal-name">MFA Portal (Shibboleth/VPN)</div><div class="ref-portal-link"><a href="https://mfa.hof-university.de" target="_blank">https://mfa.hof-university.de</a></div><div class="ref-portal-desc">Separate token registration — needed for Moodle, Primuss, Zoom, Panopto, Nextcloud & VPN. Microsoft's factor does NOT work here</div></div><div class="ref-portal"><div class="ref-portal-name">PRIMUSS Student Portal</div><div class="ref-portal-link"><a href="https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh" target="_blank">https://www3.primuss.de/cgi-bin/login/index.pl?FH=fhh</a></div><div class="ref-portal-desc">Enrollment docs, exam registration, address updates, matriculation certificate</div></div><div class="ref-portal"><div class="ref-portal-name">Moodle</div><div class="ref-portal-link"><a href="https://moodle.hof-university.de/" target="_blank">https://moodle.hof-university.de/</a></div><div class="ref-portal-desc">Course rooms, study materials, Zoom links — log in via Shibboleth</div></div><div class="ref-portal"><div class="ref-portal-name">Webfolders</div><div class="ref-portal-link"><a href="https://webfolders.hof-university.de" target="_blank">https://webfolders.hof-university.de</a></div><div class="ref-portal-desc">Access your personal university files worldwide</div></div><div class="ref-portal"><div class="ref-portal-name">Print Server</div><div class="ref-portal-link"><a href="https://printserver.hof-university.de/user" target="_blank">https://printserver.hof-university.de/user</a></div><div class="ref-portal-desc">Load printing account, retrieve printer ID, unlock Windows password</div></div><div class="ref-portal"><div class="ref-portal-name">Zoom</div><div class="ref-portal-link"><a href="https://hof-university.zoom.us/" target="_blank">https://hof-university.zoom.us/</a></div><div class="ref-portal-desc">Full-access university Zoom account</div></div><div class="ref-portal"><div class="ref-portal-name">Panopto</div><div class="ref-portal-link"><a href="https://hawhof.cloud.panopto.eu/" target="_blank">https://hawhof.cloud.panopto.eu/</a></div><div class="ref-portal-desc">Recorded lecture videos</div></div><div class="ref-portal"><div class="ref-portal-name">Nextcloud</div><div class="ref-portal-link"><a href="https://nextcloud.hof-university.de/" target="_blank">https://nextcloud.hof-university.de/</a></div><div class="ref-portal-desc">File sharing/cloud storage</div></div><div class="ref-portal"><div class="ref-portal-name">IT Service Site</div><div class="ref-portal-link"><a href="https://www.hof-university.com/studying-at-hof-university/services-and-support/it-service" target="_blank">https://www.hof-university.com/studying-at-hof-university/services-and-support/it-service</a></div><div class="ref-portal-desc">Guides for Office365, printing, WiFi, and more</div></div></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🆔</span><span class="ref-title">Your Account Basics</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><div class="ref-row"><span class="ref-label">Username (Windows ID)</span><span class="ref-value">mpadamuthum</span></div><div class="ref-row"><span class="ref-label">University email</span><span class="ref-value">mpadamuthum@hof-university.de</span></div><div class="ref-row"><span class="ref-label">Matrikelnummer</span><span class="ref-value">00417126</span></div><div class="note-box" style="margin-top:10px;"><strong>⚠️ Deliberately not stored here:</strong> your password and online registration number. This dashboard's repo is public — anything pushed to it (even to feed the private database) sits in git history in plaintext. Keep those two in a password manager instead.</div></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🔐</span><span class="ref-title">MFA Setup Recap (two separate registrations)</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><p>Two <strong>separate</strong> MFA registrations are required — completing one does not cover the other:</p>
-<ol style="margin:6px 0 0 18px;padding:0;font-size:12.5px;line-height:1.7;">
-<li><strong>Microsoft 365 / email</strong> — set up via portal.microsoftonline.com using the Microsoft Authenticator app (QR code + number-matching approval).</li>
-<li><strong>Shibboleth services & VPN</strong> — set up separately via mfa.hof-university.de using your online registration number, then "Token enrollment wizard → Enroll Token" and scanning a second QR code with the same Authenticator app. This one generates a 6-digit code that refreshes every 30 seconds.</li>
-</ol></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🏫</span><span class="ref-title">Hof University Fast Facts</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><div class="ref-row"><span class="ref-label">Founded</span><span class="ref-value">1994, run by the Free State of Bavaria</span></div><div class="ref-row"><span class="ref-label">Students</span><span class="ref-value">~4,000 · 30%+ international, 50+ nations</span></div><div class="ref-row"><span class="ref-label">Campus Hof (main)</span><span class="ref-value">University management, library, sports facilities, main canteen, start-up support</span></div><div class="ref-row"><span class="ref-label">Other locations</span><span class="ref-value">2nd campus: Münchberg · 3rd campus: Kronach · Learning site: Selb</span></div></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">✉️</span><span class="ref-title">Communication Culture Rules</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><ul style="margin:0 0 0 18px;padding:0;font-size:12.5px;line-height:1.8;">
-<li>Email is the <strong>only official channel</strong> — WhatsApp/social/Moodle are extras, not replacements.</li>
-<li>Contact <strong>one</strong> email address per issue — not several at once.</li>
-<li>Unsure who to contact? Email welcome@hof-university.de — they'll redirect you.</li>
-<li>Don't chase an update for <strong>3 weeks</strong> after your first email — repeated follow-ups slow things down.</li>
-<li>Don't visit offices in person unless there's an open consultation hour, or you've been given a specific appointment.</li>
-</ul></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🕐</span><span class="ref-title">Open Consultation Hours</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><div class="ref-row"><span class="ref-label">Orientation Week</span><span class="ref-value">Sept 25 – Oct 9, Mon–Fri, 1:00–2:00pm, in front of room A016</span></div><div class="ref-row"><span class="ref-label">During semester (from Oct 5)</span><span class="ref-value">Shared office hours in A016 — Mon–Thu 1:00–2:00pm, Fri 9:00–10:00am</span></div><div class="ref-row"><span class="ref-label">Closed</span><span class="ref-value">Weekends, holidays, lecture-free days, semester break</span></div></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🪪</span><span class="ref-title">CampusCard — What It Covers</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><ul style="margin:0 0 0 18px;padding:0;font-size:12.5px;line-height:1.8;">
-<li><strong>Student ID</strong> + <strong>semester ticket</strong>: free on HofBus (all routes), specific DB Regio trains Hof↔Münchberg (not Agilis/ALEX), specific Agilis train Hof↔Selb — valid until end of semester (Mar 14 for WS, Sept 30 for SS)</li>
-<li><strong>Library card</strong>, <strong>printing/copying</strong>, and <strong>canteen/Mensa</strong> payment</li>
-<li>Only issued after enrollment + access data are created (a few days' wait) — collected in person, room A111</li>
-<li>Same card reused every semester — just re-validated at the validation machine (near A115/B023) each term, only possible after paying that semester's fee</li>
-</ul></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🏋️</span><span class="ref-title">Sports Facilities</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><ul style="margin:0 0 0 18px;padding:0;font-size:12.5px;line-height:1.8;">
-<li>Opening hours: Mon–Sun 7:00am–10:00pm · Programs: Mon–Thu 4:30–10:00pm</li>
-<li>Transponder for anytime access: €20 deposit, from the reception of the neighboring university (subject to stock)</li>
-<li>Free program includes: Volleyball, Table Tennis, Crossfit, Unihockey, Badminton, Nordic Walking, Football, Yoga, Step Aerobic, Basketball, Running, Zumba and more (seasonal)</li>
-<li>Weekly enrollment opens every Sunday 10:00pm for the following week</li>
-</ul></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🏦</span><span class="ref-title">Bank Account — Documents Needed</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><p style="font-size:12.5px;">Documents needed to open a German current account ("Girokonto"):</p>
-<ul style="margin:6px 0 0 18px;padding:0;font-size:12.5px;line-height:1.8;">
-<li>Passport (non-EU) / ID card (EU)</li>
-<li>Meldebescheinigung (from city registration)</li>
-<li>Immatrikulationsbescheinigung (enrollment certificate)</li>
-</ul>
-<p style="font-size:12.5px;margin-top:8px;">Hof partners with <strong>Sparkasse Hochfranken</strong>. If your blocked account is with <strong>Kotak</strong>, note it isn't recognized in Germany — you'd need a German blocked account too (Sparkasse can do both). Legitimation must happen in person within 7 days of starting.</p></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🛂</span><span class="ref-title">Residence Permit — Documents Needed</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><p style="font-size:12.5px;">Email to Ms. Schaller (rebecca.schaller@stadt-hof.de) should include: full name, birthdate, visa expiry date.</p>
-<p style="font-size:12.5px;margin-top:6px;">Documents to attach:</p>
-<ul style="margin:6px 0 0 18px;padding:0;font-size:12.5px;line-height:1.8;">
-<li>Filled application form</li>
-<li>Proof of valid health insurance for studying (not travel insurance)</li>
-<li>Financial statement — min. <strong>€934/month</strong>: recent blocked-account statement + current-account statements for the last 3 months</li>
-<li>"Regelstudienzeitbescheinigung" — expected graduation date letter from student affairs</li>
-</ul>
-<p style="font-size:12.5px;margin-top:6px;">At the appointment itself, bring: originals of everything sent, 1 digital biometric passport photo, and approx. <strong>€100 cash</strong> (fee varies by country).</p></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">🏥</span><span class="ref-title">Health Insurance Notes</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><p style="font-size:12.5px;">Your insurer notifies Hof directly once your enrollment certificate is submitted to them — don't send proof to the university yourself.</p>
-<p style="font-size:12.5px;margin-top:6px;"><strong>AOK</strong> and <strong>TK</strong> both have representatives on campus during the semester for in-person consultations.</p></div>
-</details>
-<details class="ref-topic">
-  <summary><span class="ref-icon">⚠️</span><span class="ref-title">Scam Awareness</span><span class="ref-arrow">▾</span></summary>
-  <div class="ref-body"><p style="font-size:12.5px;">German police, immigration authorities, and embassies will <strong>never</strong> ask for sensitive data (student number, bank details, visa info) over the phone. If someone claiming to be an authority does, don't share anything — hang up and report it to police if it happens. Hof itself is a safe city.</p></div>
-</details>
-$ADMREF$, now())
-ON CONFLICT (section_key) DO UPDATE SET html_content = EXCLUDED.html_content, updated_at = EXCLUDED.updated_at;
-
--- My Room tab content
-INSERT INTO page_sections (section_key, html_content, updated_at)
-VALUES ('my-room', $ROOM$<style>
-.my-room-content .rm-topic { background:var(--card-bg); border:1.5px solid var(--border); border-radius:10px; margin-bottom:10px; overflow:hidden; }
-.my-room-content .rm-topic summary { list-style:none; cursor:pointer; padding:13px 16px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:600; color:var(--text); }
-.my-room-content .rm-topic summary::-webkit-details-marker { display:none; }
-.my-room-content .rm-icon { font-size:16px; }
-.my-room-content .rm-title { flex:1; }
-.my-room-content .rm-arrow { font-size:11px; color:var(--text-muted,#888); transition:transform 0.2s; }
-.my-room-content .rm-topic[open] .rm-arrow { transform:rotate(180deg); }
-.my-room-content .rm-body { padding:2px 16px 16px; border-top:1px solid var(--border); }
-.my-room-content .rm-row { display:flex; gap:10px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12.5px; }
-.my-room-content .rm-row:last-child { border-bottom:none; }
-.my-room-content .rm-label { width:190px; flex-shrink:0; color:var(--text-muted,#888); }
-.my-room-content .rm-value { color:var(--text); }
-.my-room-content .rm-alert { background:rgba(214,69,69,0.08); border:1.5px solid rgba(214,69,69,0.35); border-radius:10px; padding:12px 14px; font-size:12.5px; margin-bottom:14px; color:var(--text); }
-.my-room-content .rm-todo { margin:0; padding-left:0; list-style:none; }
-.my-room-content .rm-todo li { display:flex; gap:8px; padding:6px 0; border-bottom:1px solid var(--border); font-size:12.5px; color:var(--text); }
-.my-room-content .rm-todo li:last-child { border-bottom:none; }
-.my-room-content .rm-body ul { margin:4px 0 4px 18px; padding:0; }
-.my-room-content .rm-body li { font-size:12.5px; padding:3px 0; color:var(--text); }
-</style>
-
-<div class="my-room-content">
-
-<div class="section-title">🏠 My Room</div>
-<div class="section-sub">Wohnanlage An der Schützenstraße, Hof — Studierendenwerk Oberfranken. Everything from your Mietvertrag, Hausordnung and Brandschutzordnung, in one place.</div>
-
-<div class="rm-alert">📮 <strong>Two documents still need your signature and to be sent back</strong> — the Mietvertrag (sign twice, fill in place/date) and the SEPA-Mandat (fill in your bank details once you have a German account, then sign). The Allgemeine Mietbedingungen, Hausordnung and Brandschutzordnung are for your records only — no signature needed.</div>
-
-<details class="rm-topic" open>
-  <summary><span class="rm-icon">📋</span><span class="rm-title">Quick Facts</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <div class="rm-row"><div class="rm-label">Address</div><div class="rm-value">Schützenstr. 10, 95028 Hof</div></div>
-    <div class="rm-row"><div class="rm-label">Apartment</div><div class="rm-value">No. 905-00-01-08-0 · 1st floor · Einzelapartment (möbliert) with own bathroom/WC and own small kitchen</div></div>
-    <div class="rm-row"><div class="rm-label">Personennummer</div><div class="rm-value">119126</div></div>
-    <div class="rm-row"><div class="rm-label">Contract period</div><div class="rm-value">01.10.2026 – 29.02.2028</div></div>
-    <div class="rm-row"><div class="rm-label">Grundmiete</div><div class="rm-value">€276.00</div></div>
-    <div class="rm-row"><div class="rm-label">Betriebskosten (Vorauszahlung)</div><div class="rm-value">€96.00</div></div>
-    <div class="rm-row"><div class="rm-label">Internet</div><div class="rm-value">€16.00</div></div>
-    <div class="rm-row"><div class="rm-label">Included in rent</div><div class="rm-value">Electricity, gas, water, heating and internet</div></div>
-    <div class="rm-row"><div class="rm-label">Gesamtmiete</div><div class="rm-value"><strong>€388.00/month</strong> — due by the 5th working day, via SEPA direct debit</div></div>
-    <div class="rm-row"><div class="rm-label">Kaution (deposit)</div><div class="rm-value">€570.00 — the offer letter asks for the full deposit with the first payment (by 30.09.2026); the Mietvertrag says 3 equal monthly instalments. Confirm with the Wohnheimverwaltung which applies.</div></div>
-    <div class="rm-row"><div class="rm-label">First payment (due by 30.09.2026)</div><div class="rm-value"><strong>€958.00</strong> = deposit €570.00 + October 2026 rent €388.00 · <strong>€1,043.00</strong> if you take the optional starter package</div></div>
-    <div class="rm-row"><div class="rm-label">Starter package (optional)</div><div class="rm-value">€85.00, incl. good-night package. Otherwise bring your own duvet, pillow, bed linen, pan, plate and cutlery. <a href="https://swo.bayern/studierendenservice/" target="_blank" rel="noopener">swo.bayern/studierendenservice</a></div></div>
-    <div class="rm-row"><div class="rm-label">Deposit/rent account</div><div class="rm-value">Studierendenwerk Oberfranken, Universitätsstr. 30, 95447 Bayreuth · Sparkasse Bayreuth, Luitpoldplatz 11, 95444 Bayreuth · IBAN DE60 7735 0110 0009 0344 48 · Account no. 9034448 · BIC BYLADEM1SBT</div></div>
-    <div class="rm-row"><div class="rm-label">Monthly rent payment</div><div class="rm-value">Needs a German bank account (opened after arrival) or a SEPA-compatible European account</div></div>
-    <div class="rm-row"><div class="rm-label">Notice period</div><div class="rm-value">Only to 28.02 or 31.08, 2 months' written notice</div></div>
-  </div>
-</details>
-
-<details class="rm-topic" open>
-  <summary><span class="rm-icon">📞</span><span class="rm-title">Contacts</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <div class="rm-row"><div class="rm-label">Hausmeister (caretaker)</div><div class="rm-value">Herr Schmidt · 0173/2752769 — call about move-in (office hours 8:00–9:00)</div></div>
-    <div class="rm-row"><div class="rm-label">Wohnheimverwaltung</div><div class="rm-value">Monika Zenkel · 0921 5559-01 · wohnheim@swo.bayern</div></div>
-    <div class="rm-row"><div class="rm-label">Office hours</div><div class="rm-value">Mon, Tue, Thu, Fri 9–12 · Wed 13–16</div></div>
-  </div>
-</details>
-
-<details class="rm-topic" open>
-  <summary><span class="rm-icon">✅</span><span class="rm-title">To Do Before / At Move-In</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <ul class="rm-todo">
-      <li>☐ Transfer the first payment (€958.00, or €1,043.00 with starter package) to Studierendenwerk Oberfranken by 30.09.2026</li>
-      <li>☐ Sign the Mietvertrag (2 signatures + place/date) and send it back to Studierendenwerk Oberfranken</li>
-      <li>☐ Fill in and sign the SEPA-Mandat once you have a German bank account, then send it back</li>
-      <li>☐ Pack your own bedding and kitchen basics (or buy the €85 starter package)</li>
-      <li>☐ Hand the Bewerbungsbogen to the Hausmeister at move-in</li>
-      <li>☐ Register at the Einwohnermeldeamt Hof within 2 weeks of moving in (Wohnungsgeberbescheinigung is already on file there)</li>
-      <li>☐ Submit a valid Studienbescheinigung every 30.04 and 31.10</li>
-    </ul>
-  </div>
-</details>
-
-<details class="rm-topic">
-  <summary><span class="rm-icon">🏢</span><span class="rm-title">House Rules — General (all Studierendenwerk buildings)</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <ul>
-      <li>Quiet hours 22:00–7:00 — keep noise at room volume</li>
-      <li>Building doors (main + side) always kept closed</li>
-      <li>Waste separation is required — non-compliance gets billed to you</li>
-      <li>No nails, screws or tape on walls/doors; thin steel pins/pushpins are fine — use picture rails</li>
-      <li>No personal cooking plates, fridges/freezers, heaters or other high-power appliances</li>
-      <li>Laundry rooms are for residents only</li>
-      <li>Bikes/vehicles only in designated spots; fire lanes always clear</li>
-      <li>Rundfunkbeitrag (German broadcasting fee) registration is required</li>
-      <li>Away more than 7 days → tell the Hausmeister in advance</li>
-      <li>Private parties need the Hausmeister's approval in advance; quiet hours still apply</li>
-      <li>Beds must not be used without bedsheets</li>
-      <li>No grilling or open flame on balconies, terraces, courtyards or green areas</li>
-      <li>Absolute no-smoking in halls, stairwells, shared common rooms, and the waste/heat-pump area</li>
-      <li>Don't remove official notices or post your own on the noticeboard</li>
-      <li>No personal routers allowed in the dorms</li>
-      <li>No shopping carts left on the grounds</li>
-    </ul>
-  </div>
-</details>
-
-<details class="rm-topic">
-  <summary><span class="rm-icon">🚪</span><span class="rm-title">House Rules — Specific to An der Schützenstraße</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <ul>
-      <li>Never stick anything to the window panes; close the window whenever you leave the room</li>
-      <li>Don't sit on the fall-protection railings</li>
-      <li>Ground-floor window sills are not an exit</li>
-      <li>Never alter the room's ventilation slots or tape over them</li>
-      <li>The flat roof is off-limits</li>
-      <li>No smoking in the rooms</li>
-      <li>Follow the posted floor-cleaning instructions (also on the Studierendenwerk website)</li>
-      <li>No grilling near the façade outside</li>
-      <li>No bikes in hallways or rooms — only in the designated bike area</li>
-      <li>Never park or even unload in the fire lane</li>
-      <li>No smoking near the waste enclosure/heat pump; never bin hot cigarette butts</li>
-      <li>Max occupancy in shared common rooms: 38 people (ground floor) / 37 (upper floors)</li>
-    </ul>
-  </div>
-</details>
-
-<details class="rm-topic">
-  <summary><span class="rm-icon">🔥</span><span class="rm-title">Fire Safety (Brandschutzordnung)</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <p style="font-size:12.5px;"><strong>⚠️ There is no building-wide fire alarm — you have to warn others yourself.</strong></p>
-    <p style="font-size:12.5px;margin-top:6px;"><strong>Emergency number: 112</strong></p>
-    <ul>
-      <li>Stay calm → call 112 → warn others and help anyone who needs it → close doors behind you (don't lock them)</li>
-      <li>Use the marked escape routes — never the lift — and go to the assembly point, then follow instructions</li>
-      <li>Fire extinguishers are in the corridors and technical rooms; smoke detectors are in every apartment and networked in the hallways</li>
-      <li>Keep escape routes, fire-brigade access lanes and hydrants clear at all times</li>
-      <li>Only try to put out a fire yourself if it's small and you're not in danger — leave immediately if smoke builds up</li>
-    </ul>
-  </div>
-</details>
-
-<details class="rm-topic">
-  <summary><span class="rm-icon">📄</span><span class="rm-title">Rental Conditions — Key Points (Allgemeine Mietbedingungen)</span><span class="rm-arrow">▾</span></summary>
-  <div class="rm-body">
-    <ul>
-      <li>This is a rotation-principle student room, tied to being enrolled — it ends automatically if you leave or finish your studies, no notice needed</li>
-      <li>Send a current Studienbescheinigung (enrollment certificate) by 30.04 and 31.10 every year, without being asked</li>
-      <li>Extensions are possible near your thesis/final exams or for serious illness — apply in writing by 30.04 (for a 31.08 end date) or 31.10 (for a 28.02 end date)</li>
-      <li>The landlord can raise the rent unilaterally in writing if costs increase</li>
-      <li>Subletting only with prior permission, max 3 months, and only to another eligible student</li>
-      <li>Register at the Einwohnermeldeamt within 2 weeks of moving in</li>
-      <li>You're liable for damage caused by you, your visitors, or (in a shared flat) a flatmate's negligence</li>
-      <li>The landlord can enter with 48h notice for repairs/inspections; immediate entry only if there's danger to life/health or serious property damage</li>
-      <li>Pets: only small caged/tank animals without permission — anything else needs the landlord's sign-off</li>
-    </ul>
-  </div>
-</details>
-
+UPDATE page_sections SET html_content = '<div class="section-title">🧳 Travel Prep — India to Hof</div>
+  <div class="section-sub">Flight on Oct 5 (Qatar Airways, Student Club). Ordered online-first — buy/order those categories today, work down through offline errands after. Each item shows where to get it.</div>
+<div id="travel-filter-bar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 18px;padding:12px 14px;background:var(--card,#fff);border:1px solid var(--border,#e2e5ea);border-radius:10px;">
+  <input type="text" id="travel-search" placeholder="🔎 Search items..." oninput="applyTravelFilters()" style="flex:1;min-width:160px;padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
+  <select id="travel-filter-status" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
+    <option value="all">Status: All</option>
+    <option value="pending">Pending</option>
+    <option value="done">Done</option>
+  </select>
+  <select id="travel-filter-priority" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
+    <option value="all">Priority: All</option>
+    <option value="critical">Critical</option>
+    <option value="important">Important</option>
+    <option value="optional">Optional</option>
+  </select>
+  <select id="travel-filter-source" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
+    <option value="all">Buy from: All</option>
+    <option value="online">🛒 Online</option>
+    <option value="offline">🏬 Offline</option>
+    <option value="germany">🇩🇪 Buy in Germany</option>
+    <option value="have">✅ Already Have</option>
+  </select>
+  <button onclick="resetTravelFilters()" style="padding:7px 12px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:transparent;color:var(--muted,#7a8699);cursor:pointer;">Clear</button>
+  <span id="travel-filter-count" style="font-size:12px;color:var(--muted,#7a8699);margin-left:auto;"></span>
 </div>
-$ROOM$, now())
-ON CONFLICT (section_key) DO UPDATE SET html_content = EXCLUDED.html_content, updated_at = EXCLUDED.updated_at;
+
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🔌 Electronics &amp; Adapters</span>
+        <span class="home-card-link" id="travel-progress-electronics">2/7</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Mostly online — order these first, 1-4 day shipping</div>
+      <div class="cl-item cl-done" data-priority="critical" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-ceptics" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-ceptics">Ceptics EU Plug Adapter (Type E/F, 2-pack) — ₹604 — ordered</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-powerbank"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-powerbank">Power bank — 1</label>
+          <div class="cl-source">🛒 Online — Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-phonecable"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-phonecable">Phone charger cable — 2 (1 spare)</label>
+          <div class="cl-source">🛒 Online — Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-headphones"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-headphones">Headphones — 1</label>
+          <div class="cl-source">🛒 Online — Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-laptop"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-laptop">Laptop &amp; charger — 1 each, carry in cabin bag, never checked baggage</label>
+          <div class="cl-source">✅ Already have — remember cabin-bag placement</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="germany">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-powerplate" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-powerplate">Portronics Power Plate — decided AGAINST (build-quality concerns)</label>
+          <div class="cl-source">🇩🇪 Buy in Germany instead — any local supermarket/electronics store</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-sim"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-electronics-sim">SIM / eSIM for Germany — not yet decided</label>
+          <div class="cl-source">🏬 Offline in Germany — Aldi Talk, congstar, or otelo, OR pre-order eSIM online before departure</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🧳 Packing Materials</span>
+        <span class="home-card-link" id="travel-progress-packing">5/7</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">All online — already ordered</div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-pickle" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-pickle">Foreign Pickle Packing Covers — ₹549 — ordered</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-cubes" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-cubes">Oceanevo Packing Cubes (9pc) — ₹798 — ordered</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-shoebags" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-shoebags">Lifelong Shoe Bags (10-pack) — ₹199 — ordered</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-sealer" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-sealer">ENEM Sealing Machine — ₹1,391 — for packing in India only</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-done" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-lanyard" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-lanyard">BowieMall Phone Lanyard — ₹338 — ordered</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-padlock"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-padlock"><strong>TSA-approved padlock</strong> for luggage — 1-2. A non-TSA lock risks being cut off if security needs to inspect your bag</label>
+          <div class="cl-source">🛒 Online — Amazon.in (search "TSA approved lock")</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-luggagetags"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-luggagetags">Luggage tags with your name, phone, and email — don''t rely only on the airline''s tag, improves odds of recovery if a bag is delayed or lost</label>
+          <div class="cl-source">🛒 Online — Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-packing-pillow"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-packing-pillow">Travel pillow / thin blanket — 1</label>
+          <div class="cl-source">🛒 Online — Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🎒 Bags &amp; Backpacks</span>
+        <span class="home-card-link" id="travel-progress-bags">1/2</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Cabin bag + personal item for Qatar Airways (7kg combined limit)</div>
+      <div class="cl-item cl-done" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-bags-niwlix" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-bags-niwlix">Niwlix Crossbody Sling Bag — ₹570 — ordered (personal item for flight)</label>
+          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
+        </div>
+        <span class="cl-chip chip-done">Done</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-bags-transitz"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-bags-transitz">Mokobara Transit Z Backpack — ₹6,499 — test laptop + iPad fit first</label>
+          <div class="cl-source">🏬 Offline — Mokobara store, Phoenix Mall of Asia</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-bags-suitcase"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-bags-suitcase">Check-in suitcase / trolley — 1 large, sized for the 25 kg checked allowance (plus extra baggage). Lightweight, 4 wheels, TSA lock built in if possible</label>
+          <div class="cl-source">🏬 Offline — luggage stores at Phoenix Mall of Asia (Mokobara store is already on your list)</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-bags-luggagescale"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-bags-luggagescale">Portable digital luggage scale — weigh each bag at home so nothing is over the limit at Bengaluru check-in</label>
+          <div class="cl-source">🏬 Offline — mall/electronics store, or 🛒 Amazon.in</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">📄 Documents &amp; Photos</span>
+        <span class="home-card-link" id="travel-progress-documents">0/12</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Highest priority — start immediately, some need attestation/translation lead time</div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-passport"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-passport">Passport — 1 + photo of ID/visa page saved on phone</label>
+          <div class="cl-source">✅ Already have — save a phone photo as backup</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-photos"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-photos"><strong>Passport-size photos — German biometric spec (35x45mm, specific background/lighting rules)</strong> — 10-12 copies. Explicitly ask the studio for "German biometric photo" format, not generic Indian passport-size — a wrong format risks rejection at Anmeldung/residence permit stage</label>
+          <div class="cl-source">🏬 Offline — local photo studio/print shop (cheaper in India, specify German biometric spec)</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-admissionletter"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-admissionletter">Hof admission/enrollment letter — 3 copies</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-arrivalform"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-arrivalform">Arrival form confirmation — 2 copies</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-degreecert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-degreecert">Degree certificate + transcripts — 1 original + 2 attested copies each</label>
+          <div class="cl-source">🏬 Offline — attestation service + print shop (start early, attestation takes time)</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-btechcert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-btechcert">B.Tech provisional/final certificate — 1 original + 2 copies</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-projectreport"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-projectreport">Final year project report — 1 copy</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-birthcert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-birthcert">Birth certificate — 1 original + 2 translated/attested copies</label>
+          <div class="cl-source">🏬 Offline — translation service + notary/attestation (start early)</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-vaccination"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-vaccination">Vaccination/health records — 1 original + 1 copy</label>
+          <div class="cl-source">🏬 Offline — your clinic + print shop</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-passportcopies"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-passportcopies">Passport photocopies (front + visa page) — 3 copies</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-idp"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-idp"><strong>International Driving Permit (IDP)</strong> — your Indian license alone stops being valid in Germany after 6 months. The IDP can ONLY be obtained in India before you leave — no way to get one retroactively once abroad. Get this even if you have no immediate driving plans.</label>
+          <div class="cl-source">🏬 Offline — RTO (Regional Transport Office) in India</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-docbackup"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-docbackup">Document copies — physical + cloud: full set for parents, scan to Google Drive</label>
+          <div class="cl-source">🏬 Offline (print shop) + online (Google Drive upload)</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-address"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-address">Accommodation address in Germany — written/printed copy, not just saved on phone</label>
+          <div class="cl-source">✅ No purchase — write it out / print from housing confirmation email</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-documents-cabinbag"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-documents-cabinbag">Pack all originals + one full copy set in the cabin bag — never checked baggage</label>
+          <div class="cl-source">✅ No purchase — just organize what you have</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">💳 Money &amp; Financial</span>
+        <span class="home-card-link" id="travel-progress-money">0/7</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Highest priority — sort before departure</div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-hdfc"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-hdfc">HDFC multicurrency forex card — load with Euros</label>
+          <div class="cl-source">🏦 Offline — HDFC branch visit</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-blockedaccount"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-blockedaccount">Blocked account (Expatrio) confirmation — 2 copies</label>
+          <div class="cl-source">🏬 Offline/online — download from Expatrio portal, print at any shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-bankdocs"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-bankdocs">Bank account opening documents — 1-2 copies</label>
+          <div class="cl-source">🏬 Offline — print shop</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-secondcard"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-secondcard">Backup debit/credit card — 1 (different bank if possible)</label>
+          <div class="cl-source">🏦 Offline — your bank branch</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-niyo"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-niyo">Download Niyo Global app &amp; order card — zero forex markup for daily Euro spending</label>
+          <div class="cl-source">🛒 Online — order before departure so the card arrives in time</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-netbanking"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-netbanking">Indian bank account details + net-banking access noted down — needed for NRI banking management from abroad</label>
+          <div class="cl-source">✅ No purchase — just write it down / confirm access before you go</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-cash"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-cash">Euro cash — €200-300, mixed denominations (some €20s/€50s)</label>
+          <div class="cl-source">🏦 Offline — HDFC branch or authorized forex exchange counter</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-emergencycontacts"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-emergencycontacts">Emergency contact numbers — 1 written copy, kept separate from phone</label>
+          <div class="cl-source">✅ No purchase — just write it out</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="germany">
+        <input type="checkbox" class="cl-check persist-check" id="travel-money-coins"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-money-coins">Small coins/notes for airport trains/trams on arrival</label>
+          <div class="cl-source">🇩🇪 Get on arrival — currency exchange counter or ATM at the German airport</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">💊 Medicines &amp; Pharmacy</span>
+        <span class="home-card-link" id="travel-progress-medicines">0/4</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Highest priority — Germany requires a prescription for most medicines</div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-prescription"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-medicines-prescription">Prescription medication — 60 days'' supply</label>
+          <div class="cl-source">💊 Offline — your regular pharmacy/doctor</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-prescriptioncopies"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-medicines-prescriptioncopies">Prescription copies (in English) — 2 copies</label>
+          <div class="cl-source">🏬 Offline — your doctor/clinic</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-firstaid"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-medicines-firstaid">First-aid kit — paracetamol, band-aids, antiseptic, ORS, cold relief, antacid, all in one small kit</label>
+          <div class="cl-source">💊 Offline — any local pharmacy/medical store</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-healthinsurance"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-medicines-healthinsurance">Health insurance (TK) confirmation — 2 copies</label>
+          <div class="cl-source">🏬 Offline/online — download confirmation, print at any shop</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🛌 Daily Comfort &amp; Extras</span>
+        <span class="home-card-link" id="travel-progress-comfort">0/2</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Smaller items, but easy to forget</div>
+      <div class="cl-item cl-important" data-priority="important" data-source="online">
+        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-toiletrykit"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-comfort-toiletrykit">Toiletry travel kit — 1 set</label>
+          <div class="cl-source">🛒 Online — Amazon.in, or offline at any supermarket</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-towel"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-comfort-towel">Small towel — 1-2</label>
+          <div class="cl-source">🛍️ Offline — any supermarket</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-basics"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-comfort-basics">Everyday basics — underwear/innerwear, T-shirts, trousers/jeans, nightwear. Enough for 7-10 days between laundry runs</label>
+          <div class="cl-source">🏬 Offline — Phoenix Mall of Asia (Jack &amp; Jones, Celio, Van Heusen Innerwear), or Decathlon</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-slippers"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-comfort-slippers">Flip-flops / shower slippers + indoor slippers for the dorm</label>
+          <div class="cl-source">🏬 Offline — any footwear store, or 🇩🇪 buy in Germany</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🧥 Winter Clothing</span>
+        <span class="home-card-link" id="travel-progress-winterclothing">0/10</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">1 good jacket from India is enough — buy more locally if needed</div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-jacket"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-jacket">1 good winter jacket</label>
+          <div class="cl-source">🏬 Offline — Columbia, Ground Floor, Phoenix Mall of Asia — <a href="https://magicpin.in/Bangalore/Phoenix-Mall-Of-Asia/Fashion/Columbia/store/1662584/" target="_blank">map</a>, or Decathlon MT100 (~₹3,000)</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-thermals"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-thermals">Thermal / HEATTECH innerwear — 2-3 sets</label>
+          <div class="cl-source">🏬 Offline — Van Heusen Innerwear, Phoenix Mall of Asia — <a href="https://magicpin.in/Bangalore/Phoenix-Mall-Of-Asia/Fashion/Van-Heusen-Innerwear/store/16624b6/" target="_blank">map</a>, or Decathlon</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-sweaters"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-sweaters">Sweaters/fleece layers — 3-4</label>
+          <div class="cl-source">🏬 Offline — Jack &amp; Jones (2nd Floor), Columbia (Ground Floor), or Celio, Phoenix Mall of Asia</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-formal"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-formal">Formal outfits — 1-2 (for presentations/interviews)</label>
+          <div class="cl-source">✅ Existing wardrobe, or offline at the mall if needed</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-casual"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-casual">Light/casual indoor clothing — German buildings run warm indoors, you''ll want something lighter than thermals once you''re inside all day</label>
+          <div class="cl-source">✅ Existing wardrobe</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-ethnic"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-ethnic">1-2 sets of Indian ethnic/traditional wear — for festivals and community events</label>
+          <div class="cl-source">✅ Existing wardrobe</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-gloveshat"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-gloveshat">Gloves + beanie/cap + scarf — 1 each</label>
+          <div class="cl-source">🏬 Offline — Columbia (Ground Floor) or Accessorize (1st Floor), Phoenix Mall of Asia</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-socks"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-socks">Woollen/warm socks — 4-5 pairs</label>
+          <div class="cl-source">🏬 Offline — Adidas Originals (1st Floor) or Columbia (Ground Floor), Phoenix Mall of Asia, or Decathlon</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-umbrella"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-umbrella">Small windproof umbrella</label>
+          <div class="cl-source">🏬 Offline — Miniso, Ground Floor, Phoenix Mall of Asia, or any supermarket in Hof</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-skincare"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-skincare">Lip balm + moisturiser</label>
+          <div class="cl-source">🏬 Offline — Health &amp; Glow (2nd Floor) or L''Occitane (1st Floor), Phoenix Mall of Asia</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="germany">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-handwarmers"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-handwarmers">Hand/foot warmers</label>
+          <div class="cl-source">🇩🇪 Buy in Germany — Decathlon carries these</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="germany">
+        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-waterbottle"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-winterclothing-waterbottle">Hot-water bottle (Wärmflasche)</label>
+          <div class="cl-source">🇩🇪 Buy in Germany — cheaper there, built to German safety standards</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">👟 Shoes</span>
+        <span class="home-card-link" id="travel-progress-shoes">0/1</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Interim pair only — proper heavy winter boots to be bought in Germany once real snow hits</div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-shoes-mh100"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-shoes-mh100">Insulated waterproof boots — 1 pair, interim wear</label>
+          <div class="cl-source">🏬 Offline — Decathlon (Quechua MH100, ~₹3,500-4,000), or Geox (1st Floor)/Bata Premium (Ground Floor), Phoenix Mall of Asia</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">👓 Eyewear</span>
+        <span class="home-card-link" id="travel-progress-eyewear">0/2</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Lenskart stop</div>
+      <div class="cl-item cl-important" data-priority="important" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-specs"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-eyewear-specs">Spectacles — 3 sets total (confirm same power and frame fit in all, collect before Oct 3)</label>
+          <div class="cl-source">🏬 Offline — Lenskart store</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-rx"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-eyewear-rx">Copy of your eye prescription (English) — needed if you ever need to reorder or replace specs in Germany</label>
+          <div class="cl-source">✅ Ask Lenskart to print it with the order, or keep a phone photo</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-cases"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-eyewear-cases">Hard spectacle cases + microfibre cloths — 1 per pair</label>
+          <div class="cl-source">🏬 Offline — Lenskart store, usually free/cheap with the order</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-lenssolution"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-eyewear-lenssolution">Contact lens solution + 1 month lens supply, if applicable</label>
+          <div class="cl-source">🏬 Offline — Lenskart store or any pharmacy</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-sunglasses"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-eyewear-sunglasses">Sunglasses — snow glare is real in winter</label>
+          <div class="cl-source">🏬 Offline — Lenskart store</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">🛒 Groceries &amp; Kitchen</span>
+        <span class="home-card-link" id="travel-progress-groceries">0/3</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">Indian food essentials for the first few weeks</div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-spices"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-groceries-spices">Spice/snack stash — 1 small sealed pouch (customs-compliant)</label>
+          <div class="cl-source">🛍️ Offline — any Indian grocery/supermarket</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-teacoffee"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-groceries-teacoffee">Instant coffee/tea sachets — ~7-10</label>
+          <div class="cl-source">🛍️ Offline — any supermarket</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-readymade"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-groceries-readymade">A few ready-to-eat / instant food packets (MTR, Haldiram''s)</label>
+          <div class="cl-source">🛍️ Offline — any supermarket</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      </div>
+    </div>
+
+    <div class="home-card" style="margin-bottom:16px;">
+      <div class="home-card-head">
+        <span class="home-card-title">✅ Final Checks — Oct 3-5</span>
+        <span class="home-card-link" id="travel-progress-finalchecks">0/7</span>
+      </div>
+      <div style="padding:12px 16px;">
+        <div class="section-sub" style="margin-bottom:10px;">No purchases — last-mile steps before you fly</div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-packweigh"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-packweigh">Lay everything out by category, check against this list, weigh luggage</label>
+          <div class="cl-source">✅ DIY — bathroom scale</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-printtickets"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-printtickets">Print flight ticket, accommodation proof, arrival confirmation</label>
+          <div class="cl-source">🏬 Offline — print shop, or self-print</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-chargedevices"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-chargedevices">Charge all devices fully</label>
+          <div class="cl-source">✅ DIY</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-confirmcabin"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-confirmcabin">Confirm cash, cards, and all documents are in the cabin bag</label>
+          <div class="cl-source">✅ DIY</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-flightdetails"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-flightdetails">Double-check flight time, terminal, check-in requirements</label>
+          <div class="cl-source">✅ DIY — check airline app/email</div>
+        </div>
+        <span class="cl-chip chip-critical">Critical</span>
+      </div>
+      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-snacks"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-snacks">Snacks/water for travel day</label>
+          <div class="cl-source">🛍️ Offline — any supermarket, day of travel</div>
+        </div>
+        <span class="cl-chip chip-optional">Optional</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-warmlayer"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
+        <div class="cl-body">
+          <label class="cl-label" for="travel-finalchecks-warmlayer">Warm layer for arrival — 1, kept accessible (not packed deep in luggage)</label>
+          <div class="cl-source">✅ From your winter clothing — just keep it on top</div>
+        </div>
+        <span class="cl-chip chip-important">Important</span>
+      </div>
+      </div>
+    </div>
+<script>
+function updateTravelProgress() {
+  document.querySelectorAll(''[id^="travel-progress-"]'').forEach(function(pill) {
+    var card = pill.closest(''.home-card'');
+    if (!card) return;
+    var boxes = card.querySelectorAll(''input.cl-check'');
+    var total = boxes.length;
+    var checked = Array.from(boxes).filter(function(b){ return b.checked; }).length;
+    pill.textContent = checked + ''/'' + total;
+  });
+}
+document.addEventListener(''DOMContentLoaded'', function(){ setTimeout(updateTravelProgress, 300); });
+if (typeof updateTravelProgress === ''function'') setTimeout(updateTravelProgress, 300);
+</script>
+
+<script>
+function applyTravelFilters() {
+  const searchEl = document.getElementById(''travel-search'');
+  const statusEl = document.getElementById(''travel-filter-status'');
+  const priorityEl = document.getElementById(''travel-filter-priority'');
+  const sourceEl = document.getElementById(''travel-filter-source'');
+  if (!searchEl) return;
+
+  const searchVal = (searchEl.value || '''').toLowerCase().trim();
+  const statusVal = statusEl.value;
+  const priorityVal = priorityEl.value;
+  const sourceVal = sourceEl.value;
+
+  let visibleCount = 0, totalCount = 0;
+
+  document.querySelectorAll(''#tab-travel .cl-item'').forEach(function(item) {
+    totalCount++;
+    const label = item.querySelector(''.cl-label'');
+    const text = label ? label.textContent.toLowerCase() : '''';
+    const checkbox = item.querySelector(''input.cl-check'');
+    const isDone = checkbox ? checkbox.checked : false;
+    const priority = item.dataset.priority || '''';
+    const source = item.dataset.source || '''';
+
+    let visible = true;
+    if (searchVal && !text.includes(searchVal)) visible = false;
+    if (statusVal === ''pending'' && isDone) visible = false;
+    if (statusVal === ''done'' && !isDone) visible = false;
+    if (priorityVal !== ''all'' && priority !== priorityVal) visible = false;
+    if (sourceVal !== ''all'' && source !== sourceVal) visible = false;
+
+    item.style.display = visible ? '''' : ''none'';
+    if (visible) visibleCount++;
+  });
+
+  document.querySelectorAll(''#tab-travel .home-card'').forEach(function(card) {
+    const items = card.querySelectorAll(''.cl-item'');
+    if (items.length === 0) return;
+    const anyVisible = Array.from(items).some(function(it){ return it.style.display !== ''none''; });
+    card.style.display = anyVisible ? '''' : ''none'';
+  });
+
+  const countEl = document.getElementById(''travel-filter-count'');
+  if (countEl) {
+    countEl.textContent = (searchVal || statusVal !== ''all'' || priorityVal !== ''all'' || sourceVal !== ''all'')
+      ? (''Showing '' + visibleCount + '' of '' + totalCount)
+      : '''';
+  }
+}
+
+function resetTravelFilters() {
+  document.getElementById(''travel-search'').value = '''';
+  document.getElementById(''travel-filter-status'').value = ''all'';
+  document.getElementById(''travel-filter-priority'').value = ''all'';
+  document.getElementById(''travel-filter-source'').value = ''all'';
+  applyTravelFilters();
+}
+document.addEventListener(''DOMContentLoaded'', function(){ setTimeout(applyTravelFilters, 350); });
+if (typeof applyTravelFilters === ''function'') setTimeout(applyTravelFilters, 350);
+</script>
+', updated_at = NOW() WHERE section_key = 'travel';
