@@ -161,7 +161,7 @@
 - **Progress pills:** each category header shows a live `checked/total` count via `updateTravelProgress()`, a small inline `<script>` block at the end of the `tab-travel` div in index.html
 - **Categories currently in place:** Bags & Backpacks, Packing Materials, Electronics & Adapters, Money & Financial, Documents & Photos, Medicines & Pharmacy, Groceries & Kitchen, Eyewear, Winter Clothing, Shoes
 - **To add a new item to a category:** find the matching `.home-card` block in `index.html` under `id="tab-travel"`, copy an existing `.cl-item` block, give it a unique id, done
-- **Flight context baked into content:** Qatar Airways, 7kg cabin limit (bag + personal item combined), Oct 4 2026 departure, Student Club extra checked baggage (not cabin)
+- **Flight context baked into content:** Qatar Airways, 7kg cabin limit (bag + personal item combined), Oct 5 2026 departure, Student Club extra checked baggage (not cabin)
 
 ### Housing Tab
 - Housing tab added to dashboard (3rd tab in top nav, between German and Life Tracker)
