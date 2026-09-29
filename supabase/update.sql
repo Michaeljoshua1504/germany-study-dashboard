@@ -1,846 +1,368 @@
-UPDATE page_sections SET html_content = '<div class="section-title">🧳 Travel Prep — India to Hof</div>
-  <div class="section-sub">Flight on Oct 5 (Qatar Airways, Student Club). Ordered online-first — buy/order those categories today, work down through offline errands after. Each item shows where to get it.</div>
-<div id="travel-filter-bar" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 18px;padding:12px 14px;background:var(--card,#fff);border:1px solid var(--border,#e2e5ea);border-radius:10px;">
-  <input type="text" id="travel-search" placeholder="🔎 Search items..." oninput="applyTravelFilters()" style="flex:1;min-width:160px;padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
-  <select id="travel-filter-status" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
-    <option value="all">Status: All</option>
-    <option value="pending">Pending</option>
-    <option value="done">Done</option>
-  </select>
-  <select id="travel-filter-priority" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
-    <option value="all">Priority: All</option>
-    <option value="critical">Critical</option>
-    <option value="important">Important</option>
-    <option value="optional">Optional</option>
-  </select>
-  <select id="travel-filter-source" onchange="applyTravelFilters()" style="padding:7px 10px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:var(--bg,#fff);color:var(--text,#222);">
-    <option value="all">Buy from: All</option>
-    <option value="online">🛒 Online</option>
-    <option value="offline">🏬 Offline</option>
-    <option value="germany">🇩🇪 Buy in Germany</option>
-    <option value="have">✅ Already Have</option>
-  </select>
-  <button onclick="resetTravelFilters()" style="padding:7px 12px;border:1px solid var(--border,#e2e5ea);border-radius:7px;font-size:13px;background:transparent;color:var(--muted,#7a8699);cursor:pointer;">Clear</button>
-  <span id="travel-filter-count" style="font-size:12px;color:var(--muted,#7a8699);margin-left:auto;"></span>
+INSERT INTO page_sections (section_key, html_content, updated_at)
+VALUES ('admission-checklist', '<div class="section-title">&#128203; Enrollment Checklist &amp; Contacts &mdash; MEng Software Engineering for Industrial Applications</div>
+<div class="section-sub">Hof University Graduate School &middot; Winter Semester 2026/27 &middot; from the Info Session, 29 Sept 2026</div>
+
+
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#9989; Start-of-Studies Checklist</span></div>
+  <div style="padding:12px 16px;">
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-arrival-email" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-arrival-email">Email Graduate School your arrival date</label>
+          <div class="cl-source">graduate.school@hof-university.de &mdash; include any expected late arrival</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-german-cert" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-german-cert">Send your latest German certificate, if you&rsquo;ve progressed beyond A1</label>
+          <div class="cl-source">Only if applicable &mdash; affects your placement test result</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-placement-test" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-placement-test">Take the mandatory online German placement test</label>
+          <div class="cl-source">30 Sept, 9:00 am</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-qa-session" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-qa-session">Attend the Q&amp;A session for Graduate School students</label>
+          <div class="cl-source">30 Sept, 11:00 am</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-moodle-gs" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-moodle-gs">Register on Moodle &mdash; Information Graduate School</label>
+          <div class="cl-source">Use your student credentials, not guest login</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-moodle-welcome" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-moodle-welcome">Register on Moodle &mdash; Welcome Center International Students</label>
+          <div class="cl-source">Use your student credentials, not guest login</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-timetable" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-timetable">Build your timetable on the Hof University site</label>
+          <div class="cl-source">Program &rarr; &ldquo;1-WS 2026&rdquo; &rarr; First semester students</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-exam-reg" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-exam-reg">Exam registration window</label>
+          <div class="cl-source">3&ndash;12 Nov 2026</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+      <div class="cl-item cl-important" data-priority="important" data-source="have">
+        <input type="checkbox" class="cl-check persist-check" id="admchk-rereg" onchange="saveCheck(this)">
+        <div class="cl-body">
+          <label class="cl-label" for="admchk-rereg">Re-registration for next semester (pay fees)</label>
+          <div class="cl-source">22 Dec 2026 &ndash; 25 Jan 2027 &mdash; status turns green in Primuss once received</div>
+        </div>
+        <span class="cl-chip chip-important">To do</span>
+      </div>
+  </div>
 </div>
 
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128203; Your Contacts</span></div>
+  <div style="padding:6px 0 4px;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Area</th>
+          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Name</th>
+          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Dean of Faculty (until 30 Sept)</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. Gerald Schmola</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4091<br><a href="mailto:gerald.schmola@hof-university.de" style="color:#378ADD;">gerald.schmola@hof-university.de</a> &middot; Room B133</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Dean of Faculty (from 1 Oct)</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. Daniel Werner</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4655<br><a href="mailto:daniel.werner@hof-university.de" style="color:#378ADD;">daniel.werner@hof-university.de</a> &middot; Room CE06</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Head of Program &mdash; Software Engineering</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. J&uuml;rgen Heym</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4470<br><a href="mailto:juergen.heym@hof-university.de" style="color:#378ADD;">juergen.heym@hof-university.de</a> &middot; Room C118</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Program Coordinators &mdash; course organization, study questions</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Mr. Maximilian Burger &middot; Ms. Shuyi Yang</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409-3328 / -3324<br><a href="mailto:graduate.school@hof-university.de" style="color:#378ADD;">graduate.school@hof-university.de</a> &middot; Room A015</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Examination &amp; Student Affairs &mdash; exam registration, internship certs, credit recognition, leave of absence</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Sonja And&ouml;rfer</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3328<br><a href="mailto:sonja.andoerfer@hof-university.de" style="color:#378ADD;">sonja.andoerfer@hof-university.de</a></td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Admission Team &mdash; admission, re-registration, tuition payment</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Kathrin Sch&ouml;tz &middot; Ms. Stefanie Bauer</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3222 / 3227<br><a href="mailto:admission@hof-university.de" style="color:#378ADD;">admission@hof-university.de</a> &middot; Room A111</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Language Center &mdash; non-German language courses</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Ulrike Walther</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3512<br><a href="mailto:ulrike.walther@hof-university.de" style="color:#378ADD;">ulrike.walther@hof-university.de</a> &middot; Room A018</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Career Service &mdash; job search, application review, career events</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Theresa Funk &middot; Mr. Florian Giessler</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3040<br><a href="mailto:career@hof-university.de" style="color:#378ADD;">career@hof-university.de</a> &middot; Room A116</td>
+    </tr>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Housing Office &mdash; accommodation in Hof/M&uuml;nchberg</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Borbala Thurnay &middot; Ms. Helen Rickl</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3177 / 3325<br><a href="mailto:housing@hof-university.de" style="color:#378ADD;">housing@hof-university.de</a> &middot; Room A016</td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🔌 Electronics &amp; Adapters</span>
-        <span class="home-card-link" id="travel-progress-electronics">2/7</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Mostly online — order these first, 1-4 day shipping</div>
-      <div class="cl-item cl-done" data-priority="critical" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-ceptics" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-ceptics">Ceptics EU Plug Adapter (Type E/F, 2-pack) — ₹604 — ordered</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-powerbank"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-powerbank">Power bank — 1</label>
-          <div class="cl-source">🛒 Online — Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-phonecable"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-phonecable">Phone charger cable — 2 (1 spare)</label>
-          <div class="cl-source">🛒 Online — Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-headphones"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-headphones">Headphones — 1</label>
-          <div class="cl-source">🛒 Online — Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-laptop"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-laptop">Laptop &amp; charger — 1 each, carry in cabin bag, never checked baggage</label>
-          <div class="cl-source">✅ Already have — remember cabin-bag placement</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="germany">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-powerplate" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-powerplate">Portronics Power Plate — decided AGAINST (build-quality concerns)</label>
-          <div class="cl-source">🇩🇪 Buy in Germany instead — any local supermarket/electronics store</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-electronics-sim"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-electronics-sim">SIM / eSIM for Germany — not yet decided</label>
-          <div class="cl-source">🏬 Offline in Germany — Aldi Talk, congstar, or otelo, OR pre-order eSIM online before departure</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      </div>
+<div class="note-box" style="margin-bottom:16px;">
+  <strong>&#9993;&#65039; Communication Culture</strong>
+  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+    <li>Use your <strong>university email account</strong>.</li>
+    <li>Choose the <strong>right contact person</strong> and send <strong>only one email</strong>.</li>
+    <li>Please <strong>wait for a response</strong> before following up.</li>
+    <li>Your email or message should include: <strong>full name</strong>, <strong>study program &amp; semester</strong>, and a <strong>clear description</strong> of your question or problem.</li>
+  </ul>
+</div>
+
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128197; Important Dates &amp; Deadlines</span></div>
+  <div style="padding:14px 16px;">
+    <div class="dash-stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:14px;">
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:14px;">05.10.26</div><div class="dash-stat-label">Lectures WS26/27 start</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:14px;">25.01&ndash;13.02.27</div><div class="dash-stat-label">Examination period</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:14px;">15.03.27</div><div class="dash-stat-label">Lectures SS27 start</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:14px;">TBA</div><div class="dash-stat-label">SS27 exam period</div></div>
     </div>
-
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🧳 Packing Materials</span>
-        <span class="home-card-link" id="travel-progress-packing">5/7</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">All online — already ordered</div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-pickle" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-pickle">Foreign Pickle Packing Covers — ₹549 — ordered</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-cubes" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-cubes">Oceanevo Packing Cubes (9pc) — ₹798 — ordered</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-shoebags" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-shoebags">Lifelong Shoe Bags (10-pack) — ₹199 — ordered</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-sealer" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-sealer">ENEM Sealing Machine — ₹1,391 — for packing in India only</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-done" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-lanyard" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-lanyard">BowieMall Phone Lanyard — ₹338 — ordered</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-padlock"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-padlock"><strong>TSA-approved padlock</strong> for luggage — 1-2. A non-TSA lock risks being cut off if security needs to inspect your bag</label>
-          <div class="cl-source">🛒 Online — Amazon.in (search "TSA approved lock")</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-luggagetags"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-luggagetags">Luggage tags with your name, phone, and email — don''t rely only on the airline''s tag, improves odds of recovery if a bag is delayed or lost</label>
-          <div class="cl-source">🛒 Online — Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-packing-pillow"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-packing-pillow">Travel pillow / thin blanket — 1</label>
-          <div class="cl-source">🛒 Online — Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      </div>
+    <div style="font-size:12.5px;line-height:1.8;">
+      <div>&#128221; <strong>Registration for exams:</strong> 03.11.2026 &ndash; 12.11.2026</div>
+      <div>&#128257; <strong>Re-registration for next semester:</strong> 22.12.2026 &ndash; 25.01.2027</div>
+      <div>&#9989; <strong>No mid-term exams.</strong></div>
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🎒 Bags &amp; Backpacks</span>
-        <span class="home-card-link" id="travel-progress-bags">1/2</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Cabin bag + personal item for Qatar Airways (7kg combined limit)</div>
-      <div class="cl-item cl-done" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-bags-niwlix" checked onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-bags-niwlix">Niwlix Crossbody Sling Bag — ₹570 — ordered (personal item for flight)</label>
-          <div class="cl-source">🛒 Online — Amazon.in (ordered)</div>
-        </div>
-        <span class="cl-chip chip-done">Done</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-bags-transitz"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-bags-transitz">Mokobara Transit Z Backpack — ₹6,499 — test laptop + iPad fit first</label>
-          <div class="cl-source">🏬 Offline — Mokobara store, Phoenix Mall of Asia</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-bags-suitcase"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-bags-suitcase">Check-in suitcase / trolley — 1 large, sized for the 25 kg checked allowance (plus extra baggage). Lightweight, 4 wheels, TSA lock built in if possible</label>
-          <div class="cl-source">🏬 Offline — luggage stores at Phoenix Mall of Asia (Mokobara store is already on your list)</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-bags-luggagescale"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-bags-luggagescale">Portable digital luggage scale — weigh each bag at home so nothing is over the limit at Bengaluru check-in</label>
-          <div class="cl-source">🏬 Offline — mall/electronics store, or 🛒 Amazon.in</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      </div>
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128198; Academic Calendar &mdash; WS 2026/2027</span>
+    <a class="home-card-link" href="https://www.hof-university.com/studying-at-hof-university/our-degree-programs/academic-calendar.html" target="_blank" rel="noopener">Open on Hof site &rarr;</a>
+  </div>
+  <div style="padding:6px 0;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;">
+      <tbody>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Duration of the semester</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">01.10.2026 &ndash; 14.03.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Welcome event for first semester students</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">01.10.2026 &ndash; 02.10.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Start of lecture period (higher semesters)</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">05.10.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">End of lecture period</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">22.01.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Exam period</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">25.01.2027 &ndash; 13.02.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">German Unity Day</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">03.10.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">All Saints&rsquo; Day</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">01.11.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Campus holiday</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">23.12.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Christmas vacation</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">24.12.2026 &ndash; 06.01.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Semester vacation</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">15.02.2027 &ndash; 14.03.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Exam registration</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">03.11.2026 &ndash; 12.11.2026</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Re-registration for the coming semester</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">22.12.2026 &ndash; 25.01.2027</td></tr>
+<tr><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Start of the next lecture period</td><td style="padding:8px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;font-weight:600;color:#14213c;">16.03.2027</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128203; Exam Registration &amp; Re-registration</span></div>
+  <div style="padding:12px 16px;font-size:12.5px;line-height:1.8;">
+    <div style="margin-bottom:10px;"><strong>Exam registration:</strong> 03.11.2026 &ndash; 12.11.2026. Read the Exam Regulations in your Moodle room first. An info session on Exam Regulations will run in November &mdash; exact date announced by email from Graduate School.</div>
+    <div>
+      <strong>Re-registration for each semester:</strong>
+      <ul style="margin:6px 0 0 18px;padding:0;">
+        <li>You&rsquo;ll get an email reminder each semester.</li>
+        <li>Pay the upcoming semester&rsquo;s fees during the re-registration window &mdash; make sure funds are available.</li>
+        <li>Once received, your status shows <strong>green</strong> in Primuss.</li>
+        <li><strong>Do not</strong> send payment confirmations to the university.</li>
+        <li>Use your re-registration certificate until the next semester&rsquo;s enrollment letter appears in Primuss.</li>
+      </ul>
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">📄 Documents &amp; Photos</span>
-        <span class="home-card-link" id="travel-progress-documents">0/12</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Highest priority — start immediately, some need attestation/translation lead time</div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-passport"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-passport">Passport — 1 + photo of ID/visa page saved on phone</label>
-          <div class="cl-source">✅ Already have — save a phone photo as backup</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-photos"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-photos"><strong>Passport-size photos — German biometric spec (35x45mm, specific background/lighting rules)</strong> — 10-12 copies. Explicitly ask the studio for "German biometric photo" format, not generic Indian passport-size — a wrong format risks rejection at Anmeldung/residence permit stage</label>
-          <div class="cl-source">🏬 Offline — local photo studio/print shop (cheaper in India, specify German biometric spec)</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-admissionletter"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-admissionletter">Hof admission/enrollment letter — 3 copies</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-arrivalform"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-arrivalform">Arrival form confirmation — 2 copies</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-degreecert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-degreecert">Degree certificate + transcripts — 1 original + 2 attested copies each</label>
-          <div class="cl-source">🏬 Offline — attestation service + print shop (start early, attestation takes time)</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-btechcert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-btechcert">B.Tech provisional/final certificate — 1 original + 2 copies</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-projectreport"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-projectreport">Final year project report — 1 copy</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-birthcert"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-birthcert">Birth certificate — 1 original + 2 translated/attested copies</label>
-          <div class="cl-source">🏬 Offline — translation service + notary/attestation (start early)</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-vaccination"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-vaccination">Vaccination/health records — 1 original + 1 copy</label>
-          <div class="cl-source">🏬 Offline — your clinic + print shop</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-passportcopies"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-passportcopies">Passport photocopies (front + visa page) — 3 copies</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-idp"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-idp"><strong>International Driving Permit (IDP)</strong> — your Indian license alone stops being valid in Germany after 6 months. The IDP can ONLY be obtained in India before you leave — no way to get one retroactively once abroad. Get this even if you have no immediate driving plans.</label>
-          <div class="cl-source">🏬 Offline — RTO (Regional Transport Office) in India</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-docbackup"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-docbackup">Document copies — physical + cloud: full set for parents, scan to Google Drive</label>
-          <div class="cl-source">🏬 Offline (print shop) + online (Google Drive upload)</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-address"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-address">Accommodation address in Germany — written/printed copy, not just saved on phone</label>
-          <div class="cl-source">✅ No purchase — write it out / print from housing confirmation email</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-documents-cabinbag"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-documents-cabinbag">Pack all originals + one full copy set in the cabin bag — never checked baggage</label>
-          <div class="cl-source">✅ No purchase — just organize what you have</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      </div>
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#127891; Study Structure &mdash; 120 ECTS</span></div>
+  <div style="padding:14px 16px;">
+    <div class="dash-stats" style="grid-template-columns:repeat(4,1fr);">
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:13px;">Sem 1&ndash;2</div><div class="dash-stat-label">4 basic + 8 core modules &mdash; 60 ECTS (mandatory)</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:13px;">Sem 3</div><div class="dash-stat-label">Internship I &mdash; 30 ECTS</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:13px;">Sem 4</div><div class="dash-stat-label">Internship II &amp; Master&rsquo;s Thesis &mdash; 25 ECTS</div></div>
+      <div class="dash-stat"><div class="dash-stat-num" style="font-size:13px;">Sem 4</div><div class="dash-stat-label">Scientific Prep Training &mdash; 5 ECTS</div></div>
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">💳 Money &amp; Financial</span>
-        <span class="home-card-link" id="travel-progress-money">0/7</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Highest priority — sort before departure</div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-hdfc"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-hdfc">HDFC multicurrency forex card — load with Euros</label>
-          <div class="cl-source">🏦 Offline — HDFC branch visit</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-blockedaccount"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-blockedaccount">Blocked account (Expatrio) confirmation — 2 copies</label>
-          <div class="cl-source">🏬 Offline/online — download from Expatrio portal, print at any shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-bankdocs"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-bankdocs">Bank account opening documents — 1-2 copies</label>
-          <div class="cl-source">🏬 Offline — print shop</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-secondcard"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-secondcard">Backup debit/credit card — 1 (different bank if possible)</label>
-          <div class="cl-source">🏦 Offline — your bank branch</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-niyo"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-niyo">Download Niyo Global app &amp; order card — zero forex markup for daily Euro spending</label>
-          <div class="cl-source">🛒 Online — order before departure so the card arrives in time</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-netbanking"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-netbanking">Indian bank account details + net-banking access noted down — needed for NRI banking management from abroad</label>
-          <div class="cl-source">✅ No purchase — just write it down / confirm access before you go</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-cash"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-cash">Euro cash — €200-300, mixed denominations (some €20s/€50s)</label>
-          <div class="cl-source">🏦 Offline — HDFC branch or authorized forex exchange counter</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-emergencycontacts"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-emergencycontacts">Emergency contact numbers — 1 written copy, kept separate from phone</label>
-          <div class="cl-source">✅ No purchase — just write it out</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="germany">
-        <input type="checkbox" class="cl-check persist-check" id="travel-money-coins"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-money-coins">Small coins/notes for airport trains/trams on arrival</label>
-          <div class="cl-source">🇩🇪 Get on arrival — currency exchange counter or ATM at the German airport</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      </div>
+<div class="note-box" style="margin-bottom:16px;">
+  <strong>&#127919; Expectations in Lectures</strong>
+  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+    <li><strong>Be on time</strong> &mdash; avoids missing key info and keeps group work on track.</li>
+    <li><strong>Be active</strong> &mdash; participate in discussions, ask questions, engage with the content.</li>
+    <li><strong>Attend regularly</strong> &mdash; some courses have mandatory attendance.</li>
+    <li><strong>Watch deadlines</strong> &mdash; for papers, presentations, group work; some lectures require active participation.</li>
+    <li><strong>Online sessions:</strong> keep your microphone muted, only unmute when asked by the lecturer.</li>
+  </ul>
+</div>
+
+<div class="note-box" style="margin-bottom:16px;">
+  <strong>&#128104;&#8205;&#127891; Teaching Mode &mdash; Winter Semester 2026</strong>
+  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+    <li>Hybrid format until <strong>31 October 2026</strong>.</li>
+    <li><strong>From 2 November</strong>, lectures are <strong>on campus only</strong>.</li>
+    <li><strong>No recordings</strong> will be provided &mdash; catching up on missed content is your responsibility.</li>
+    <li>Be physically present at Hof University as soon as your visa status allows travel to Germany.</li>
+    <li>Register for your Moodle courses immediately: <a href="https://moodle.hof-university.de/" target="_blank" rel="noopener" style="color:#378ADD;">moodle.hof-university.de</a></li>
+  </ul>
+</div>
+
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128279; Module Descriptions &amp; Timetable</span></div>
+  <div style="padding:12px 16px;font-size:12.5px;line-height:1.8;">
+    <div style="margin-bottom:10px;">
+      <strong>Module Descriptions:</strong> find detailed info on each module at
+      <a href="https://www.hof-university.com/studying-at-hof-university/our-degree-programs/module-descriptions.html" target="_blank" rel="noopener" style="color:#378ADD;">hof-university.com &rarr; Module Descriptions</a>.
+      If WS26/27 descriptions aren&rsquo;t posted yet, check a previous semester&rsquo;s.
     </div>
-
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">💊 Medicines &amp; Pharmacy</span>
-        <span class="home-card-link" id="travel-progress-medicines">0/4</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Highest priority — Germany requires a prescription for most medicines</div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-prescription"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-medicines-prescription">Prescription medication — 60 days'' supply</label>
-          <div class="cl-source">💊 Offline — your regular pharmacy/doctor</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-prescriptioncopies"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-medicines-prescriptioncopies">Prescription copies (in English) — 2 copies</label>
-          <div class="cl-source">🏬 Offline — your doctor/clinic</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-firstaid"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-medicines-firstaid">First-aid kit — paracetamol, band-aids, antiseptic, ORS, cold relief, antacid, all in one small kit</label>
-          <div class="cl-source">💊 Offline — any local pharmacy/medical store</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-medicines-healthinsurance"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-medicines-healthinsurance">Health insurance (TK) confirmation — 2 copies</label>
-          <div class="cl-source">🏬 Offline/online — download confirmation, print at any shop</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      </div>
+    <div>
+      <strong>Create Your Timetable:</strong>
+      <a href="https://www.hof-university.com/studying-at-hof-university/our-degree-programs/timetable.html" target="_blank" rel="noopener" style="color:#378ADD;">hof-university.com &rarr; Timetable</a>
+      &mdash; go to &ldquo;Quick Links&rdquo;, select your degree program, choose &ldquo;1-WS 2026&rdquo; &rarr; &ldquo;First semester students, Winter semester 2026&rdquo;. Includes times &amp; room numbers &mdash; check regularly for changes. Some lectures run on Saturdays (block courses). &ldquo;KW&rdquo; = calendar week.
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🛌 Daily Comfort &amp; Extras</span>
-        <span class="home-card-link" id="travel-progress-comfort">0/2</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Smaller items, but easy to forget</div>
-      <div class="cl-item cl-important" data-priority="important" data-source="online">
-        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-toiletrykit"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-comfort-toiletrykit">Toiletry travel kit — 1 set</label>
-          <div class="cl-source">🛒 Online — Amazon.in, or offline at any supermarket</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-towel"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-comfort-towel">Small towel — 1-2</label>
-          <div class="cl-source">🛍️ Offline — any supermarket</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-basics"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-comfort-basics">Everyday basics — underwear/innerwear, T-shirts, trousers/jeans, nightwear. Enough for 7-10 days between laundry runs</label>
-          <div class="cl-source">🏬 Offline — Phoenix Mall of Asia (Jack &amp; Jones, Celio, Van Heusen Innerwear), or Decathlon</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-comfort-slippers"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-comfort-slippers">Flip-flops / shower slippers + indoor slippers for the dorm</label>
-          <div class="cl-source">🏬 Offline — any footwear store, or 🇩🇪 buy in Germany</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      </div>
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128187; My Program &mdash; MEng Software Engineering for Industrial Applications</span></div>
+  <div style="padding:12px 16px 16px;">
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;border-spacing:0 2px;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11.5px;">Winter Semester 2026/27</th>
+            <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11.5px;">Summer Semester 2027</th>
+          </tr>
+        </thead>
+        <tbody>
+<tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#f6c344;font-weight:600;font-size:12.5px;">Project Management</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#f6c344;font-weight:600;font-size:12.5px;">Component Oriented Software Development</td>
+    </tr><tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#f6c344;font-weight:600;font-size:12.5px;">Software Engineering</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#f6c344;font-weight:600;font-size:12.5px;">Applied Cloud Computing</td>
+    </tr><tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Advanced Programming</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Concepts and Tools Application Development</td>
+    </tr><tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Practical Studies &ndash; Industry 4.0</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Communication and Negotiation Skills</td>
+    </tr><tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Non-Relational Data Bases</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#d9736b;font-weight:600;font-size:12.5px;">Internet of Things</td>
+    </tr><tr>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#e5e5e5;font-weight:600;font-size:12.5px;">German A1 (or higher)</td>
+      <td style="padding:9px 12px;border-bottom:1px solid #fff;background:#e5e5e5;font-weight:600;font-size:12.5px;">German A2 (or higher)</td>
+    </tr>
+        </tbody>
+      </table>
     </div>
-
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🧥 Winter Clothing</span>
-        <span class="home-card-link" id="travel-progress-winterclothing">0/10</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">1 good jacket from India is enough — buy more locally if needed</div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-jacket"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-jacket">1 good winter jacket</label>
-          <div class="cl-source">🏬 Offline — Columbia, Ground Floor, Phoenix Mall of Asia — <a href="https://magicpin.in/Bangalore/Phoenix-Mall-Of-Asia/Fashion/Columbia/store/1662584/" target="_blank">map</a>, or Decathlon MT100 (~₹3,000)</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-thermals"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-thermals">Thermal / HEATTECH innerwear — 2-3 sets</label>
-          <div class="cl-source">🏬 Offline — Van Heusen Innerwear, Phoenix Mall of Asia — <a href="https://magicpin.in/Bangalore/Phoenix-Mall-Of-Asia/Fashion/Van-Heusen-Innerwear/store/16624b6/" target="_blank">map</a>, or Decathlon</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-sweaters"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-sweaters">Sweaters/fleece layers — 3-4</label>
-          <div class="cl-source">🏬 Offline — Jack &amp; Jones (2nd Floor), Columbia (Ground Floor), or Celio, Phoenix Mall of Asia</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-formal"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-formal">Formal outfits — 1-2 (for presentations/interviews)</label>
-          <div class="cl-source">✅ Existing wardrobe, or offline at the mall if needed</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-casual"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-casual">Light/casual indoor clothing — German buildings run warm indoors, you''ll want something lighter than thermals once you''re inside all day</label>
-          <div class="cl-source">✅ Existing wardrobe</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-ethnic"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-ethnic">1-2 sets of Indian ethnic/traditional wear — for festivals and community events</label>
-          <div class="cl-source">✅ Existing wardrobe</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-gloveshat"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-gloveshat">Gloves + beanie/cap + scarf — 1 each</label>
-          <div class="cl-source">🏬 Offline — Columbia (Ground Floor) or Accessorize (1st Floor), Phoenix Mall of Asia</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-socks"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-socks">Woollen/warm socks — 4-5 pairs</label>
-          <div class="cl-source">🏬 Offline — Adidas Originals (1st Floor) or Columbia (Ground Floor), Phoenix Mall of Asia, or Decathlon</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-umbrella"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-umbrella">Small windproof umbrella</label>
-          <div class="cl-source">🏬 Offline — Miniso, Ground Floor, Phoenix Mall of Asia, or any supermarket in Hof</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-skincare"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-skincare">Lip balm + moisturiser</label>
-          <div class="cl-source">🏬 Offline — Health &amp; Glow (2nd Floor) or L''Occitane (1st Floor), Phoenix Mall of Asia</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="germany">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-handwarmers"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-handwarmers">Hand/foot warmers</label>
-          <div class="cl-source">🇩🇪 Buy in Germany — Decathlon carries these</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="germany">
-        <input type="checkbox" class="cl-check persist-check" id="travel-winterclothing-waterbottle"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-winterclothing-waterbottle">Hot-water bottle (Wärmflasche)</label>
-          <div class="cl-source">🇩🇪 Buy in Germany — cheaper there, built to German safety standards</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      </div>
+    <div style="margin-top:10px;font-size:11px;color:#888;">
+      <span class="pill amber" style="background:#f6c344;color:#5c4300;">&#9632;</span> 4 Basic Modules &nbsp;
+      <span class="pill red" style="background:#d9736b;color:#5c1c16;">&#9632;</span> 6 Core Modules &nbsp;
+      <span class="pill gray">&#9632;</span> 2 Elective Modules (German, or technical once earned)
     </div>
-
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">👟 Shoes</span>
-        <span class="home-card-link" id="travel-progress-shoes">0/1</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Interim pair only — proper heavy winter boots to be bought in Germany once real snow hits</div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-shoes-mh100"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-shoes-mh100">Insulated waterproof boots — 1 pair, interim wear</label>
-          <div class="cl-source">🏬 Offline — Decathlon (Quechua MH100, ~₹3,500-4,000), or Geox (1st Floor)/Bata Premium (Ground Floor), Phoenix Mall of Asia</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      </div>
+    <div class="note-box" style="margin-top:12px;margin-bottom:0;">
+      <strong>&#127775; Your German level decides the elective slot:</strong>
+      <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+        <li><strong>No German knowledge:</strong> attend &amp; pass German A1 (sem 1) and A2 (sem 2) &mdash; no technical elective yet.</li>
+        <li><strong>Already at A1:</strong> attend &amp; pass German A2 in sem 1, then <strong>1 technical elective</strong> in sem 2.</li>
+        <li><strong>Already at A2 or higher:</strong> <strong>2 technical electives</strong> &mdash; one from sem 1.</li>
+      </ul>
+      <div style="margin-top:8px;font-size:12px;color:#666;">Tomorrow&rsquo;s German placement test (30 Sept, 9:00 am) determines which of these applies to you. The deck doesn&rsquo;t name specific technical elective options for this program &mdash; check the Module Descriptions link above or ask Prof. Heym once your level is confirmed.</div>
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">👓 Eyewear</span>
-        <span class="home-card-link" id="travel-progress-eyewear">0/2</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Lenskart stop</div>
-      <div class="cl-item cl-important" data-priority="important" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-specs"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-eyewear-specs">Spectacles — 3 sets total (confirm same power and frame fit in all, collect before Oct 3)</label>
-          <div class="cl-source">🏬 Offline — Lenskart store</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-rx"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-eyewear-rx">Copy of your eye prescription (English) — needed if you ever need to reorder or replace specs in Germany</label>
-          <div class="cl-source">✅ Ask Lenskart to print it with the order, or keep a phone photo</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-cases"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-eyewear-cases">Hard spectacle cases + microfibre cloths — 1 per pair</label>
-          <div class="cl-source">🏬 Offline — Lenskart store, usually free/cheap with the order</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-lenssolution"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-eyewear-lenssolution">Contact lens solution + 1 month lens supply, if applicable</label>
-          <div class="cl-source">🏬 Offline — Lenskart store or any pharmacy</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-eyewear-sunglasses"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-eyewear-sunglasses">Sunglasses — snow glare is real in winter</label>
-          <div class="cl-source">🏬 Offline — Lenskart store</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      </div>
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128337; Open Consultation Hours</span></div>
+  <div style="padding:12px 16px;font-size:12.5px;">
+    <div style="margin-bottom:8px;color:#555;">Graduate School shared office hours &mdash; Room A016, starting 1 October</div>
+    <table style="width:100%;border-collapse:collapse;">
+      <tbody>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #f0ede6;font-weight:600;">Monday</td><td style="padding:6px 12px;border-bottom:1px solid #f0ede6;">1:00 p.m. &ndash; 2:00 p.m.</td></tr>
+        <tr><td style="padding:6px 12px;border-bottom:1px solid #f0ede6;font-weight:600;">Thursday</td><td style="padding:6px 12px;border-bottom:1px solid #f0ede6;">1:00 p.m. &ndash; 2:00 p.m.</td></tr>
+        <tr><td style="padding:6px 12px;font-weight:600;">Friday</td><td style="padding:6px 12px;">9:00 a.m. &ndash; 10:00 a.m.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="note-box" style="margin-bottom:16px;">
+  <strong>&#128172; Graduate School Talk Sessions</strong>
+  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+    <li>Informal drop-ins &mdash; no specific questions needed, just come chat.</li>
+    <li>If the weather&rsquo;s good, sometimes a walk together instead.</li>
+    <li>Invitation comes by email.</li>
+    <li>Next sessions: <strong>Thursday, 8 October, 1:00 p.m.</strong> and <strong>Thursday, 15 October, 1:00 p.m.</strong></li>
+  </ul>
+</div>
+
+<div class="home-card" style="margin-bottom:16px;">
+  <div class="home-card-head"><span class="home-card-title">&#128218; Moodle Rooms</span></div>
+  <div style="padding:12px 16px;font-size:12.5px;line-height:1.8;">
+    <div style="margin-bottom:10px;">Register using your <strong>student credentials</strong> &mdash; guest accounts get deleted.</div>
+    <div style="margin-bottom:10px;">
+      <strong>Information Graduate School</strong> &mdash;
+      <a href="https://moodle.hof-university.de/course/view.php?id=413" target="_blank" rel="noopener" style="color:#378ADD;">moodle.hof-university.de/course/view.php?id=413</a>
+      &mdash; password: <code>GraduateSchoolHof</code>
+      <div style="margin:4px 0 0 14px;color:#666;font-size:12px;">Covers: Study Duration &amp; Tuition Fees &middot; General Information &middot; FAQs about Your Studies &middot; Exams &amp; Academic Regulations &middot; Internship &amp; Master&rsquo;s Thesis &middot; German &amp; Other Language Courses</div>
     </div>
-
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">🛒 Groceries &amp; Kitchen</span>
-        <span class="home-card-link" id="travel-progress-groceries">0/3</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">Indian food essentials for the first few weeks</div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-spices"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-groceries-spices">Spice/snack stash — 1 small sealed pouch (customs-compliant)</label>
-          <div class="cl-source">🛍️ Offline — any Indian grocery/supermarket</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-teacoffee"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-groceries-teacoffee">Instant coffee/tea sachets — ~7-10</label>
-          <div class="cl-source">🛍️ Offline — any supermarket</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-groceries-readymade"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-groceries-readymade">A few ready-to-eat / instant food packets (MTR, Haldiram''s)</label>
-          <div class="cl-source">🛍️ Offline — any supermarket</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      </div>
+    <div>
+      <strong>Welcome Center International Students</strong> &mdash;
+      <a href="https://moodle.hof-university.de/course/view.php?id=643" target="_blank" rel="noopener" style="color:#378ADD;">moodle.hof-university.de/course/view.php?id=643</a>
+      &mdash; password: <code>WelcomeToHof</code>
     </div>
+  </div>
+</div>
 
-    <div class="home-card" style="margin-bottom:16px;">
-      <div class="home-card-head">
-        <span class="home-card-title">✅ Final Checks — Oct 3-5</span>
-        <span class="home-card-link" id="travel-progress-finalchecks">0/7</span>
-      </div>
-      <div style="padding:12px 16px;">
-        <div class="section-sub" style="margin-bottom:10px;">No purchases — last-mile steps before you fly</div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-packweigh"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-packweigh">Lay everything out by category, check against this list, weigh luggage</label>
-          <div class="cl-source">✅ DIY — bathroom scale</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-printtickets"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-printtickets">Print flight ticket, accommodation proof, arrival confirmation</label>
-          <div class="cl-source">🏬 Offline — print shop, or self-print</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-chargedevices"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-chargedevices">Charge all devices fully</label>
-          <div class="cl-source">✅ DIY</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-confirmcabin"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-confirmcabin">Confirm cash, cards, and all documents are in the cabin bag</label>
-          <div class="cl-source">✅ DIY</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-critical" data-priority="critical" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-flightdetails"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-flightdetails">Double-check flight time, terminal, check-in requirements</label>
-          <div class="cl-source">✅ DIY — check airline app/email</div>
-        </div>
-        <span class="cl-chip chip-critical">Critical</span>
-      </div>
-      <div class="cl-item cl-optional" data-priority="optional" data-source="offline">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-snacks"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-snacks">Snacks/water for travel day</label>
-          <div class="cl-source">🛍️ Offline — any supermarket, day of travel</div>
-        </div>
-        <span class="cl-chip chip-optional">Optional</span>
-      </div>
-      <div class="cl-item cl-important" data-priority="important" data-source="have">
-        <input type="checkbox" class="cl-check persist-check" id="travel-finalchecks-warmlayer"  onchange="saveCheck(this); updateTravelProgress(); applyTravelFilters()">
-        <div class="cl-body">
-          <label class="cl-label" for="travel-finalchecks-warmlayer">Warm layer for arrival — 1, kept accessible (not packed deep in luggage)</label>
-          <div class="cl-source">✅ From your winter clothing — just keep it on top</div>
-        </div>
-        <span class="cl-chip chip-important">Important</span>
-      </div>
-      </div>
-    </div>
-<script>
-function updateTravelProgress() {
-  document.querySelectorAll(''[id^="travel-progress-"]'').forEach(function(pill) {
-    var card = pill.closest(''.home-card'');
-    if (!card) return;
-    var boxes = card.querySelectorAll(''input.cl-check'');
-    var total = boxes.length;
-    var checked = Array.from(boxes).filter(function(b){ return b.checked; }).length;
-    pill.textContent = checked + ''/'' + total;
-  });
-}
-document.addEventListener(''DOMContentLoaded'', function(){ setTimeout(updateTravelProgress, 300); });
-if (typeof updateTravelProgress === ''function'') setTimeout(updateTravelProgress, 300);
-</script>
-
-<script>
-function applyTravelFilters() {
-  const searchEl = document.getElementById(''travel-search'');
-  const statusEl = document.getElementById(''travel-filter-status'');
-  const priorityEl = document.getElementById(''travel-filter-priority'');
-  const sourceEl = document.getElementById(''travel-filter-source'');
-  if (!searchEl) return;
-
-  const searchVal = (searchEl.value || '''').toLowerCase().trim();
-  const statusVal = statusEl.value;
-  const priorityVal = priorityEl.value;
-  const sourceVal = sourceEl.value;
-
-  let visibleCount = 0, totalCount = 0;
-
-  document.querySelectorAll(''#tab-travel .cl-item'').forEach(function(item) {
-    totalCount++;
-    const label = item.querySelector(''.cl-label'');
-    const text = label ? label.textContent.toLowerCase() : '''';
-    const checkbox = item.querySelector(''input.cl-check'');
-    const isDone = checkbox ? checkbox.checked : false;
-    const priority = item.dataset.priority || '''';
-    const source = item.dataset.source || '''';
-
-    let visible = true;
-    if (searchVal && !text.includes(searchVal)) visible = false;
-    if (statusVal === ''pending'' && isDone) visible = false;
-    if (statusVal === ''done'' && !isDone) visible = false;
-    if (priorityVal !== ''all'' && priority !== priorityVal) visible = false;
-    if (sourceVal !== ''all'' && source !== sourceVal) visible = false;
-
-    item.style.display = visible ? '''' : ''none'';
-    if (visible) visibleCount++;
-  });
-
-  document.querySelectorAll(''#tab-travel .home-card'').forEach(function(card) {
-    const items = card.querySelectorAll(''.cl-item'');
-    if (items.length === 0) return;
-    const anyVisible = Array.from(items).some(function(it){ return it.style.display !== ''none''; });
-    card.style.display = anyVisible ? '''' : ''none'';
-  });
-
-  const countEl = document.getElementById(''travel-filter-count'');
-  if (countEl) {
-    countEl.textContent = (searchVal || statusVal !== ''all'' || priorityVal !== ''all'' || sourceVal !== ''all'')
-      ? (''Showing '' + visibleCount + '' of '' + totalCount)
-      : '''';
-  }
-}
-
-function resetTravelFilters() {
-  document.getElementById(''travel-search'').value = '''';
-  document.getElementById(''travel-filter-status'').value = ''all'';
-  document.getElementById(''travel-filter-priority'').value = ''all'';
-  document.getElementById(''travel-filter-source'').value = ''all'';
-  applyTravelFilters();
-}
-document.addEventListener(''DOMContentLoaded'', function(){ setTimeout(applyTravelFilters, 350); });
-if (typeof applyTravelFilters === ''function'') setTimeout(applyTravelFilters, 350);
-</script>
-', updated_at = NOW() WHERE section_key = 'travel';
+<div class="note-box" style="margin-bottom:16px;">
+  <strong>&#8505;&#65039; Important Information for the Start of Your Studies</strong>
+  <ul style="margin:8px 0 0 18px;padding:0;line-height:1.7;">
+    <li>Inform Graduate School of your arrival date by email as soon as possible, including any expected late arrival.</li>
+    <li>If you&rsquo;ve reached a higher level of German proficiency, send your latest certificate.</li>
+    <li>You&rsquo;ll take a German placement test &mdash; based on the result and your certificate, you&rsquo;ll be assigned an appropriate German course.</li>
+    <li><strong>Course changes are possible only within the first two weeks</strong> after semester start. After that, your technical elective or German course is locked in.</li>
+    <li>Once assigned to a German course, you&rsquo;ll get an email on how to access the course details.</li>
+  </ul>
+</div>', NOW())
+ON CONFLICT (section_key) DO UPDATE SET html_content = EXCLUDED.html_content, updated_at = NOW();
