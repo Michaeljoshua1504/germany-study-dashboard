@@ -83,63 +83,100 @@ VALUES ('admission-checklist', '<div class="section-title">&#128203; Enrollment 
 
 <div class="home-card" style="margin-bottom:16px;">
   <div class="home-card-head"><span class="home-card-title">&#128203; Your Contacts</span></div>
-  <div style="padding:6px 0 4px;overflow-x:auto;">
-    <table style="width:100%;border-collapse:collapse;">
-      <thead>
-        <tr>
-          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Area</th>
-          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Name</th>
-          <th style="text-align:left;padding:9px 12px;background:#14213c;color:#fff;font-size:11px;text-transform:uppercase;letter-spacing:.03em;">Contact</th>
-        </tr>
-      </thead>
-      <tbody>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Dean of Faculty (until 30 Sept)</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. Gerald Schmola</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4091<br><a href="mailto:gerald.schmola@hof-university.de" style="color:#378ADD;">gerald.schmola@hof-university.de</a> &middot; Room B133</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Dean of Faculty (from 1 Oct)</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. Daniel Werner</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4655<br><a href="mailto:daniel.werner@hof-university.de" style="color:#378ADD;">daniel.werner@hof-university.de</a> &middot; Room CE06</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Head of Program &mdash; Software Engineering</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Prof. J&uuml;rgen Heym</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 4470<br><a href="mailto:juergen.heym@hof-university.de" style="color:#378ADD;">juergen.heym@hof-university.de</a> &middot; Room C118</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Program Coordinators &mdash; course organization, study questions</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Mr. Maximilian Burger &middot; Ms. Shuyi Yang</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409-3328 / -3324<br><a href="mailto:graduate.school@hof-university.de" style="color:#378ADD;">graduate.school@hof-university.de</a> &middot; Room A015</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Examination &amp; Student Affairs &mdash; exam registration, internship certs, credit recognition, leave of absence</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Sonja And&ouml;rfer</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3328<br><a href="mailto:sonja.andoerfer@hof-university.de" style="color:#378ADD;">sonja.andoerfer@hof-university.de</a></td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Admission Team &mdash; admission, re-registration, tuition payment</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Kathrin Sch&ouml;tz &middot; Ms. Stefanie Bauer</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3222 / 3227<br><a href="mailto:admission@hof-university.de" style="color:#378ADD;">admission@hof-university.de</a> &middot; Room A111</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Language Center &mdash; non-German language courses</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Ulrike Walther</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3512<br><a href="mailto:ulrike.walther@hof-university.de" style="color:#378ADD;">ulrike.walther@hof-university.de</a> &middot; Room A018</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Career Service &mdash; job search, application review, career events</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Theresa Funk &middot; Mr. Florian Giessler</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3040<br><a href="mailto:career@hof-university.de" style="color:#378ADD;">career@hof-university.de</a> &middot; Room A116</td>
-    </tr>
-<tr>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-weight:600;color:#14213c;font-size:12.5px;">Housing Office &mdash; accommodation in Hof/M&uuml;nchberg</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12.5px;">Ms. Borbala Thurnay &middot; Ms. Helen Rickl</td>
-      <td style="padding:9px 12px;border-bottom:1px solid #f0ede6;font-size:12px;color:#555;">+49 9281 409 3177 / 3325<br><a href="mailto:housing@hof-university.de" style="color:#378ADD;">housing@hof-university.de</a> &middot; Room A016</td>
-    </tr>
-      </tbody>
-    </table>
+  <div style="padding:12px 16px 16px;">
+    <div style="font-size:11px;color:#999;margin-bottom:10px;">Avatars show initials &mdash; official staff photos aren&rsquo;t published, so these are colour-coded stand-ins (navy = leadership, red = academic admin, amber = admission/language, blue = student life).</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;">
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#14213c;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">GS</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Prof. Gerald Schmola</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Dean of Faculty (until 30 Sept)</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 4091</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:gerald.schmola@hof-university.de" style="color:#378ADD;">gerald.schmola@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room B133</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#14213c;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">DW</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Prof. Daniel Werner</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Dean of Faculty (from 1 Oct)</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 4655</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:daniel.werner@hof-university.de" style="color:#378ADD;">daniel.werner@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room CE06</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#14213c;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">JH</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Prof. J&uuml;rgen Heym</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Head of Program &mdash; Software Engineering</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 4470</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:juergen.heym@hof-university.de" style="color:#378ADD;">juergen.heym@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room C118</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#d9736b;color:#5c1c16;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">MB</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Mr. Maximilian Burger &middot; Ms. Shuyi Yang</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Program Coordinators &mdash; course organization, study questions</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409-3328 / -3324</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:graduate.school@hof-university.de" style="color:#378ADD;">graduate.school@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room A015</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#d9736b;color:#5c1c16;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">SA</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Ms. Sonja And&ouml;rfer</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Examination &amp; Student Affairs &mdash; exam registration, internship certs, credit recognition, leave of absence</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 3328</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:sonja.andoerfer@hof-university.de" style="color:#378ADD;">sonja.andoerfer@hof-university.de</a></div>
+        
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#f6c344;color:#5c4300;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">KS</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Ms. Kathrin Sch&ouml;tz &middot; Ms. Stefanie Bauer</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Admission Team &mdash; admission, re-registration, tuition payment</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 3222 / 3227</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:admission@hof-university.de" style="color:#378ADD;">admission@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room A111</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#f6c344;color:#5c4300;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">UW</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Ms. Ulrike Walther</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Language Center &mdash; non-German language courses</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 3512</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:ulrike.walther@hof-university.de" style="color:#378ADD;">ulrike.walther@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room A018</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#378ADD;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">TF</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Ms. Theresa Funk &middot; Mr. Florian Giessler</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Career Service &mdash; job search, application review, career events</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 3040</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:career@hof-university.de" style="color:#378ADD;">career@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room A116</div>
+      </div>
+    </div>
+<div style="display:flex;gap:12px;align-items:flex-start;background:var(--card-bg,#fff);border:1px solid var(--border,#e0ded6);border-radius:10px;padding:12px;">
+      <div style="flex-shrink:0;width:48px;height:48px;border-radius:50%;background:#378ADD;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;letter-spacing:.02em;">BT</div>
+      <div style="min-width:0;flex:1;">
+        <div style="font-weight:600;color:#14213c;font-size:13px;">Ms. Borbala Thurnay &middot; Ms. Helen Rickl</div>
+        <div style="font-size:11px;color:#777;margin-top:1px;line-height:1.4;">Housing Office &mdash; accommodation in Hof/M&uuml;nchberg</div>
+        <div style="font-size:12px;margin-top:6px;color:#555;">+49 9281 409 3177 / 3325</div>
+        <div style="font-size:12px;margin-top:2px;"><a href="mailto:housing@hof-university.de" style="color:#378ADD;">housing@hof-university.de</a></div>
+        <div style="font-size:11px;color:#999;margin-top:2px;">Room A016</div>
+      </div>
+    </div>
+    </div>
   </div>
 </div>
 
