@@ -1,1 +1,3 @@
-SELECT id, text, detail, chip, urgency, section, done, sort_order FROM next_steps ORDER BY sort_order;
+INSERT INTO next_steps (text, detail, chip, urgency, section, done, sort_order) VALUES
+('Apply for residence permit at the Auslaenderbehoerde', 'Book an appointment at Stadt Hof Auslaenderbehoerde, Karolinenstrasse 40, 95028 Hof (Tel 09281 8151470, abh@stadt-hof.de, appointment preferred). Bring passport, Anmeldung confirmation, enrollment certificate, proof of financial means, health insurance confirmation, biometric photo and the EUR 100 fee.', 'Book now', 'red', 'both', false, 18),
+('Open a German bank account', 'Needed to set up the SEPA direct debit mandate for dorm rent (due 31.10.2026) and to finish the paused Deutschlandticket order.', 'By 31 Oct', 'amber', 'both', false, 19);
