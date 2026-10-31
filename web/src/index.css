@@ -1,0 +1,125 @@
+/* ─────────────────────────────────────────────────────────────
+   Design tokens
+   Direction: a German registrar's desk meets a rail departure
+   board — navy + warm paper + a single signal red for anything
+   that needs attention. Hairline rules instead of card shadows;
+   a folder-tab metaphor for subjects instead of a grid of cards.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --navy: #0d1b2a;
+  --navy-raised: #15283c;
+  --paper: #f6f3ec;
+  --ink: #22262b;
+  --ink-soft: #565b63;
+  --line: #ded9cc;
+  --card: #ffffff;
+  --red: #c8102e;
+  --red-soft: #f3d9dd;
+  --green: #2f7d4f;
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --radius: 6px;
+}
+
+html[data-theme="dark"] {
+  --navy: #0a141f;
+  --navy-raised: #15283c;
+  --paper: #171a21;
+  --ink: #e8e6dd;
+  --ink-soft: #9a9d9f;
+  --line: #2e323b;
+  --card: #1d2129;
+  --red: #e2455e;
+  --red-soft: #3a2126;
+  --green: #4caf79;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
+
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; }
+h1 { font-size: 22px; }
+h2 { font-size: 17px; }
+h3 { font-size: 14px; }
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a { color: var(--red); text-decoration: none; }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--navy);
+  color: #fff;
+  padding: 7px 14px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 13px;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--navy-raised); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+.field {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+}
+.field:focus { outline: 2px solid var(--red); outline-offset: 1px; }
+
+textarea.field { resize: vertical; min-height: 70px; font-family: inherit; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
