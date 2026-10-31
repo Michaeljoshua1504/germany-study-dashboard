@@ -20,7 +20,13 @@ export default function TopNav({ activeTab, onTabChange, onOpenTodos, onOpenLogi
     <header className="topnav">
       <div className="topnav-inner">
         <span className="topnav-mark">
-          <span aria-hidden="true">🇩🇪</span> Study Germany
+          {/* SVG, not 🇩🇪: Windows doesn't render flag emoji (shows "DE"). */}
+          <svg className="topnav-flag" width="26" height="18" viewBox="0 0 5 3" aria-hidden="true">
+            <rect width="5" height="1" fill="#000" />
+            <rect width="5" height="1" y="1" fill="#dd0000" />
+            <rect width="5" height="1" y="2" fill="#ffce00" />
+          </svg>
+          Study Germany
         </span>
 
         <nav className="topnav-tabs" aria-label="Sections">
@@ -36,7 +42,7 @@ export default function TopNav({ activeTab, onTabChange, onOpenTodos, onOpenLogi
                 onClick={() => tab.ready && onTabChange?.(tab.id)}
               >
                 {tab.label}
-                {!tab.ready && <span className="topnav-soon">Coming soon</span>}
+                {!tab.ready && <span className="topnav-soon" title="Coming soon">Soon</span>}
               </button>
             );
           })}
@@ -50,7 +56,7 @@ export default function TopNav({ activeTab, onTabChange, onOpenTodos, onOpenLogi
             aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             title={theme === 'light' ? 'Dark theme' : 'Light theme'}
           >
-            {theme === 'light' ? '☾' : '☀'}
+            <span key={theme} className="topnav-theme-ico">{theme === 'light' ? '☾' : '☀'}</span>
           </button>
 
           <button

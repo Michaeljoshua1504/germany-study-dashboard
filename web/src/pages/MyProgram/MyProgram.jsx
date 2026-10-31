@@ -1,61 +1,23 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../lib/supabase';
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useProgramData } from '../../hooks/useProgramData';
 import SubjectList from './SubjectList';
 import SubjectDetail from './SubjectDetail';
 import './MyProgram.css';
 
 export default function MyProgram({ onOpenLogin }) {
   const { user, loading } = useAuth();
-  const [subjects, setSubjects] = useState([]);
+  const program = useProgramData();
+  const { subjects, notes, todos, items, loaded, error } = program;
   const [selectedId, setSelectedId] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (!user) {
-      setSubjects([]);
-      setSelectedId(null);
-      return;
-    }
-    let cancelled = false;
-    supabase
-      .from('subjects')
-      .select('*')
-      .order('created_at', { ascending: true })
-      .then(({ data, error: err }) => {
-        if (cancelled) return;
-        if (err) return setError(err.message);
-        setError('');
-        setSubjects(data);
-        setSelectedId((cur) => cur ?? data[0]?.id ?? null);
-      });
-    return () => { cancelled = true; };
-  }, [user]);
-
-  async function addSubject(name, term) {
-    const { data, error: err } = await supabase
-      .from('subjects')
-      .insert({ user_id: user.id, name, term: term || null })
-      .select()
-      .single();
-    if (err) return setError(err.message);
-    setSubjects((prev) => [...prev, data]);
-    setSelectedId(data.id);
-  }
-
-  async function deleteSubject(id) {
-    const { error: err } = await supabase.from('subjects').delete().eq('id', id);
-    if (err) return setError(err.message);
-    const rest = subjects.filter((s) => s.id !== id);
-    setSubjects(rest);
-    setSelectedId(rest[0]?.id ?? null);
-  }
+  const [seeding, setSeeding] = useState(false);
 
   if (loading) return null;
 
   if (!user) {
     return (
-      <div className="mp-gate">
+      <div className="mp-gate rise">
+        <span className="hero-emoji" aria-hidden="true">🎓</span>
         <h1>My Program</h1>
         <p className="mp-muted">Log in to see your subjects, lectures and homework.</p>
         <button type="button" className="btn-primary" onClick={onOpenLogin}>Log in</button>
@@ -63,18 +25,59 @@ export default function MyProgram({ onOpenLogin }) {
     );
   }
 
-  const selected = subjects.find((s) => s.id === selectedId);
+  const selected = subjects.find((s) => s.id === selectedId) ?? subjects[0];
+
+  async function addSubject(name, term) {
+    const row = await program.addSubject(name, term);
+    if (row) setSelectedId(row.id);
+  }
+
+  async function seed() {
+    setSeeding(true);
+    const first = await program.addStarterSubjects();
+    if (first) setSelectedId(first.id);
+    setSeeding(false);
+  }
+
+  async function deleteSubject(id) {
+    await program.deleteSubject(id);
+    setSelectedId(null);
+  }
+
+  let main;
+  if (!loaded) {
+    main = <div className="skeleton" aria-busy="true"><span /><span /><span /></div>;
+  } else if (selected) {
+    main = (
+      <SubjectDetail
+        key={selected.id}
+        subject={selected}
+        notes={notes.filter((n) => n.subject_id === selected.id)}
+        todos={todos.filter((t) => t.context_id === selected.id)}
+        data={Object.fromEntries(Object.entries(items).map(([k, rows]) => [k, rows.filter((r) => r.subject_id === selected.id)]))}
+        api={program}
+        onDelete={deleteSubject}
+      />
+    );
+  } else {
+    main = (
+      <div className="mp-start rise">
+        <span className="hero-emoji" aria-hidden="true">🗂️</span>
+        <h1>Set up your program</h1>
+        <p className="mp-muted">Start with your six courses, or add your own from the left.</p>
+        <button type="button" className="btn-primary" onClick={seed} disabled={seeding}>
+          {seeding ? 'Adding…' : 'Add my 6 subjects'}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="mp">
-      <SubjectList subjects={subjects} selectedId={selectedId} onSelect={setSelectedId} onAdd={addSubject} />
+      <SubjectList subjects={subjects} notes={notes} selectedId={selected?.id} onSelect={setSelectedId} onAdd={addSubject} />
       <main className="mp-main">
         {error && <p className="mp-error" role="alert">{error}</p>}
-        {selected ? (
-          <SubjectDetail key={selected.id} subject={selected} onDelete={deleteSubject} />
-        ) : (
-          <p className="mp-muted">Add a subject to get started.</p>
-        )}
+        {main}
       </main>
     </div>
   );

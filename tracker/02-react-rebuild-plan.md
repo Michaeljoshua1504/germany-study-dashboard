@@ -24,9 +24,13 @@ running the whole time so nothing breaks mid-migration.
 7. Life Tracker (currently locked; build fresh rather than port)
 
 ## Design direction
-Navy (#0d1b2a) + warm paper (#f6f3ec) + signal red (#c8102e) accent.
-Hairline dividers, not card-shadow grids. Subjects list uses a folder-tab
-metaphor. Tokens are in `web/src/index.css`.
+Navy (#0d1b2a) + warm paper (#f4f1ea) + signal red (#c8102e) accent.
+Revised after the first pass felt flat: rounded cards with soft shadows,
+springy motion (count-up stats, sliding tab pill, animated checkboxes), a
+glass nav with a German-flag stripe, and each subject carrying its own accent
+colour (gradient hero, avatar, tab pill). Red stays reserved for what needs
+attention. Respect `prefers-reduced-motion`. Tokens are in `web/src/index.css`.
+Note: Windows doesn't render flag emoji (shows "DE") — use the SVG flag.
 
 ## Supabase: done
 Tables live (pushed via `supabase/update.sql` → GitHub Action, already executed):

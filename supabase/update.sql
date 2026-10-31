@@ -48,3 +48,103 @@ create policy "Users manage own subject_notes" on subject_notes
 drop policy if exists "Users manage own todos" on todos;
 create policy "Users manage own todos" on todos
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+-- My Program v2: day-wise lecture log, homework due dates, subject colors.
+-- All additive and idempotent.
+alter table subject_notes add column if not exists note_date date default current_date;
+alter table subject_notes add column if not exists due_date date;
+alter table subject_notes add column if not exists done boolean default false;
+alter table subjects add column if not exists color text;
+
+notify pgrst, 'reload schema';
+
+-- My Program v3: exams, resources, questions, study log, flashcards,
+-- project milestones, grades/credits, lecture tags. Additive and idempotent.
+-- Tables are prefixed subject_ so they can't clash with the old dashboard's.
+alter table subjects add column if not exists credits numeric;
+alter table subjects add column if not exists grade numeric;
+alter table subjects add column if not exists repo_url text;
+alter table subjects add column if not exists team text;
+alter table subject_notes add column if not exists exam_relevant boolean default false;
+alter table subject_notes add column if not exists revise boolean default false;
+
+create table if not exists subject_exams (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  title text not null,
+  kind text default 'exam',
+  due_date date not null,
+  result text,
+  created_at timestamptz default now()
+);
+
+create table if not exists subject_resources (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  title text not null,
+  url text not null,
+  kind text default 'link',
+  read boolean default false,
+  created_at timestamptz default now()
+);
+
+create table if not exists subject_questions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  question text not null,
+  answer text,
+  resolved boolean default false,
+  created_at timestamptz default now()
+);
+
+create table if not exists subject_study_sessions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  session_date date default current_date,
+  minutes integer not null check (minutes > 0),
+  topic text,
+  created_at timestamptz default now()
+);
+
+create table if not exists subject_flashcards (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  term text not null,
+  definition text not null,
+  known boolean default false,
+  last_reviewed timestamptz,
+  created_at timestamptz default now()
+);
+
+create table if not exists subject_milestones (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  title text not null,
+  due_date date,
+  done boolean default false,
+  created_at timestamptz default now()
+);
+
+do $$
+declare t text;
+begin
+  foreach t in array array[
+    'subject_exams', 'subject_resources', 'subject_questions',
+    'subject_study_sessions', 'subject_flashcards', 'subject_milestones'
+  ] loop
+    execute format('alter table %I enable row level security', t);
+    execute format('drop policy if exists "Users manage own %s" on %I', t, t);
+    execute format(
+      'create policy "Users manage own %s" on %I for all using (auth.uid() = user_id) with check (auth.uid() = user_id)',
+      t, t
+    );
+  end loop;
+end $$;
+
+notify pgrst, 'reload schema';

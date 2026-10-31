@@ -1,37 +1,56 @@
 /* ─────────────────────────────────────────────────────────────
    Design tokens
-   Direction: a German registrar's desk meets a rail departure
-   board — navy + warm paper + a single signal red for anything
-   that needs attention. Hairline rules instead of card shadows;
-   a folder-tab metaphor for subjects instead of a grid of cards.
+   Direction: navy + warm paper + signal red, now with depth —
+   soft layered cards, springy motion, and each subject carrying
+   its own accent colour. Red stays reserved for what needs attention.
    ───────────────────────────────────────────────────────────── */
 :root {
   --navy: #0d1b2a;
   --navy-raised: #15283c;
-  --paper: #f6f3ec;
-  --ink: #22262b;
-  --ink-soft: #565b63;
-  --line: #ded9cc;
+  --paper: #f4f1ea;
+  --ink: #1f2429;
+  --ink-soft: #5b6169;
+  --line: #e2ddd0;
   --card: #ffffff;
   --red: #c8102e;
-  --red-soft: #f3d9dd;
+  --red-soft: #f8dde1;
   --green: #2f7d4f;
+  --amber: #b7791f;
+  --amber-soft: #fbefd5;
+  --primary: #14304d;
+  --primary-hover: #1d4468;
 
-  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --radius: 6px;
+  --shadow-sm: 0 1px 2px rgba(13, 27, 42, 0.07), 0 1px 1px rgba(13, 27, 42, 0.04);
+  --shadow-md: 0 8px 22px rgba(13, 27, 42, 0.1), 0 2px 5px rgba(13, 27, 42, 0.05);
+  --shadow-lg: 0 24px 60px rgba(13, 27, 42, 0.22);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+  --radius: 10px;
+  --radius-lg: 16px;
 }
 
 html[data-theme="dark"] {
   --navy: #0a141f;
   --navy-raised: #15283c;
-  --paper: #171a21;
+  --paper: #14171d;
   --ink: #e8e6dd;
   --ink-soft: #9a9d9f;
-  --line: #2e323b;
+  --line: #2b2f38;
   --card: #1d2129;
   --red: #e2455e;
   --red-soft: #3a2126;
   --green: #4caf79;
+  --amber: #f0b44c;
+  --amber-soft: #3a3020;
+  --primary: #3d6fb0;
+  --primary-hover: #4d80c4;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 22px rgba(0, 0, 0, 0.4), 0 2px 5px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,16 +59,20 @@ html, body, #root { height: 100%; }
 
 body {
   font-family: var(--font);
-  font-size: 13px;
-  background: var(--paper);
+  font-size: 14px;
+  background:
+    radial-gradient(900px 420px at 8% -8%, color-mix(in srgb, var(--red) 7%, transparent), transparent 70%),
+    radial-gradient(800px 400px at 100% 0%, color-mix(in srgb, #3b82c4 7%, transparent), transparent 70%),
+    var(--paper);
+  background-attachment: fixed;
   color: var(--ink);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; }
-h1 { font-size: 22px; }
-h2 { font-size: 17px; }
+h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; }
+h1 { font-size: 24px; }
+h2 { font-size: 18px; }
 h3 { font-size: 14px; }
 
 button {
@@ -69,49 +92,101 @@ input, textarea, select {
 
 a { color: var(--red); text-decoration: none; }
 
+::selection { background: color-mix(in srgb, var(--red) 25%, transparent); }
+
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
 ::-webkit-scrollbar-track { background: transparent; }
 
-.btn-primary {
+/* ── Buttons: lift on hover, press on click ───────────── */
+.btn-primary, .btn-ghost, .btn-danger {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  background: var(--navy);
-  color: #fff;
-  padding: 7px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   font-weight: 600;
   font-size: 13px;
-  transition: background 0.15s;
+  transition: transform 0.18s var(--ease), box-shadow 0.2s, background 0.2s, border-color 0.2s, color 0.2s;
 }
-.btn-primary:hover { background: var(--navy-raised); }
+.btn-primary:hover, .btn-ghost:hover, .btn-danger:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:active, .btn-ghost:active, .btn-danger:active { transform: translateY(0) scale(0.97); box-shadow: none; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+.btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-primary:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; }
 
 .btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: var(--radius);
-  font-weight: 600;
-  font-size: 13px;
+  padding: 7px 14px;
   color: var(--ink-soft);
   border: 1px solid var(--line);
-  transition: border-color 0.15s, color 0.15s;
+  background: var(--card);
 }
 .btn-ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
 
+.btn-danger { background: var(--red); color: #fff; box-shadow: var(--shadow-sm); }
+
+/* ── Form fields ──────────────────────────────────────── */
 .field {
   width: 100%;
-  padding: 8px 10px;
+  padding: 9px 12px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
+  border-radius: 8px;
   background: var(--card);
   color: var(--ink);
+  transition: border-color 0.15s, box-shadow 0.2s;
 }
-.field:focus { outline: 2px solid var(--red); outline-offset: 1px; }
+.field:hover { border-color: var(--ink-soft); }
+.field:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--red) 16%, transparent);
+}
+.field::placeholder { color: color-mix(in srgb, var(--ink-soft) 70%, transparent); }
 
-textarea.field { resize: vertical; min-height: 70px; font-family: inherit; }
+textarea.field { resize: vertical; min-height: 70px; font-family: inherit; line-height: 1.5; }
+
+select.field {
+  appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%239a9d9f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* ── Checkboxes: animated tick ────────────────────────── */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+  border: 2px solid var(--ink-soft);
+  border-radius: 6px;
+  background: var(--card);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.25s var(--spring), box-shadow 0.2s;
+}
+input[type="checkbox"]::after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  margin-top: -2px;
+  border-left: 2.5px solid #fff;
+  border-bottom: 2.5px solid #fff;
+  transform: rotate(-45deg) scale(0);
+  transition: transform 0.25s var(--spring);
+}
+input[type="checkbox"]:hover { border-color: var(--check, var(--green)); }
+input[type="checkbox"]:checked { background: var(--check, var(--green)); border-color: var(--check, var(--green)); }
+input[type="checkbox"]:checked::after { transform: rotate(-45deg) scale(1); }
+input[type="checkbox"]:active { transform: scale(0.82); }
+input[type="checkbox"]:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
 .visually-hidden {
   position: absolute;
