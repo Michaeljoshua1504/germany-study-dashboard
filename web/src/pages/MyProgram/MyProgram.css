@@ -511,3 +511,24 @@ kbd { margin-left: 6px; padding: 0 6px; border: 1px solid currentColor; border-r
   .subject-detail-head h1 { font-size: 24px; }
   .pane-head { flex-wrap: wrap; }
 }
+
+/* ── Resources: link icons, embeds, bulk add ──────────── */
+.res-title { display: inline-flex; align-items: center; gap: 10px; min-width: 0; overflow-wrap: anywhere; }
+.res-icon { font-size: 20px; line-height: 1; }
+.res-meta { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.res-preview-btn { padding: 1px 12px; border-radius: 999px; background: color-mix(in srgb, var(--subject) 16%, transparent); color: var(--ink); font-size: 11px; font-weight: 700; transition: background 0.2s, transform 0.2s var(--ease); }
+.res-preview-btn:hover { background: var(--subject); color: #fff; transform: translateY(-1px); }
+.res-preview-btn:active { transform: scale(0.95); }
+
+.embed { display: grid; gap: 8px; width: 100%; margin-top: 8px; animation: mp-rise 0.35s var(--ease) both; }
+.embed iframe { width: 100%; border: 0; border-radius: 12px; background: var(--paper); box-shadow: var(--shadow-md); }
+.embed-video iframe { aspect-ratio: 16 / 9; }
+.embed-doc iframe { height: 70vh; min-height: 420px; }
+.embed-close { justify-self: end; padding: 4px 12px; font-size: 12px; }
+
+.bulk-text { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 12.5px; white-space: pre; overflow-x: auto; }
+.bulk-kind { max-width: 220px; }
+.bulk-preview { list-style: none; display: grid; gap: 6px; max-height: 260px; overflow-y: auto; }
+.bulk-preview li { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 10px; background: var(--paper); animation: mp-fade 0.2s ease both; }
+.bulk-preview li.has-error { opacity: 0.85; }
+.bulk-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }

@@ -68,7 +68,8 @@ export function safeUrl(input) {
   if (!s) return null;
   try {
     const u = new URL(/^[a-z][a-z0-9+.-]*:/i.test(s) ? s : `https://${s}`);
-    return u.protocol === 'http:' || u.protocol === 'https:' ? u.href : null;
+    // Needs a real domain ("line" or "localhost" alone is a typo, not a link).
+    return (u.protocol === 'http:' || u.protocol === 'https:') && u.hostname.includes('.') ? u.href : null;
   } catch {
     return null;
   }

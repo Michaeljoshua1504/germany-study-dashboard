@@ -156,6 +156,19 @@ export function useProgramData() {
     return !!row;
   }
 
+  // Several rows in one request (used by "add several links").
+  async function addItems(key, subjectId, rows) {
+    if (!rows.length) return true;
+    const created = await run(
+      supabase
+        .from(ITEM_TABLES[key])
+        .insert(rows.map((r) => ({ user_id: user.id, subject_id: subjectId, ...r })))
+        .select(),
+    );
+    if (created) setItems((prev) => ({ ...prev, [key]: [...created.reverse(), ...prev[key]] }));
+    return !!created;
+  }
+
   async function updateItem(key, id, patch) {
     if (!(await run(supabase.from(ITEM_TABLES[key]).update(patch).eq('id', id)))) return false;
     setItems((prev) => ({ ...prev, [key]: prev[key].map((r) => (r.id === id ? { ...r, ...patch } : r)) }));
@@ -195,7 +208,7 @@ export function useProgramData() {
     subjects, notes, todos, items, loaded, error,
     addSubject, addStarterSubjects, updateSubject, deleteSubject,
     addNote, updateNote, deleteNote,
-    addItem, updateItem, deleteItem,
+    addItem, addItems, updateItem, deleteItem,
     addTodo, toggleTodo, deleteTodo,
   };
 }
