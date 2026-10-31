@@ -1,0 +1,100 @@
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--navy);
+  color: #fff;
+  border-bottom: 3px solid var(--red);
+}
+
+.topnav-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 52px;
+}
+
+.topnav-mark {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.topnav-tabs {
+  display: flex;
+  flex: 1;
+  align-self: stretch;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topnav-tabs::-webkit-scrollbar { display: none; }
+
+.topnav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: color 0.15s, background 0.15s;
+}
+.topnav-tab:hover { color: #fff; background: var(--navy-raised); }
+.topnav-tab.is-active { color: #fff; border-bottom-color: #fff; }
+.topnav-tab.is-soon { cursor: default; color: rgba(255, 255, 255, 0.4); }
+.topnav-tab.is-soon:hover { background: none; color: rgba(255, 255, 255, 0.4); }
+
+.topnav-soon {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 1px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 3px;
+}
+
+.topnav-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.topnav-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background 0.15s, color 0.15s;
+}
+.topnav-icon:hover { background: var(--navy-raised); color: #fff; }
+
+.topnav-auth {
+  margin-left: 4px;
+  padding: 5px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius);
+  font-weight: 600;
+  color: #fff;
+  transition: background 0.15s, border-color 0.15s;
+}
+.topnav-auth:hover { background: var(--navy-raised); border-color: #fff; }
+
+.topnav button:focus-visible { outline: 2px solid #fff; outline-offset: -2px; }
+
+@media (max-width: 760px) {
+  .topnav-inner { gap: 12px; padding: 0 12px; }
+  .topnav-mark { font-size: 0; }
+  .topnav-mark span { font-size: 16px; }
+}
