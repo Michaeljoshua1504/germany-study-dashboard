@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AnimatedNumber from './AnimatedNumber';
+import KeyDates from './KeyDates';
 import { countdown, dayOf, daysBetween, formatDay, formatMinutes, parseISO, toISO, todayISO } from './dates';
 
 export default function Overview({ subject, notes, todos, data, api, onGo }) {
@@ -55,6 +56,8 @@ export default function Overview({ subject, notes, todos, data, api, onGo }) {
 
   return (
     <div className="overview">
+      <KeyDates subject={subject} items={data.schedule} api={api} />
+
       <div className="stats">
         {stats.map((s, i) => (
           <button key={s.label} type="button" className="stat rise" style={{ '--i': i }} onClick={() => onGo(s.tab)}>

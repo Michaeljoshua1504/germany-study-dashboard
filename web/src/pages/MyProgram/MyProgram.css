@@ -406,6 +406,54 @@
   transition: transform 0.3s var(--ease), box-shadow 0.3s;
 }
 .note-card:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: var(--shadow-md); }
+/* The title gets the whole first line; tags and actions wrap below it. */
+.note-card .entry-head { flex-wrap: wrap; align-items: center; }
+.note-card .entry-head strong { flex: 1 1 100%; }
+.note-card .entry-head .tag-chips { margin: 0 auto 0 0; }
+
+/* ── Key dates and timetable (overview) ───────────────── */
+.kd { padding: 18px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); box-shadow: var(--shadow-sm); }
+.kd-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.kd-head h3 { margin: 0; }
+.kd-hero { display: flex; align-items: center; gap: 18px; padding: 14px 18px; margin-bottom: 12px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--subject) 30%, var(--line)); background: linear-gradient(120deg, color-mix(in srgb, var(--subject) 16%, transparent), transparent 70%); }
+.kd-days { min-width: 64px; text-align: center; font-size: 42px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.kd-days.is-soon { color: var(--red); }
+.kd-days small { display: block; margin-top: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-soft); }
+.kd-hero-text { display: grid; gap: 2px; min-width: 0; }
+.kd-label { font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-soft); }
+.kd-progress-wrap { display: grid; gap: 4px; margin-bottom: 14px; font-size: 12px; }
+.kd-progress { height: 6px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 8%, transparent); overflow: hidden; }
+.kd-progress span { display: block; height: 100%; border-radius: inherit; background: var(--subject); transition: width 0.9s var(--ease); }
+.kd-past-toggle { margin-left: auto; }
+.kd-list { list-style: none; display: grid; gap: 2px; padding: 0; margin: 0; }
+.kd-month { margin: 12px 0 4px; font-size: 11.5px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-soft); }
+.kd-month:first-child { margin-top: 0; }
+.kd-row { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; width: 100%; padding: 8px 10px; border-radius: 12px; text-align: left; font: inherit; color: inherit; cursor: pointer; transition: background 0.2s, transform 0.25s var(--ease); }
+.kd-row:hover, .kd-row.is-open { background: color-mix(in srgb, var(--subject) 9%, transparent); }
+.kd-row:hover { transform: translateX(3px); }
+.kd-date { display: grid; padding: 5px 0; border-radius: 10px; text-align: center; line-height: 1.1; background: color-mix(in srgb, var(--subject) 13%, transparent); }
+.kd-date b { font-size: 18px; }
+.kd-date span { font-size: 10px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-soft); }
+.kd-row.is-today .kd-date { background: var(--amber); }
+.kd-row.is-today .kd-date b, .kd-row.is-today .kd-date span { color: #fff; }
+.kd-main { display: grid; gap: 1px; min-width: 0; }
+.kd-title { font-weight: 600; overflow-wrap: anywhere; }
+.kd-meta { font-size: 12px; color: var(--ink-soft); }
+.kd-side { display: inline-flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+.kd-kind.kd-deadline { background: var(--red-soft); color: var(--red); }
+.kd-kind.kd-presentation { background: var(--amber-soft); color: var(--amber); }
+.kd-row.is-past { opacity: 0.55; }
+.kd-row.is-done .kd-title { text-decoration: line-through; text-decoration-color: var(--ink-soft); }
+.kd-detail { display: grid; gap: 6px; padding: 4px 12px 10px 74px; font-size: 13px; }
+.kd-detail p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.kd-detail-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.kd-detail-actions .row-actions { opacity: 1; transform: none; }
+@media (max-width: 560px) {
+  .kd-row { grid-template-columns: 46px 1fr; }
+  .kd-side { grid-column: 2; justify-content: flex-start; }
+  .kd-detail { padding-left: 12px; }
+}
+
 .note-card.is-open { grid-column: 1 / -1; }
 .note-card.is-open:hover { transform: none; }
 .note-card.is-open .nb { max-width: 80ch; }

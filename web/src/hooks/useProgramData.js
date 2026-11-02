@@ -21,7 +21,10 @@ export const ITEM_TABLES = {
   sessions: 'subject_study_sessions',
   cards: 'subject_flashcards',
   milestones: 'subject_milestones',
+  schedule: 'subject_schedule',
 };
+// Collections that may not exist yet: a missing table shows as empty, not as an error.
+const OPTIONAL_ITEMS = new Set(['schedule']);
 const EMPTY_ITEMS = Object.fromEntries(Object.keys(ITEM_TABLES).map((k) => [k, []]));
 
 // Everything the My Program tab needs: subjects, their notes (lectures,
@@ -48,7 +51,7 @@ export function useProgramData() {
       ...keys.map((k) => supabase.from(ITEM_TABLES[k]).select('*').order('created_at', { ascending: false })),
     ]).then(([s, n, t, ...rest]) => {
       if (cancelled) return;
-      const err = [s, n, t, ...rest].find((r) => r.error)?.error;
+      const err = [s, n, t, ...rest.filter((_, i) => !OPTIONAL_ITEMS.has(keys[i]))].find((r) => r.error)?.error;
       setError(err ? err.message : '');
       setSubjects(s.data ?? []);
       setNotes(n.data ?? []);

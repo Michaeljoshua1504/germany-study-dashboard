@@ -170,3 +170,24 @@ create policy "Users manage own subject_slides" on subject_slides
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 notify pgrst, 'reload schema';
+
+-- Key dates and timetable shown at the top of each subject's overview.
+create table if not exists subject_schedule (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  event_date date not null,
+  title text not null,
+  kind text not null default 'deadline' check (kind in ('class', 'deadline', 'presentation')),
+  at_time text,
+  details text,
+  done boolean default false,
+  created_at timestamptz default now(),
+  unique (subject_id, kind, event_date, title)
+);
+alter table subject_schedule enable row level security;
+drop policy if exists "Users manage own subject_schedule" on subject_schedule;
+create policy "Users manage own subject_schedule" on subject_schedule
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+notify pgrst, 'reload schema';
