@@ -67,6 +67,7 @@ alter table subjects add column if not exists repo_url text;
 alter table subjects add column if not exists team text;
 alter table subject_notes add column if not exists exam_relevant boolean default false;
 alter table subject_notes add column if not exists revise boolean default false;
+alter table subject_notes add column if not exists important boolean default false;
 
 create table if not exists subject_exams (
   id uuid primary key default gen_random_uuid(),
@@ -146,5 +147,26 @@ begin
     );
   end loop;
 end $$;
+
+notify pgrst, 'reload schema';
+
+-- Course slide summaries: pick the slides that were taught and the Lectures
+-- tab turns them into one dated lecture (lecture_id marks a slide as used).
+create table if not exists subject_slides (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) default auth.uid(),
+  subject_id uuid references subjects(id) on delete cascade,
+  deck text not null,
+  slide_no int not null,
+  title text not null,
+  content text,
+  lecture_id uuid references subject_notes(id) on delete set null,
+  created_at timestamptz default now(),
+  unique (subject_id, deck, slide_no)
+);
+alter table subject_slides enable row level security;
+drop policy if exists "Users manage own subject_slides" on subject_slides;
+create policy "Users manage own subject_slides" on subject_slides
+  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 notify pgrst, 'reload schema';

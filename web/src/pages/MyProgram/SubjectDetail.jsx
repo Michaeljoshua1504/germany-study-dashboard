@@ -17,7 +17,7 @@ const RENAME_FIELDS = [
   { name: 'term', label: 'Term', width: 'sm', placeholder: 'WS 2026/27' },
 ];
 
-export default function SubjectDetail({ subject, notes, todos, data, api, onDelete }) {
+export default function SubjectDetail({ subject, notes, todos, slides, data, api, onDelete }) {
   const [tab, setTab] = useState('overview');
   const [confirming, setConfirming] = useState(false);
   const [renaming, setRenaming] = useState(false);
@@ -117,7 +117,7 @@ export default function SubjectDetail({ subject, notes, todos, data, api, onDele
 
       <div className="pane" key={tab} role="tabpanel">
         {tab === 'overview' && <Overview subject={subject} notes={notes} todos={todos} data={data} api={api} onGo={setTab} />}
-        {tab === 'lectures' && <LectureLog subjectId={subject.id} lectures={lectures} api={api} />}
+        {tab === 'lectures' && <LectureLog subjectId={subject.id} lectures={lectures} slides={slides} api={api} />}
         {tab === 'notes' && <NotesPane subjectId={subject.id} notes={plain} api={api} />}
         {tab === 'cards' && <Flashcards subject={subject} cards={data.cards} api={api} />}
         {tab === 'questions' && <QuestionsPane subject={subject} questions={data.questions} api={api} />}

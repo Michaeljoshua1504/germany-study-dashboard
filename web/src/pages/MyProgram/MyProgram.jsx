@@ -8,7 +8,7 @@ import './MyProgram.css';
 export default function MyProgram({ onOpenLogin }) {
   const { user, loading } = useAuth();
   const program = useProgramData();
-  const { subjects, notes, todos, items, loaded, error } = program;
+  const { subjects, notes, todos, items, slides, loaded, error } = program;
   const [selectedId, setSelectedId] = useState(null);
   const [seeding, setSeeding] = useState(false);
 
@@ -54,6 +54,7 @@ export default function MyProgram({ onOpenLogin }) {
         subject={selected}
         notes={notes.filter((n) => n.subject_id === selected.id)}
         todos={todos.filter((t) => t.context_id === selected.id)}
+        slides={slides.filter((s) => s.subject_id === selected.id)}
         data={Object.fromEntries(Object.entries(items).map(([k, rows]) => [k, rows.filter((r) => r.subject_id === selected.id)]))}
         api={program}
         onDelete={deleteSubject}

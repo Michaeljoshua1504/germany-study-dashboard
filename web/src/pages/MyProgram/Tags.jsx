@@ -1,5 +1,6 @@
 // "Exam relevant" / "Revise again" flags on lectures and notes.
 export const TAGS = [
+  { key: 'important', label: 'Important' },
   { key: 'exam_relevant', label: 'Exam relevant' },
   { key: 'revise', label: 'Revise again' },
 ];

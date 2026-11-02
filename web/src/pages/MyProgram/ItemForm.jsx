@@ -12,9 +12,10 @@ const COPY = {
 export default function ItemForm({ type, initial, onSave, onCancel }) {
   const [title, setTitle] = useState(initial?.title ?? '');
   const [content, setContent] = useState(initial?.content ?? '');
-  const [noteDate, setNoteDate] = useState(initial?.note_date ?? todayISO());
+  // New lectures default to today; an existing undated one stays empty until set.
+  const [noteDate, setNoteDate] = useState(initial ? initial.note_date ?? '' : todayISO());
   const [dueDate, setDueDate] = useState(initial?.due_date ?? '');
-  const [tags, setTags] = useState({ exam_relevant: !!initial?.exam_relevant, revise: !!initial?.revise });
+  const [tags, setTags] = useState(Object.fromEntries(TAGS.map((t) => [t.key, !!initial?.[t.key]])));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const copy = COPY[type];
@@ -23,7 +24,7 @@ export default function ItemForm({ type, initial, onSave, onCancel }) {
     e.preventDefault();
     if (!title.trim()) return setError(`${copy.title} is required.`);
     const fields = { title: title.trim(), content: content.trim() };
-    if (type === 'lecture') fields.note_date = noteDate || todayISO();
+    if (type === 'lecture') fields.note_date = noteDate || (initial ? null : todayISO());
     if (type === 'homework') fields.due_date = dueDate || null;
     if (type !== 'homework') Object.assign(fields, tags);
     setBusy(true);

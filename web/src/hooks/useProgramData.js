@@ -33,6 +33,7 @@ export function useProgramData() {
   const [notes, setNotes] = useState([]);
   const [todos, setTodos] = useState([]);
   const [items, setItems] = useState(EMPTY_ITEMS);
+  const [slides, setSlides] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
 
@@ -55,6 +56,12 @@ export function useProgramData() {
       setItems(Object.fromEntries(keys.map((k, i) => [k, rest[i].data ?? []])));
       setLoaded(true);
     });
+    // Course slides are optional: if the table isn't there yet, just show none.
+    supabase
+      .from('subject_slides')
+      .select('*')
+      .order('slide_no', { ascending: true })
+      .then(({ data }) => { if (!cancelled) setSlides(data ?? []); });
     return () => { cancelled = true; };
   }, [user]);
 
@@ -113,6 +120,7 @@ export function useProgramData() {
     setSubjects((prev) => prev.filter((s) => s.id !== id));
     setNotes((prev) => prev.filter((n) => n.subject_id !== id));
     setTodos((prev) => prev.filter((t) => t.context_id !== id));
+    setSlides((prev) => prev.filter((s) => s.subject_id !== id));
     setItems((prev) =>
       Object.fromEntries(Object.entries(prev).map(([k, rows]) => [k, rows.filter((r) => r.subject_id !== id)])),
     );
@@ -141,6 +149,26 @@ export function useProgramData() {
   async function deleteNote(id) {
     if (!(await run(supabase.from('subject_notes').delete().eq('id', id)))) return;
     setNotes((prev) => prev.filter((n) => n.id !== id));
+    // The database frees the slides of a deleted lecture; mirror that here.
+    setSlides((prev) => prev.map((s) => (s.lecture_id === id ? { ...s, lecture_id: null } : s)));
+  }
+
+  // One dated lecture built from the slides that were taught; those slides
+  // are then marked as used so they drop out of the picker.
+  async function addLectureFromSlides(subjectId, slideIds, fields) {
+    const row = await run(
+      supabase
+        .from('subject_notes')
+        .insert({ user_id: user.id, subject_id: subjectId, type: 'lecture', ...fields })
+        .select()
+        .single(),
+    );
+    if (!row) return false;
+    setNotes((prev) => [row, ...prev]);
+    if (await run(supabase.from('subject_slides').update({ lecture_id: row.id }).in('id', slideIds))) {
+      setSlides((prev) => prev.map((s) => (slideIds.includes(s.id) ? { ...s, lecture_id: row.id } : s)));
+    }
+    return true;
   }
 
   /* ── Generic per-subject collections (see ITEM_TABLES) ── */
@@ -205,9 +233,9 @@ export function useProgramData() {
   }
 
   return {
-    subjects, notes, todos, items, loaded, error,
+    subjects, notes, todos, items, slides, loaded, error,
     addSubject, addStarterSubjects, updateSubject, deleteSubject,
-    addNote, updateNote, deleteNote,
+    addNote, updateNote, deleteNote, addLectureFromSlides,
     addItem, addItems, updateItem, deleteItem,
     addTodo, toggleTodo, deleteTodo,
   };

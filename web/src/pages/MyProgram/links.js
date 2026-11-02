@@ -56,6 +56,19 @@ export function parseLink(input) {
   if (host === '1drv.ms' || host.endsWith('onedrive.live.com') || host.endsWith('sharepoint.com') || host.endsWith('office.com')) {
     return { ...base, source: 'OneDrive', icon: '☁️', title: host === '1drv.ms' ? 'OneDrive file' : fileTitle(u) };
   }
+  // Nextcloud / sciebo (many German universities). These servers send
+  // X-Frame-Options: SAMEORIGIN, so there's deliberately no embed — they open in a tab.
+  if (
+    host.includes('nextcloud') ||
+    host.includes('sciebo') ||
+    /\/index\.php\/s\/|\/apps\/files/.test(path) ||
+    (host.startsWith('cloud.') && /^\/s\/[\w]{8,}/.test(path))
+  ) {
+    const hasFile = /\.[a-z0-9]{2,5}$/i.test(path);
+    const kind = /\.pdf$/i.test(path) ? 'Paper' : /\.pptx?$/i.test(path) ? 'Slides' : null;
+    const folder = path.includes('/apps/files') && !hasFile;
+    return { ...base, source: 'Nextcloud', icon: folder ? '📁' : '🗄️', title: hasFile ? fileTitle(u) : folder ? 'Nextcloud folder' : 'Nextcloud share', suggestedKind: kind };
+  }
   if (host === 'dropbox.com' || host.endsWith('.dropbox.com')) return { ...base, source: 'Dropbox', icon: '📦' };
   if (host === 'github.com') return { ...base, source: 'GitHub', icon: '🐙' };
   if (/\.pdf$/i.test(path)) return { ...base, source: 'PDF', icon: '📕', suggestedKind: 'Paper' };
