@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ItemForm from './ItemForm';
 import SlidePicker from './SlidePicker';
 import RowActions from './RowActions';
+import NoteBody from './NoteBody';
 import { formatDay } from './dates';
 import { TagChips, TagFilter, matchTag } from './Tags';
 
@@ -12,6 +13,14 @@ export default function LectureLog({ subjectId, lectures, slides = [], api }) {
   const left = slides.filter((s) => !s.lecture_id);
   const [editingId, setEditingId] = useState(null);
   const [tag, setTag] = useState('');
+  const [closed, setClosed] = useState(() => new Set()); // minimized days
+
+  const toggleDay = (day) =>
+    setClosed((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(day)) next.add(day);
+      return next;
+    });
 
   // Lectures with no date yet are collected under "Date not set" at the top.
   const keyOf = (l) => l.note_date || '';
@@ -70,11 +79,32 @@ export default function LectureLog({ subjectId, lectures, slides = [], api }) {
         <p className="empty">No lectures logged yet. After each class, add what you covered — it builds a day-by-day record you can revise from.</p>
       )}
 
+      {groups.length > 1 && (
+        <div className="timeline-tools">
+          <button type="button" onClick={() => setClosed(new Set(groups.map(([d]) => d)))}>Minimize all</button>
+          <button type="button" onClick={() => setClosed(new Set())}>Maximize all</button>
+        </div>
+      )}
+
       <div className="timeline">
-        {groups.map(([day, items], g) => (
+        {groups.map(([day, items], g) => {
+          const folded = closed.has(day) && !items.some((l) => l.id === editingId);
+          return (
           <section key={day || 'undated'} className="timeline-day rise" style={{ '--i': g }}>
-            <h3 className="timeline-date">{day ? formatDay(day) : 'Date not set'}</h3>
-            {items.map((l) =>
+            <h3 className="timeline-date">
+              <button type="button" className="timeline-toggle" aria-expanded={!folded} onClick={() => toggleDay(day)}>
+                <span className={`chev${folded ? '' : ' is-open'}`} aria-hidden="true">▸</span>
+                {day ? formatDay(day) : 'Date not set'}
+                <span className="timeline-count">{items.length}</span>
+              </button>
+            </h3>
+            {folded ? (
+              <ul className="timeline-peek">
+                {items.map((l) => (
+                  <li key={l.id}>{l.title}</li>
+                ))}
+              </ul>
+            ) : items.map((l) =>
               editingId === l.id ? (
                 <ItemForm
                   key={l.id}
@@ -94,7 +124,7 @@ export default function LectureLog({ subjectId, lectures, slides = [], api }) {
                     <TagChips note={l} />
                     <RowActions onEdit={() => setEditingId(l.id)} onDelete={() => api.deleteNote(l.id)} />
                   </div>
-                  {l.content && <p className="entry-body">{l.content}</p>}
+                  <NoteBody text={l.content} />
                   {!l.note_date && (
                     <label className="set-date">
                       <span>Set date</span>
@@ -110,7 +140,8 @@ export default function LectureLog({ subjectId, lectures, slides = [], api }) {
               ),
             )}
           </section>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

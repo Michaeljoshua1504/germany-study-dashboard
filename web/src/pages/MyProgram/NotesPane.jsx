@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import ItemForm from './ItemForm';
 import RowActions from './RowActions';
+import NoteBody from './NoteBody';
+import { isLong } from './noteText';
 import { dayOf, formatShort } from './dates';
 import { TagChips, TagFilter, matchTag } from './Tags';
 
@@ -9,6 +11,15 @@ export default function NotesPane({ subjectId, notes, api }) {
   const [editingId, setEditingId] = useState(null);
   const [query, setQuery] = useState('');
   const [tag, setTag] = useState('');
+  const [openIds, setOpenIds] = useState(() => new Set()); // long notes shown in full
+
+  const setOpen = (id, open) =>
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (open) next.add(id);
+      else next.delete(id);
+      return next;
+    });
 
   const q = query.trim().toLowerCase();
   const shown = notes.filter(
@@ -64,13 +75,17 @@ export default function NotesPane({ subjectId, notes, api }) {
               />
             </div>
           ) : (
-            <article key={n.id} className="note-card rise" style={{ '--i': i }}>
+            <article
+              key={n.id}
+              className={`note-card rise${isLong(n.content) && openIds.has(n.id) ? ' is-open' : ''}`}
+              style={{ '--i': i }}
+            >
               <div className="entry-head">
                 <strong>{n.title}</strong>
                 <TagChips note={n} />
                 <RowActions onEdit={() => setEditingId(n.id)} onDelete={() => api.deleteNote(n.id)} />
               </div>
-              {n.content && <p className="entry-body">{n.content}</p>}
+              <NoteBody text={n.content} open={openIds.has(n.id)} onToggle={(open) => setOpen(n.id, open)} />
               <time className="mp-muted" dateTime={dayOf(n)}>{formatShort(dayOf(n))}</time>
             </article>
           ),

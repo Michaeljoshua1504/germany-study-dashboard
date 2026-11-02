@@ -369,6 +369,26 @@
 }
 .entry:hover { transform: translateX(3px); box-shadow: var(--shadow-md); }
 
+/* ── Note / lecture body ──────────────────────────────── */
+.nb-wrap { display: grid; justify-items: start; gap: 2px; margin: 8px 0 2px; }
+.nb { display: grid; gap: 5px; width: 100%; overflow-wrap: anywhere; line-height: 1.55; font-size: 14px; color: color-mix(in srgb, var(--ink) 90%, var(--ink-soft)); }
+.nb p { margin: 0; }
+.nb .nb-indent { padding-left: 18px; color: var(--ink-soft); }
+.nb.is-clamped { max-height: 11.5em; overflow: hidden; mask-image: linear-gradient(#000 55%, transparent); -webkit-mask-image: linear-gradient(#000 55%, transparent); }
+.nb-h { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: 11.5px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink); }
+.nb-h::before { content: ''; flex: none; width: 4px; height: 14px; border-radius: 2px; background: var(--subject); }
+.nb-h:first-child { margin-top: 0; }
+.nb ul { list-style: none; display: grid; gap: 3px; padding: 0; margin: 0; }
+.nb li { position: relative; padding-left: 16px; }
+.nb li::before { content: ''; position: absolute; left: 2px; top: 0.62em; width: 6px; height: 6px; border-radius: 50%; background: var(--subject); }
+.nb li.l2 { margin-left: 18px; }
+.nb li.l2::before { background: transparent; border: 1.5px solid var(--subject); }
+.nb li.num { padding-left: 22px; }
+.nb li.num::before { display: none; }
+.nb-n { position: absolute; left: 0; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.nb-more { margin-top: 6px; padding: 3px 12px; border-radius: 999px; background: color-mix(in srgb, var(--subject) 14%, transparent); font-size: 12px; font-weight: 700; color: var(--ink); transition: background 0.2s, transform 0.2s var(--ease); }
+.nb-more:hover { background: color-mix(in srgb, var(--subject) 26%, transparent); transform: translateY(-1px); }
+
 /* ── Notes grid ───────────────────────────────────────── */
 .notes-search { max-width: 300px; border-radius: 999px; padding-left: 16px; }
 .note-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
@@ -386,6 +406,22 @@
   transition: transform 0.3s var(--ease), box-shadow 0.3s;
 }
 .note-card:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: var(--shadow-md); }
+.note-card.is-open { grid-column: 1 / -1; }
+.note-card.is-open:hover { transform: none; }
+.note-card.is-open .nb { max-width: 80ch; }
+.note-card time { margin-top: 6px; font-size: 12px; }
+
+/* Day headers in the lecture log fold their lectures away. */
+.timeline-tools { display: flex; gap: 6px; margin-bottom: 12px; }
+.timeline-tools button { padding: 3px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 7%, transparent); font-size: 12px; font-weight: 600; color: var(--ink-soft); transition: background 0.2s, color 0.2s; }
+.timeline-tools button:hover { background: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--ink); }
+.timeline-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 2px 8px 2px 4px; margin-left: -4px; border-radius: 8px; font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.timeline-toggle:hover { background: color-mix(in srgb, var(--ink) 7%, transparent); color: var(--ink); }
+.timeline-toggle .chev { display: inline-block; transition: transform 0.25s var(--ease); }
+.timeline-toggle .chev.is-open { transform: rotate(90deg); }
+.timeline-count { padding: 0 8px; border-radius: 999px; background: color-mix(in srgb, var(--subject) 16%, transparent); font-size: 11px; color: var(--ink); }
+.timeline-peek { list-style: none; display: grid; gap: 2px; margin: -2px 0 0; padding: 0; font-size: 13px; color: var(--ink-soft); }
+.timeline-peek li { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── Tags ─────────────────────────────────────────────── */
 .entry-head .tag-chips { margin: 0 auto 0 8px; }
