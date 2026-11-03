@@ -459,6 +459,20 @@
 .note-card.is-open .nb { max-width: 80ch; }
 .note-card time { margin-top: 6px; font-size: 12px; }
 
+/* Lecture search: matched words, the lecture and the day it was taught are lit up. */
+mark { padding: 0 2px; border-radius: 3px; background: color-mix(in srgb, var(--amber) 45%, transparent); color: inherit; }
+.lecture-search { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lecture-search .notes-search { width: 100%; max-width: 440px; }
+.search-summary { font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+.timeline-day.is-hit .timeline-toggle { background: color-mix(in srgb, var(--amber) 24%, transparent); color: var(--ink); }
+.timeline-day.is-hit::before { background: var(--amber); border-color: var(--amber); }
+.entry.is-hit { border-color: var(--amber); box-shadow: 0 0 0 3px color-mix(in srgb, var(--amber) 16%, transparent), var(--shadow-sm); }
+.hit-date { display: inline-block; margin: 6px 0 0; padding: 2px 10px; border-radius: 999px; background: var(--amber-soft); font-size: 12px; font-weight: 700; color: var(--amber); }
+.hit-list { list-style: none; display: grid; gap: 6px; margin: 8px 0 2px; padding: 0; }
+.hit-list li { display: grid; gap: 1px; padding: 6px 10px; border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; background: color-mix(in srgb, var(--amber) 7%, transparent); font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+.hit-where { font-size: 10.5px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.hit-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
 /* Day headers in the lecture log fold their lectures away. */
 .timeline-tools { display: flex; gap: 6px; margin-bottom: 12px; }
 .timeline-tools button { padding: 3px 12px; border-radius: 999px; background: color-mix(in srgb, var(--ink) 7%, transparent); font-size: 12px; font-weight: 600; color: var(--ink-soft); transition: background 0.2s, color 0.2s; }
